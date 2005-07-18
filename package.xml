@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0" packagerversion="1.4.0a12">
+ <name>Image_3D</name>
+ <summary>This class allows the rendering of 3 dimensional images using PHP and ext/GD.</summary>
+ <description>Image_3D is a highly object oriented PHP5 package 
+that allows the creation of 3 dimensional images
+using PHP and the GD extension, which is bundled
+with PHP.
+
+Image_3D currently supports:
+* Creation of 3D objects like cubes, spheres, maps, text,...
+* Own object definitions possible
+* Own material definitions
+* Import of 3DSMax files
+* Unlimited number of light sources
+* Saving all output formats supported by GD
+ </description>
+ <maintainers>
+  <maintainer>
+   <user>toby</user>
+   <name>Tobias Schlitt</name>
+   <email>toby@php.net</email>
+   <role>lead</role>
+  </maintainer>
+  <maintainer>
+   <user>kore</user>
+   <name>Kore Nordmann</name>
+   <email>pear@kore-nordmann.de</email>
+   <role>lead</role>
+  </maintainer>
+  </maintainers>
+ <release>
+  <version>0.2.0</version>
+  <date>2005-07-08</date>
+  <license>LGPL</license>
+  <state>alpha</state>
+  <notes>* New renderer interface, added a standard and an isometric renderer.
+* Driver based output format, supports now GD and SVG.
+* New shading API, supports modes &quot;none&quot;, &quot;flat&quot; and &quot;gauround&quot; by now.
+* Highly refactored.
+  </notes>
+  <deps>
+   <dep type="ext" rel="has" optional="no">gd</dep>
+   <dep type="php" rel="ge" version="5.0.0" optional="no"/>
+  </deps>
+  <filelist>
+   <dir name="/" baseinstalldir="">
+    <dir name="data">
+     <file role="data" name="TextData.dat">
+      <replace type="package-info" from="@package_version@" to="version"/>
+      <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+     </file>
+    </dir> <!-- /data -->
+    <dir name="docs">
+     <dir name="examples">
+      <dir name="models">
+       <file role="doc" name="cube.3ds">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="Image_3D.3ds">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /docs/examples/models -->
+      <dir name="tests">
+       <file role="doc" name="TestImage_iso,flat,bfculling.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,flat,bfculling.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,flat,nobfc.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,flat,nobfc.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,gauroud,bfculling.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,gauroud,nobfc.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,none,bfculling.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,none,bfculling.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,none,nobfc.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_iso,none,nobfc.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,flat,bfculling.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,flat,bfculling.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,flat,nobfc.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,flat,nobfc.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,gauroud,bfculling.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,gauroud,nobfc.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,none,bfculling.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,none,bfculling.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,none,nobfc.png">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="doc" name="TestImage_pers,none,nobfc.svg">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /docs/examples/tests -->
+      <file role="doc" name="3ds.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="map.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="sphere.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="test_all.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="text.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+     </dir> <!-- /docs/examples -->
+     <dir name="pictures">
+      <file role="doc" name="all_objects.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="animation.gif">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="car.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="f1.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="mickey.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="mickey_trans.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="sincos.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="spheres.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="sphere_detail_4.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="sphere_detail_5.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="sphere_detail_6.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="sphere_detail_7.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="text.png">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+     </dir> <!-- /docs/pictures -->
+     <file role="doc" name="AUTHORS">
+      <replace type="package-info" from="@package_version@" to="version"/>
+      <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+     </file>
+     <file role="doc" name="COPYING">
+      <replace type="package-info" from="@package_version@" to="version"/>
+      <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+     </file>
+     <file role="doc" name="README">
+      <replace type="package-info" from="@package_version@" to="version"/>
+      <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+     </file>
+     <file role="doc" name="TODO">
+      <replace type="package-info" from="@package_version@" to="version"/>
+      <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+     </file>
+    </dir> <!-- /docs -->
+    <dir name="Image">
+     <dir name="3D">
+      <dir name="Color">
+       <file role="php" name="Metal.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /Image/3D/Color -->
+      <dir name="Driver">
+       <file role="php" name="GD.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="SVG.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /Image/3D/Driver -->
+      <dir name="Matrix">
+       <file role="php" name="Move.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="Rotation.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="Scale.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /Image/3D/Matrix -->
+      <dir name="Paintable">
+       <dir name="Object">
+        <file role="php" name="3ds.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="3dsChunks.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Cube.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Map.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Sphere.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Text.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+       </dir> <!-- /Image/3D/Paintable/Object -->
+       <file role="php" name="Light.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="Object.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="Polygon.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /Image/3D/Paintable -->
+      <dir name="Renderer">
+       <file role="php" name="Isometric.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="Perspectively.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+      </dir> <!-- /Image/3D/Renderer -->
+      <file role="php" name="Color.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Coordinate.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Driver.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Enlightenable.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Matrix.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Paintable.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Point.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Renderer.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="php" name="Vector.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+     </dir> <!-- /Image/3D -->
+     <file role="php" name="3D.php">
+      <replace type="package-info" from="@package_version@" to="version"/>
+      <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+     </file>
+    </dir> <!-- /Image -->
+   </dir> <!-- / -->
+  </filelist>
+ </release>
+ <changelog>
+   <release>
+    <version>0.2.0</version>
+    <date>2005-07-08</date>
+    <license>LGPL</license>
+    <state>alpha</state>
+    <notes>* New renderer interface, added a standard and an isometric renderer.
+* Driver based output format, supports now GD and SVG.
+* New shading API, supports modes &quot;none&quot;, &quot;flat&quot; and &quot;gauround&quot; by now.
+* Highly refactored.
+    </notes>
+   </release>
+ </changelog>
+</package>
