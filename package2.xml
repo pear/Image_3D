@@ -21,22 +21,22 @@ Image_3D currently supports:
  
  </description>
  <lead>
-  <name>Tobias Schlitt</name>
-  <user>toby</user>
-  <email>toby@php.net</email>
-  <active>yes</active>
- </lead>
- <lead>
   <name>Kore Nordmann</name>
   <user>kore</user>
   <email>pear@kore-nordmann.de</email>
   <active>yes</active>
  </lead>
- <date>2005-07-08</date>
- <time>00:08:53</time>
+ <lead>
+  <name>Tobias Schlitt</name>
+  <user>toby</user>
+  <email>toby@php.net</email>
+  <active>yes</active>
+ </lead>
+ <date>2005-07-19</date>
+ <time>21:03:43</time>
  <version>
-  <release>0.2.0</release>
-  <api>0.2.0</api>
+  <release>0.2.1</release>
+  <api>0.2.1</api>
  </version>
  <stability>
   <release>alpha</release>
@@ -156,6 +156,10 @@ Image_3D currently supports:
       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
      </file>
      <file baseinstalldir="" name="map.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+     <file baseinstalldir="" name="pie.php" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
      </file>
@@ -293,6 +297,10 @@ Image_3D currently supports:
         <tasks:replace from="@package_version@" to="version" type="package-info" />
         <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
        </file>
+       <file baseinstalldir="" name="Pie.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+       </file>
        <file baseinstalldir="" name="Sphere.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
         <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
@@ -386,14 +394,14 @@ Image_3D currently supports:
  <changelog>
   <release>
    <version>
-    <release>0.2.0</release>
-    <api>0.2.0</api>
+    <release>0.2.1</release>
+    <api>0.2.1</api>
    </version>
    <stability>
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2005-07-08</date>
+   <date>2005-07-19</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>* New renderer interface, added a standard and an isometric renderer.
 * Driver based output format, supports now GD and SVG.

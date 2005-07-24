@@ -7,14 +7,14 @@
 	$pkg = new PEAR_PackageFileManager;
 
 	// directory that PEAR CVS is located in
-	$cvsdir  = '/home/dotxp/dev/';
-	$packagedir = $cvsdir . 'Image_3D/trunk/';
+	$cvsdir  = dirname(__FILE__);
+	$packagedir = $cvsdir;
 	
 	// Filemanager settings
 	$category = 'Image';
 	$package = 'Image_3D';
 	
-	$version = '0.2.0';
+	$version = '0.2.1';
 	$state = 'alpha';
 	
 	$summary = 'This class allows the rendering of 3 dimensional images using PHP and ext/GD.';
@@ -66,8 +66,8 @@ EOT;
     	exit;
 	}
 	
-	$e = $pkg->addMaintainer('toby', 'lead', 'Tobias Schlitt', 'toby@php.net');
 	$e = $pkg->addMaintainer('kore', 'lead', 'Kore Nordmann', 'pear@kore-nordmann.de');
+	$e = $pkg->addMaintainer('toby', 'lead', 'Tobias Schlitt', 'toby@php.net');
 	
 	if (PEAR::isError($e)) {
     	echo $e->getMessage();

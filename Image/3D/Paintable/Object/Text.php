@@ -64,10 +64,14 @@ class Image_3D_Object_Text extends Image_3D_Object {
 		$this->_points = array();
 		$this->_characterSpacing = 5.5;
 		
-		$this->_chars = unserialize(file_get_contents(
-            // Dirty little trick for Kore's test env ;)
-            (('@data_dir@' != '@'.'data'.'_'.'dir'.'@') ? '@data_dir@'.'TextData.dat' : 'data/TextData.dat');
-        ));
+		$textdata = '@data_dir@/Image_3D/data/TextData.dat';
+		if (is_readable($textdata)) {
+			$this->_chars = unserialize(file_get_contents($textdata));
+		} elseif (is_readable('data/TextData.dat')) {
+			$this->_chars = unserialize(file_get_contents('data/TextData.dat'));
+		} else {
+			throw new Exception('File for textdata not found.');
+		}
 		
 		$this->_generateCubes();
 	}
