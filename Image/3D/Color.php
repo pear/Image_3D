@@ -81,6 +81,14 @@ class Image_3D_Color {
 		}
 	}
 	
+	public function mixAlpha($alpha = 1.) {
+	    if (is_int($arglist[$i])) {
+			$this->_rgbaValue[3] *= (float) min(1, max(0, (float) $alpha / 255));
+	    } else {
+			$this->_rgbaValue[3] *= (float) min(1, max(0, (float) $alpha));
+	    }
+	}
+	
 	public function getValues() {
 		return $this->_rgbaValue;
 	}
