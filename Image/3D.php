@@ -336,7 +336,10 @@ class Image_3D {
      * @version                 0.1
      */
 	public function render($x, $y, $file) {
-		if (!is_writable(dirname($file)) && (!is_file($file) || !is_writable($file))) throw new Exception('Cannot write outputfile.');
+		if (	(is_file($file) || !is_writeable(dirname($file)))
+			&&	(!is_file($file) || !is_writeable($file))
+			&&	!preg_match('/^\s*php:\/\/stdout\s*$/i', $file)) // Hack because stdout is not writeable
+			throw new Exception('Cannot write outputfile.');
 		
 		$x = min(1280, max(0, (int) $x));
 		$y = min(1280, max(0, (int) $y));

@@ -11,8 +11,10 @@ $renderer = array(
 );
 
 $driver = array(
-	'png' 		=> 'GD',
+	'gd.png' 	=> 'GD',
 	'svg' 		=> 'SVG',
+	'png' 		=> 'ZBuffer',
+	'txt'		=> 'ASCII',
 );
 
 $shading = array(
@@ -22,7 +24,10 @@ $shading = array(
 	'phong' 	=> Image_3D_Renderer::SHADE_PHONG,
 );
 
-$bf = array('bfculling' => true, 'nobfc' => false);
+$bf = array(
+    'bfculling' => true, 
+    'nobfc'     => false
+);
 
 foreach ($renderer as $r_id => $r_class) {
 	foreach ($driver as $d_id => $d_class) {

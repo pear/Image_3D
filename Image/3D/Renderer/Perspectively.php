@@ -49,8 +49,8 @@
 class Image_3D_Renderer_Perspectively extends Image_3D_Renderer {
 	
 	protected function _calculateScreenCoordiantes(Image_3D_Point $point) {
-		$viewpoint = 500.;
-		$distance = 500.;
+		$viewpoint = (float) max($this->_size);
+		$distance = (float) max($this->_size);
 		
 		$point->setScreenCoordinates(
 			$viewpoint * $point->getX() / ($point->getZ() + $distance) + $this->_size[0] / 2,
