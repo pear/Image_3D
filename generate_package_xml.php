@@ -14,7 +14,7 @@
 	$category = 'Image';
 	$package = 'Image_3D';
 	
-	$version = '0.2.1';
+	$version = '0.3.0';
 	$state = 'alpha';
 	
 	$summary = 'This class allows the rendering of 3 dimensional images using PHP and ext/GD.';
@@ -34,10 +34,8 @@ Image_3D currently supports:
 EOT;
 
 	$notes = <<<EOT
-* New renderer interface, added a standard and an isometric renderer.
-* Driver based output format, supports now GD and SVG.
-* New shading API, supports modes "none", "flat" and "gauround" by now.
-* Highly refactored.
+* Added output driver for svg rotation.
+* Added Driver for ASCII-output (including animation).
 EOT;
 	
 	$e = $pkg->setOptions(
@@ -50,7 +48,7 @@ EOT;
 	          'packagedirectory'  => $packagedir,
 	          'pathtopackagefile' => $packagedir,
               'state'             => $state,
-              'filelistgenerator' => 'file',
+              'filelistgenerator' => 'cvs',
               'notes'             => $notes,
 			  'package'           => $package,
 			  'dir_roles' => array(
