@@ -21,14 +21,16 @@ $p1->transform($world->createMatrix('Rotation', array(45, 45, 0)));
 $world->setOption(Image_3D::IMAGE_3D_OPTION_BF_CULLING, false);
 $world->setOption(Image_3D::IMAGE_3D_OPTION_FILLED, true);
 
-$rotation = $world->createMatrix('Rotation', array(0, 5, 0));
+$rotation = $world->createMatrix('Rotation', array(2, 5, 0));
 $renderer = $world->createRenderer('perspectively');
 $driver = $world->createDriver('ASCII');
 
+$world->render(2 * 80, 6 * 30, 'php://output');
+
 while (1) {
-	$world->transform($rotation);
+	$p1->transform($rotation);
 	$driver->reset();
-	$world->render(2 * 80, 6 * 30, 'php://stdout');
+	$renderer->render('php://output');
 }
 
 ?>

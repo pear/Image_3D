@@ -65,6 +65,10 @@ abstract class Image_3D_Renderer {
 	const SHADE_PHONG		= 3;
 	
 	public function __construct() {
+	    $this->reset();
+	}
+	
+	public function reset() {
 		$this->_objects = array();
 		$this->_polygones = array();
 		$this->_points = array();

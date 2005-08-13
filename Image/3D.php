@@ -46,6 +46,8 @@ require_once('Image/3D/Paintable/Object.php');
 require_once('Image/3D/Paintable/Light.php');
 require_once('Image/3D/Paintable/Polygon.php');
 
+// {{{ Image_3D
+
 /**
  * Image_3D
  *
@@ -62,28 +64,40 @@ require_once('Image/3D/Paintable/Polygon.php');
  */
 class Image_3D {
 	
+    // {{{ properties
+    
     /**
-     * Backgroundcolor 
+     * Backgroundcolor
+     *
+     * @var Image_3D_Color
      */
 	protected $_color;
     
     /**
      * List of known objects
+     *
+     * @var array
      */
 	protected $_objects;
     
     /**
      * List of lights
+     *
+     * @var array
      */
 	protected $_lights;
     
     /**
      * Active renderer
+     *
+     * @var Image_3D_Renderer
      */
 	protected $_renderer;
     
     /**
      * Active outputdriver
+     *
+     * @var Image_3D_Driver
      */
 	protected $_driver;
 	
@@ -95,8 +109,13 @@ class Image_3D {
     
     /**
      * Options set by the user
+     *
+     * @var array
      */
 	protected $_optionSet;
+	
+	// }}}
+	// {{{ constants
 	
     /**
      * Option for filled polygones (depreceated)
@@ -108,14 +127,15 @@ class Image_3D {
      */
 	const IMAGE_3D_OPTION_BF_CULLING		= 2;
 	
-    /**
+	// }}}
+	// {{{ __construct()
+
+	/**
      * Constructor for Image_3D
      * 
      * Initialises the environment
      *
-     * @return  Image_3D    World instance
-     * @author              Kore Nordmann <3d@kore-nordmann.de>
-     * @version             0.1
+     * @return  Image_3D                World instance
      */
 	public function __construct() {
 		$this->_objects = array();
@@ -129,22 +149,23 @@ class Image_3D {
 		$this->_optionSet = array();
 	}
 	
+	// }}}
+	// {{{ createObject()
+
     /**
      * Factory method for Objects
      * 
      * Creates and returns a printable object. 
      * Standard objects with parameters:
-     * 	- cube		array(x, y, z)
-     * 	- sphere	array(r, detail)
-     * 	- 3ds		file
+     * 	- cube		array(float $x, float $y, float $z)
+     * 	- sphere	array(float $r, int $detail)
+     * 	- 3ds		string $filename
      * 	- map		[array(array(Image_3D_Point))]
-     * 	- text		string
+     * 	- text		string $string
      *
-     * @param   string          Objectname
-     * @param   array           Parameters
-     * @return  Image_3D_Object	Object instance
-     * @author              	Kore Nordmann <3d@kore-nordmann.de>
-     * @version             	0.1
+     * @param   string      $type       Objectname
+     * @param   array       $parameter  Parameters
+     * @return  Image_3D_Object	        Object instance
      */
 	public function createObject($type, $parameter = array()) {
 		$name = ucfirst($type);
@@ -163,37 +184,39 @@ class Image_3D {
 		return $this->_objects[] = new $class($parameter);
 	}
 	
+	// }}}
+	// {{{ createLight()
+	
     /**
      * Factory method for lights
      * 
      * Creates and returns a light. Needs only the position of the lights as a
      * parameter.
      *
-     * @param   float           X-Position
-     * @param   float           Y-Position
-     * @param   float           Z-Position
-     * @return  Image_3D_Light  Object instance
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
+     * @param   float       $x          X-Position
+     * @param   float       $y          Y-Position
+     * @param   float       $z          Z-Position
+     * @return  Image_3D_Light          Object instance
      */
 	public function createLight($x, $y, $z) {
 		return $this->_lights[] = new Image_3D_Light($x, $y, $z);
 	}
 	
+	// }}}
+	// {{{ createMatrix()
+
     /**
      * Factory method for transformation matrixes
      * 
      * Creates a transformation matrix
      * Known matrix types:
-     *  - rotation      array(x, y, z)
-     *  - scale         array(x, y, z)
-     *  - move          array(x, y, z)
+     *  - rotation      array(float $x, float $y, float $z)
+     *  - scale         array(float $x, float $y, float $z)
+     *  - move          array(float $x, float $y, float $z)
      *
-     * @param   string          Matrix type
-     * @param   array           Parameters
-     * @return  Image_3D_Matrix Object instance
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
+     * @param   string      $type       Matrix type
+     * @param   array       $parameter  Parameters
+     * @return  Image_3D_Matrix         Object instance
      */
 	public function createMatrix($type, $parameter = array()) {
 		$name = ucfirst($type);
@@ -209,20 +232,24 @@ class Image_3D {
 		return new $class($parameter);
 	}
 	
+	// }}}
+	// {{{ setColor()
+
     /**
      * Sets world backgroundcolor 
      * 
      * Sets the backgroundcolor for final image. Transparancy is not supported
      * by all drivers
      *
-     * @param   Image_3D_Color  Backgroundcolor
+     * @param   Image_3D_Color  $color  Backgroundcolor
      * @return  void
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
      */
 	public function setColor(Image_3D_Color $color) {
 		$this->_color = $color;
 	}
+
+	// }}}
+	// {{{ createRenderer()
 
     /**
      * Factory method for renderer
@@ -232,10 +259,8 @@ class Image_3D {
      *  - Isometric
      *  - Perspektively
      *
-     * @param   string          Renderer type
-     * @return  Image_3D_Renderer   Object instance
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
+     * @param   string      $type       Renderer type
+     * @return  Image_3D_Renderer       Object instance
      */
 	public function createRenderer($type) {
 		$name = ucfirst($type);
@@ -254,6 +279,9 @@ class Image_3D {
 		return $this->_renderer = new $class();
 	}
 	
+	// }}}
+	// {{{ createDriver()
+
     /**
      * Factory method for drivers
      * 
@@ -262,10 +290,8 @@ class Image_3D {
      *  - GD
      *  - SVG
      *
-     * @param   string          Driver type
-     * @return  Image_3D_Driver Object instance
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
+     * @param   string      $type       Driver type
+     * @return  Image_3D_Driver         Object instance
      */
 	public function createDriver($type) {
 		$name = ucfirst($type);
@@ -284,22 +310,26 @@ class Image_3D {
 		return $this->_driver = new $class();
 	}
 	
+	// }}}
+	// {{{ setOption()
+
     /**
      * Sets an option for all known objects
      * 
      * Sets one of the Image_3D options for all known objects
      *
-     * @param   integer         Option
-     * @param   mixed           Value
+     * @param   integer     $option    Option
+     * @param   mixed       $value     Value
      * @return  void
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
      */
 	public function setOption($option, $value) {
 		$this->_option[$option] = $value;
 		$this->_optionSet[$option] = true;
 		foreach ($this->_objects as $object) $object->setOption($option, $value);
 	}
+
+	// }}}
+	// {{{ transform()
 
     /**
      * Transform all known objects
@@ -311,11 +341,9 @@ class Image_3D {
      * avoid double calculations, if a point is related to more than one 
      * object.
      *
-     * @param   Image_3D_Matrix Transformation matrix
-     * @param   mixed           Transformation ID
+     * @param   Image_3D_Matrix $matrix Transformation matrix
+     * @param   mixed           $id     Transformation ID
      * @return  void
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
      */
 	public function transform(Image_3D_Matrix $matrix, $id = null) {
 		
@@ -323,22 +351,23 @@ class Image_3D {
 		foreach ($this->_objects as $object) $object->transform($matrix, $id);
 	}
 	
+	// }}}
+	// {{{ render()
+
     /**
      * Renders the image
      * 
      * Starts rendering an image with given size into the given file.
      *
-     * @param   integer         Width
-     * @param   integer         Height
-     * @param   string          Filename
-     * @return  boolean         Success
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
+     * @param   integer     $x          Width
+     * @param   integer     $y          Height
+     * @param   string      $file       Filename
+     * @return  boolean                 Success
      */
 	public function render($x, $y, $file) {
 		if (	(is_file($file) || !is_writeable(dirname($file)))
 			&&	(!is_file($file) || !is_writeable($file))
-			&&	!preg_match('/^\s*php:\/\/stdout\s*$/i', $file)) // Hack because stdout is not writeable
+			&&	!preg_match('/^\s*php:\/\/(stdout|output)\s*$/i', $file)) // Hack because stdout is not writeable
 			throw new Exception('Cannot write outputfile.');
 		
 		$x = min(1280, max(0, (int) $x));
@@ -353,14 +382,15 @@ class Image_3D {
 		return $this->_renderer->render($file);
 	}
 	
+	// }}}
+	// {{{ stats()
+
     /**
      * Statistics for Image_3D
      * 
      * Returns simple statisics for Image_3D as a string.
      *
-     * @return  string          Statistics
-     * @author                  Kore Nordmann <3d@kore-nordmann.de>
-     * @version                 0.1
+     * @return  string                  Statistics
      */
 	public function stats() {
 		return sprintf('
@@ -377,6 +407,10 @@ points:     %d
 			$this->_renderer->getPointCount()
 		);
 	}
+    
+	// }}}
 }
+
+// }}}
 
 ?>
