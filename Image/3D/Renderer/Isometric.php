@@ -50,8 +50,8 @@ class Image_3D_Renderer_Isometric extends Image_3D_Renderer {
 	
 	protected function _calculateScreenCoordiantes(Image_3D_Point $point) {
 		$point->setScreenCoordinates(
-			$point->getX() - ($point->getZ() * .35) + $this->_size[0] / 2,
-			$point->getY() + ($point->getZ() * .35) + $this->_size[1] / 2
+			$point->getX() - ($point->getZ() * .35) + $this->_size[0],
+			$point->getY() + ($point->getZ() * .35) + $this->_size[1]
 		);
 	}
 	

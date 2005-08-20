@@ -101,10 +101,11 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 	}
 	
 	protected function _mixColor($old, $new) {
+	    $faktor = (1 - $new[3]) * $old[3]; // slight speed improvement
 	    return array(
-            $old[0] * (1 - $new[3]) * $old[3] + $new[0] * $new[3],
-            $old[1] * (1 - $new[3]) * $old[3] + $new[1] * $new[3],
-            $old[2] * (1 - $new[3]) * $old[3] + $new[2] * $new[3],
+            $old[0] * $faktor + $new[0] * $new[3],
+            $old[1] * $faktor + $new[1] * $new[3],
+            $old[2] * $faktor + $new[2] * $new[3],
             $old[3] * $old[3] + $new[3]
 	    );
 	    
@@ -113,8 +114,8 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 	public function setBackground(Image_3D_Color $color) {
 		$bg = $this->_getColor($color);
 
-		for ($x = 0; $x < $this->_size[0]; $x++) {
-    	    for ($y = 0; $y < $this->_size[1]; $y++) {
+		for ($x = 0; $x < $this->_size[0]; ++$x) {
+    	    for ($y = 0; $y < $this->_size[1]; ++$y) {
     	        $this->_image[$x][$y] = $bg;
     	    }
 	    }
@@ -132,7 +133,7 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 	    $zdiff = ($z2 - $z1) / $steps;
 	    
 	    $points = array('height' => array(), 'coverage' => array());
-	    for ($i = 0; $i < $steps; $i++) {
+	    for ($i = 0; $i < $steps; ++$i) {
     		$x = $x1 + $i * $xdiff;
     		$xFloor = floor($x);
     		$xCeil = ceil($x);
@@ -210,7 +211,7 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
             $this->_heigth[$x][$start][(int) ($zStart * 100)] = $this->_getColor($polygon->getColor(), $points['coverage'][$x][$start]);
             
             // the way between
-            for ($y = $start + 1; $y < $end; $y++) {
+            for ($y = $start + 1; $y < $end; ++$y) {
                 $this->_heigth[$x][$y][(int) (($zStart + $zStep * ($y - $start)) * 100)] = $this->_getColor($polygon->getColor());
 	        }
 
@@ -247,13 +248,13 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 		$output = "\033[2J";
 		$lastColor = '';
 		
-		for ($y = 0; $y < $asciiHeight; $y++) {
-			for ($x = 0; $x < $asciiWidth; $x++) {
+		for ($y = 0; $y < $asciiHeight; ++$y) {
+			for ($x = 0; $x < $asciiWidth; ++$x) {
 				// Get pixelarray
 				$char = 0;
 				$charColor = array(0, 0, 0);
-				for ($xi = 0; $xi < 2; $xi++) {
-					for ($yi = 0; $yi < 3; $yi++) {
+				for ($xi = 0; $xi < 2; ++$xi) {
+					for ($yi = 0; $yi < 3; ++$yi) {
 						$xPos = $x * 2 + $xi;
 						$yPos = $y * 6 + $yi;
 						$color = $this->_image[$xPos][$yPos];
@@ -263,7 +264,7 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 						    krsort($points);
 					        foreach ($points as $newColor) $color = $this->_mixColor($color, $newColor);
 					    }
-						if ((($color[0] + $color[1] + $color[2]) / 3) < IMAGE_3D_DRIVER_ASCII_GRAY) $char |= pow(2, $yi + ($xi * 3));
+						if ((($color[0] + $color[1] + $color[2]) / 3) > IMAGE_3D_DRIVER_ASCII_GRAY) $char |= pow(2, $yi + ($xi * 3));
 						$charColor[0] += $color[0];
 						$charColor[1] += $color[1];
 						$charColor[2] += $color[2];

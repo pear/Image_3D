@@ -120,7 +120,7 @@ abstract class Image_3D_Renderer {
 	}
 	
 	public function setSize($x, $y) {
-		$this->_size = array($x, $y);
+		$this->_size = array($x / 2, $y / 2);
 	}
 	
 	public function setBackgroundColor(Image_3D_Color $color) {
@@ -200,13 +200,13 @@ abstract class Image_3D_Renderer {
 		$this->_sortPolygones();
 		
 		// Draw background
-		$this->_driver->createImage($this->_size[0], $this->_size[1]);
+		$this->_driver->createImage($this->_size[0] * 2, $this->_size[1] * 2);
 		$this->_driver->setBackground($this->_background);
 		
-		// Calculate Colors
+		// Create polygones in driver
 		$this->_shade();
 		
-		// Save
+		// Save image
 		$this->_driver->save($file);
 	}
 }
