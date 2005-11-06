@@ -18,7 +18,7 @@ class Image_3D_Object_Cone extends Image_3D_Object {
 		$last = new Image_3D_Point(1, 0, 0);
 		$points[] = $last;
 
-		for ($i = 1; $i <= 1; ++$i) {
+		for ($i = 1; $i <= $detail; ++$i) {
 			$actual = new Image_3D_Point(cos($i / $detail * 2 * pi()), 0, sin($i / $detail * 2 * pi()));
 			$points[] = $actual;
 			
