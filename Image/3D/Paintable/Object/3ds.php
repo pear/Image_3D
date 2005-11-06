@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -41,7 +41,7 @@ require_once('Image/3D/Paintable/Object/3dsChunks.php');
  *
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -61,8 +61,11 @@ class Image_3D_Object_3ds extends Image_3D_Object {
 		parent::__construct();
 		$this->_points = array();
 		$this->_chunks = array();
-		
-		if (!is_file($file) || !is_readable($file)) return false;
+		$this->_objects = array();
+
+		if (!is_file($file) || !is_readable($file)) {
+			throw new exception('3ds file could not be loaded.');
+		}
 		$this->_file = $file;
 		
 		$this->_readChunks();

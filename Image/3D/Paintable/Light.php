@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -39,7 +39,7 @@
  *
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -47,7 +47,7 @@
  * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
-class Image_3D_Light extends Image_3D_Coordinate implements paintable {
+class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_Paintable {
 	
 	protected $_color;
 	
@@ -69,7 +69,7 @@ class Image_3D_Light extends Image_3D_Coordinate implements paintable {
 		$this->_option[$option] = $value;
 	}
 	
-	public function getColor(Enlightenable $polygon) {
+	public function getColor(Image_3D_Interface_Enlightenable $polygon) {
 		$color = clone ($polygon->getColor());
 		
 		$light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
