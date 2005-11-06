@@ -37,7 +37,5 @@ $world->createRenderer('perspectively');
 $world->createDriver('SVG');
 $world->render(400, 400, 'Image_3D_Object_Map.svg');
 
-echo memory_get_usage() / 1024, " kb\n";
-
 echo $world->stats();
 
