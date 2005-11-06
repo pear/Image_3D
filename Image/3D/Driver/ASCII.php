@@ -1,6 +1,6 @@
 <?php
 
-define('IMAGE_3D_DRIVER_ASCII_GRAY',	0.5);
+define('IMAGE_3D_DRIVER_ASCII_GRAY',	0.01);
 
 class Image_3D_Driver_ASCII extends Image_3D_Driver {
 	
@@ -79,12 +79,12 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 
 	public function __construct() {
 		parent::__construct();
+		$this->_filetype = 'txt';
 		
 		$this->reset();
 	}
 
 	public function reset() {
-		$this->_filetype = 'txt';
 		$this->_points = array();
 		$this->_heigth = array();
 		
@@ -124,71 +124,28 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 	protected function _drawLine(Image_3D_Point $p1, Image_3D_Point $p2) {
 	    list($x1, $y1) = $p1->getScreenCoordinates();
 	    list($x2, $y2) = $p2->getScreenCoordinates();
-	    $z1 = $p1->getZ(); $z2 = $p2->getZ();
 	    
 	    $steps = ceil(max(abs($x1 - $x2), abs($y1 - $y2)));
 	    
 	    $xdiff = ($x2 - $x1) / $steps;
 	    $ydiff = ($y2 - $y1) / $steps;
-	    $zdiff = ($z2 - $z1) / $steps;
 	    
-	    $points = array('height' => array(), 'coverage' => array());
-	    for ($i = 0; $i < $steps; ++$i) {
-    		$x = $x1 + $i * $xdiff;
-    		$xFloor = floor($x);
-    		$xCeil = ceil($x);
-    		$xOffset = $x - $xFloor;
-    		
-    		$y = $y1 + $i * $ydiff;
-    		$yFloor = floor($y);
-    		$yCeil = ceil($y);
-    		$yOffset = $y - $yFloor;
-	        
-    		if (!isset($points['coverage'][(int) $xFloor][(int) $yCeil])) {
-    		    $points['height'][(int) $xFloor][(int) $yCeil] = $z1 + $i * $zdiff;
-    		    $points['coverage'][(int) $xFloor][(int) $yCeil] = (1 - $xOffset) * $yOffset;
-    		} else {
-    		    $points['coverage'][(int) $xFloor][(int) $yCeil] += (1 - $xOffset) * $yOffset;
-    		}
-	        
-    		if (!isset($points['coverage'][(int) $xFloor][(int) $yFloor])) {
-    		    $points['height'][(int) $xFloor][(int) $yFloor] = $z1 + $i * $zdiff;
-    		    $points['coverage'][(int) $xFloor][(int) $yFloor] = (1 - $xOffset) * (1 - $yOffset);
-    		} else {
-    		    $points['coverage'][(int) $xFloor][(int) $yFloor] += (1 - $xOffset) * (1 - $yOffset);
-    		}
-	        
-    		if (!isset($points['coverage'][(int) $xCeil][(int) $yCeil])) {
-    		    $points['height'][(int) $xCeil][(int) $yCeil] = $z1 + $i * $zdiff;
-    		    $points['coverage'][(int) $xCeil][(int) $yCeil] = $xOffset * $yOffset;
-    		} else {
-    		    $points['coverage'][(int) $xCeil][(int) $yCeil] += $xOffset * $yOffset;
-    		}
-	        
-    		if (!isset($points['coverage'][(int) $xCeil][(int) $yFloor])) {
-    		    $points['height'][(int) $xCeil][(int) $yFloor] = $z1 + $i * $zdiff;
-    		    $points['coverage'][(int) $xCeil][(int) $yFloor] = $xOffset * (1 - $yOffset);
-    		} else {
-    		    $points['coverage'][(int) $xCeil][(int) $yFloor] += $xOffset * (1 - $yOffset);
-    		}
-	    }
+	    $points = array();
+	    for ($i = 0; $i < $steps; ++$i) $points[(int) round($x1 + $i * $xdiff)][(int) round($y1 + $i * $ydiff)] = true;
 	    return $points;
 	}
 	
 	protected function _getPolygonOutlines($pointArray) {
-	    $map = array('height' => array(), 'coverage' => array());
+	    $map = array();
 	    
 	    $last = end($pointArray);
 	    foreach ($pointArray as $point) {
 	        $line = $this->_drawLine($last, $point);
 	        $last = $point;
 	        // Merge line to map
-	        foreach ($line['height'] as $x => $row) {
-	            foreach ($row as $y => $height) {
-	                $map['height'][(int) $x][(int) $y] = $height;
-	                $map['coverage'][(int) $x][(int) $y] = $line['coverage'][(int) $x][(int) $y];
-	            }
-	        }
+	        foreach ($line as $x => $row)
+	            foreach ($row as $y => $height)
+	                $map[(int) $x][(int) $y] = $height;
 	    }
 	    
 	    return $map;
@@ -197,26 +154,22 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 	public function drawPolygon(Image_3D_Polygon $polygon) {
 		$points = $this->_getPolygonOutlines($polygon->getPoints());
 
-		foreach ($points['coverage'] as $x => $row) {
+		foreach ($points as $x => $row) {
 	        if (count($row) < 2) continue;
 	        
 	        $start = min(array_keys($row));
 	        $end = max(array_keys($row));
 	        
-	        $zStart = $points['height'][$x][$start];
-	        $zEnd = $points['height'][$x][$end];
-	        $zStep = ($zEnd - $zStart) / ($end - $start);
-
 	        // Starting point
-            $this->_heigth[$x][$start][(int) ($zStart * 100)] = $this->_getColor($polygon->getColor(), $points['coverage'][$x][$start]);
+            $this->_heigth[$x][$start] = $this->_getColor($polygon->getColor());
             
             // the way between
             for ($y = $start + 1; $y < $end; ++$y) {
-                $this->_heigth[$x][$y][(int) (($zStart + $zStep * ($y - $start)) * 100)] = $this->_getColor($polygon->getColor());
+                $this->_heigth[$x][$y] = $this->_getColor($polygon->getColor());
 	        }
 
 	        // Ending point
-            $this->_points[$x][$end][(int) ($zEnd * 100)] = $this->_getColor($polygon->getColor(), $points['coverage'][$x][$end]);
+            $this->_points[$x][$end] = $this->_getColor($polygon->getColor());
 		}
 	}
 	
@@ -257,13 +210,7 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 					for ($yi = 0; $yi < 3; ++$yi) {
 						$xPos = $x * 2 + $xi;
 						$yPos = $y * 6 + $yi;
-						$color = $this->_image[$xPos][$yPos];
-
-						if (isset($this->_heigth[$xPos][$yPos])) {
-						    $points = $this->_heigth[$xPos][$yPos];
-						    krsort($points);
-					        foreach ($points as $newColor) $color = $this->_mixColor($color, $newColor);
-					    }
+                        $color = $this->_mixColor($this->_image[$xPos][$yPos], $this->_heigth[$xPos][$yPos]);
 						if ((($color[0] + $color[1] + $color[2]) / 3) > IMAGE_3D_DRIVER_ASCII_GRAY) $char |= pow(2, $yi + ($xi * 3));
 						$charColor[0] += $color[0];
 						$charColor[1] += $color[1];
