@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -32,13 +32,15 @@
  * @since      File available since Release 0.1.0
  */
 
+// {{{ Image_3D_Renderer
+
 /**
  * Image_3D_Renderer
  *
  * 
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -48,26 +50,101 @@
  */
 abstract class Image_3D_Renderer {
 	
+    // {{{ properties
+
+    /**
+     * Worlds polygones
+     *
+     * @var array
+     */
 	protected $_polygones;
+
+    /**
+     * Worlds points
+     *
+     * @var array
+     */
 	protected $_points;
+
+    /**
+     * Worlds lights
+     *
+     * @var array
+     */
 	protected $_lights;
 	
+    /**
+     * Driver we use
+     *
+     * @var array
+     */
 	protected $_driver;
 	
+    /**
+     * Size of the Image
+     *
+     * @var array
+     */
 	protected $_size;
+
+    /**
+     * Backgroundcolol
+     *
+     * @var Image_3D_Color
+     */
 	protected $_background;
 	
+    /**
+     * Type of Shading used
+     *
+     * @var integer
+     */
 	protected $_shading;
 	
-	const SHADE_NO			= 0;
+    // }}}
+    // {{{ Constants
+
+	/*
+     * No Shading
+     */
+    const SHADE_NO			= 0;
+	/*
+     * Flat Shading
+     */
 	const SHADE_FLAT		= 1;
+	/*
+     * Gauroud Shading
+     */
 	const SHADE_GAUROUD		= 2;
+	/*
+     * Phong Shading
+     */
 	const SHADE_PHONG		= 3;
-	
+
+    // }}}
+    // {{{ __construct()
+
+    /**
+     * Constructor for Image_3D_Renderer
+     *
+     * Initialises the environment
+     *
+     * @return  Image_3D_Renderer           Instance of Renderer
+     */
 	public function __construct() {
 	    $this->reset();
 	}
 	
+    // }}}
+    // {{{ reset()
+
+    /**
+     * Reset all changeable variables
+     *
+     * Initialises the environment
+     *
+     * @return  void
+     */
 	public function reset() {
 		$this->_objects = array();
 		$this->_polygones = array();
@@ -80,7 +157,19 @@ abstract class Image_3D_Renderer {
 		
 		$this->_shading = self::SHADE_PHONG;
 	}
+
+    // }}}
+    // {{{ _getPolygones()
 	
+    /**
+     * Get and merge polygones
+     *
+     * Get polygones and points from an object and merge them unique to local
+     * polygon- and pointarrays.
+     *
+     * @param   Image_3D_Object $object Object to merge
+     * @return  void
+     */
 	protected function _getPolygones(Image_3D_Object $object) {
 		$newPolygones = $object->getPolygones();
 		$this->_polygones = array_merge($this->_polygones, $newPolygones);
@@ -97,12 +186,44 @@ abstract class Image_3D_Renderer {
 		}
 	}
 	
-	// Calculate perspective
+    // }}}
+    // {{{ _calculateScreenCoordiantes()
+	
+    /**
+     * Caclulate Screen Coordinates
+     *
+     * Calculate screen coordinates for a point according to the perspektive 
+     * the renderer should display
+     *
+     * @param   Image_3D_Point  $point  Point to process
+     * @return  void
+     */
 	abstract protected function _calculateScreenCoordiantes(Image_3D_Point $point);
 	
-	// Implement polygon-based Z-buffer
+    // }}}
+    // {{{ _sortPolygones()
+	
+    /**
+     * Sort polygones
+     *
+     * Set the order the polygones will be displayed
+     *
+     * @return  void
+     */
 	abstract protected function _sortPolygones();
 	
+    // }}}
+    // {{{ addObjects()
+	
+    /**
+     * Add objects to renderer
+     *
+     * Add objects to renderer. Only objects which are added will be 
+     * displayed
+     *
+     * @param   array           $objetcs    Array of objects
+     * @return  void
+     */
 	public function addObjects($objects) {
 		if (is_array($objects)) {
 			foreach ($objects as $object) {
@@ -115,46 +236,157 @@ abstract class Image_3D_Renderer {
 		}
 	}
 	
+    // }}}
+    // {{{ addObjects()
+	
+    /**
+     * Add objects to renderer
+     *
+     * Add objects to renderer. Only objects which are added will be 
+     * displayed
+     *
+     * @param   array           $objetcs    Array of objects
+     * @return  void
+     */
 	public function addLights($lights) {
 		$this->_lights = array_merge($this->_lights, $lights);
 	}
 	
+    // }}}
+    // {{{ setSize()
+	
+    /**
+     * Set image size
+     *
+     * Set the size of the destination image.
+     *
+     * @param   integer         $x          Width
+     * @param   integer         $y          Height
+     * @return  void
+     */
 	public function setSize($x, $y) {
 		$this->_size = array($x / 2, $y / 2);
 	}
 	
+    // }}}
+    // {{{ setBackgroundColor()
+	
+    /**
+     * Set the Backgroundcolor
+     *
+     * Set the backgroundcolor of the destination image.
+     *
+     * @param   Image_3D_Color  $color      Backgroundcolor
+     * @return  void
+     */
 	public function setBackgroundColor(Image_3D_Color $color) {
 		$this->_background = $color;
 	}
 	
+    // }}}
+    // {{{ setShading()
+	
+    /**
+     * Set the quality of the shading
+     *
+     * Set the quality of the shading. Standard value is the maximum shading
+     * quality the driver is able to render.
+     *
+     * @param   integer         $shading    Shading quality
+     * @return  void
+     */
 	public function setShading($shading) {
 		$this->_shading = min($this->_shading, (int) $shading);
 	}
 	
+    // }}}
+    // {{{ setDriver()
+	
+    /**
+     * Set the driver
+     *
+     * Set the driver the image should be rendered with
+     *
+     * @param   Image_3D_Driver $driver     Driver to use
+     * @return  void
+     */
 	public function setDriver(Image_3D_Driver $driver) {
 		$this->_driver = $driver;
 		
 		$this->setShading(max($driver->getSupportedShading()));
 	}
 	
+    // }}}
+    // {{{ getPolygonCount()
+	
+    /**
+     * Return polygon count
+     *
+     * Return the number of used polygones in this image
+     *
+     * @return  integer     Number of Polygones
+     */
 	public function getPolygonCount() {
 		return count($this->_polygones);
 	}
 	
+    // }}}
+    // {{{ getPointCount()
+	
+    /**
+     * Return point count
+     *
+     * Return the number of used points in this image
+     *
+     * @return  integer     Number of Points
+     */
 	public function getPointCount() {
 		return count($this->_points);
 	}
 	
+    // }}}
+    // {{{ getLightCount()
+	
+    /**
+     * Return light count
+     *
+     * Return the number of used lights in this image
+     *
+     * @return  integer     Number of Lights
+     */
 	public function getLightCount() {
 		return count($this->_lights);
 	}
 	
+    // }}}
+    // {{{ _calculatePolygonColors()
+	
+    /**
+     * Calculate the color of all polygones
+     *
+     * Let each polygon calculate his color based on the lights which are
+     * registered for this image
+     *
+     * @return  void
+     */
 	protected function _calculatePolygonColors() {
 		foreach ($this->_polygones as $polygon) {
 			$polygon->calculateColor($this->_lights);
 		}
 	}
 	
+    // }}}
+    // {{{ _calculatePointColors()
+	
+    /**
+     * Calculate the colors of all points
+     *
+     * Let each point calculate his color based on his normale which is
+     * calculated on his surrounding polygones and the lights which are
+     * registered for this image
+     *
+     * @return  void
+     */
 	protected function _calculatePointColors() {
 		foreach ($this->_polygones as $polygon) {
 			$normale = $polygon->getNormale();
@@ -170,6 +402,16 @@ abstract class Image_3D_Renderer {
 		foreach ($this->_points as $point) $point->calculateColor($this->_lights);
 	}
 	
+    // }}}
+    // {{{ _shade()
+	
+    /**
+     * Draw all polygones
+     *
+     * Draw all polygones concerning the type of shading wich was set for the renderer
+     *
+     * @return  void
+     */
 	protected function _shade() {
 		switch ($this->_shading) {
 			case self::SHADE_NO:
@@ -192,6 +434,17 @@ abstract class Image_3D_Renderer {
 		}
 	}
 	
+    // }}}
+    // {{{ render()
+	
+    /**
+     * Render the image
+     *
+     * Render the image into the metioned file
+     *
+     * @param   string              $file       Filename
+     * @return  void
+     */
 	public function render($file) {
 		if (empty($this->_driver)) return false;
 		
@@ -209,6 +462,8 @@ abstract class Image_3D_Renderer {
 		// Save image
 		$this->_driver->save($file);
 	}
+
+    // }}}
 }
 
-?>
+// }}}

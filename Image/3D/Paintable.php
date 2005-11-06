@@ -30,7 +30,7 @@
  *
  **/
 
-interface paintable {
+interface Image_3D_Interface_Paintable {
 	
 	public function getPolygonCount();
 	public function setColor(Image_3D_Color $color);

@@ -23,7 +23,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -32,14 +32,15 @@
  * @since      File available since Release 0.1.0
  */
 
+// {{{ Image_3D_Color
 
 /**
  * Image_3D_Color
  *
- *
+ * Base class for colors and textures.
  *
  * @category   Image
- * @package    3D
+ * @package    Image_3D
  * @author     Kore Nordmann <3d@kore-nordmann.de>
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
@@ -49,17 +50,44 @@
  */
 class Image_3D_Color {
 	
-	protected $_rgbaValue;
-	
-//	protected $_image;
-	protected $_lastColorID;
-	
+    // {{{ properties
+
+    /**
+     * Color values
+     *
+     * @var array
+     */
+    protected $_rgbaValue;
+
+    /**
+     * Array with lights which influence this color
+     *
+     * @var array
+     */
 	protected $_lights;
+
+    /**
+     * Resulting light for this color
+     *
+     * @var array
+     */
 	protected $_light;
 
-	public function __construct() {
-//		$this->_image = null;
-		$this->_lastColorID = 0;
+    // }}}
+    // {{{ __construct()
+
+    /**
+     * Constructor for Image_3D_Color
+     *
+     * All colors accept values in integer (0 - 255) or float (0 - 1)
+     * 
+     * @param   mixed       $red            red
+     * @param   mixed       $green          green
+     * @param   mixed       $blue           blue
+     * @param   mixed       $alpha          alpha
+     * @return  Image_3D_Color              Instance of Color
+     */
+    public function __construct($red = 0., $green = 0., $blue = 0., $alpha = 0.) {
 		$this->_rgbaValue = array();
 		
 		$this->_lights = array();
@@ -81,6 +109,18 @@ class Image_3D_Color {
 		}
 	}
 	
+    // }}}
+    // {{{ mixAlpha()
+
+    /**
+     * Apply alphavalue to color
+     *
+     * Apply alpha value to color. It may be int or float. 255 / 1. means full
+     * oppacity
+     *
+     * @param   mixed           $alpha      Alphavalue
+     * @return  void
+     */
 	public function mixAlpha($alpha = 1.) {
 	    if (is_int($arglist[$i])) {
 			$this->_rgbaValue[3] *= (float) min(1, max(0, (float) $alpha / 255));
@@ -89,14 +129,51 @@ class Image_3D_Color {
 	    }
 	}
 	
+    // }}}
+    // {{{ getValues()
+
+    /**
+     * return RGBA values
+     *
+     * Return an array with rgba-values
+     *  0 =>    (float) red
+     *  1 =>    (float) green
+     *  2 =>    (float) blue
+     *  3 =>    (float) alpha
+     *
+     * @param   mixed           $alpha      Aplhavalue
+     * @return  array           RGBA-Values
+     */
 	public function getValues() {
 		return $this->_rgbaValue;
 	}
 	
+    // }}}
+    // {{{ getValues()
+
+    /**
+     * Add light
+     *
+     * Add an light which influence the object this color is created for
+     *
+     * @param   Image_3D_Color  $color      Lightcolor
+     * @param   mixed           $intensity  Intensity
+     * @return  void
+     */
 	public function addLight(Image_3D_Color $color, $intensity = .5) {
 		$this->_lights[] = array($intensity, $color);
 	}
 	
+    // }}}
+    // {{{ _calcLights()
+
+    /**
+     * Calculate lights
+     *
+     * Calculate light depending an all lights which influence this object
+     *
+     * @return  void
+     */
 	protected function _calcLights() {
 		foreach ($this->_lights as $light) {
 			list($intensity, $color) = $light;
@@ -107,20 +184,52 @@ class Image_3D_Color {
 		}
 	}
 	
+    // }}}
+    // {{{ _mixColor()
+
+    /**
+     * Mix Color with light
+     *
+     * Recalculate color depending on the lights
+     *
+     * @return  void
+     */
 	protected function _mixColor() {
 		$this->_rgbaValue[0] = min(1, $this->_rgbaValue[0] * $this->_light[0]);
 		$this->_rgbaValue[1] = min(1, $this->_rgbaValue[1] * $this->_light[1]);
 		$this->_rgbaValue[2] = min(1, $this->_rgbaValue[2] * $this->_light[2]);
 	}
 	
+    // }}}
+    // {{{ calculateColor()
+
+    /**
+     * Calculate new color
+     *
+     * Calculate color depending on the lights
+     *
+     * @return  void
+     */
 	public function calculateColor() {
 		$this->_calcLights();
 		$this->_mixColor();
 	}
 
-	public function tostring() {
+    // }}}
+    // {{{ calculateColor()
+
+    /**
+     * Return Color as string
+     *
+     * Return a string representation of the color
+     *
+     * @return  string          String representation of color
+     */
+	public function __toString() {
 		return sprintf("Color: r %.2f g %.2f b %.2f a %.2f\n", $this->_rgbaValue[0], $this->_rgbaValue[1], $this->_rgbaValue[2], $this->_rgbaValue[3]);
 	}
+	
+	// }}}
 }
 
-?>
+// }}}
