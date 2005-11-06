@@ -14,13 +14,15 @@ $light->setColor(new Image_3D_Color(255, 255, 255));
 $redLight = $world->createLight(90, 0, 50);
 $redLight->setColor(new Image_3D_Color(255, 0, 0));
 
-$sphere = $world->createObject('sphere', array('r' => 150, 'detail' => 4));
-$sphere->setColor(new Image_3D_Color(150, 150, 150));
+$torus = $world->createObject('torus', array('inner_radius' => 110, 'outer_radius' => 170, 'detail_1' => 60, 'detail_2' => 30));
+$torus->setColor(new Image_3D_Color(150, 150, 150));
+$torus->transform($world->createMatrix('Rotation', array(60, -10, 0)));
+
 
 $renderer = $world->createRenderer('perspectively');
 
 $world->createDriver('GD');
-$world->render(400, 400, 'example.png');
+$world->render(500, 500, 'Image_3D_Object_Torus.png');
 
 printf("Dauer: %2.4f\n\n", microtime(true) - $start);
 echo $world->stats();

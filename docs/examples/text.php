@@ -24,4 +24,3 @@ $world->createRenderer('perspectively');
 $world->createDriver('GD');
 $world->render(300, 50, 'Image_3D_Object_Text.png');
 
-?>

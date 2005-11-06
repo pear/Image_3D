@@ -1,13 +1,12 @@
 <?php
 
 set_time_limit(0);
-
 require_once('Image/3D.php');
 
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(255, 255, 255));
 
-$light = $world->createLight(0, 0, 1000);
+$light = $world->createLight(0, 1000, 1000);
 $light->setColor(new Image_3D_Color(255, 255, 255));
 
 $pie = $world->createObject('pie', array('start' => 0, 'end' => 120, 'detail' => 20, 'outside' => 150));
@@ -29,7 +28,6 @@ $world->transform($world->createMatrix('Scale', array(1, 1, 10)));
 $world->transform($world->createMatrix('Rotation', array(-60, 0, 0)));
 
 $world->createRenderer('perspectively');
-$world->createDriver('GD');
+$world->createDriver('ZBuffer');
 $world->render(400, 400, 'Image_3D_Object_Pie.png');
 
-?>

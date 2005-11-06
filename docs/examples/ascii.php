@@ -78,4 +78,3 @@ $time = microtime(true) - $start;
 printf("%2.2f fps\n", $iterations / $time);
 getTime();
 
-?>
