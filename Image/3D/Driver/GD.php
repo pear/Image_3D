@@ -16,13 +16,13 @@ class Image_3D_Driver_GD extends Image_3D_Driver {
 	
 	protected function _getColor(Image_3D_Color $color) {
 		$values = $color->getValues();
-		
+
 		$values[0] = (int) round($values[0] * 255);
 		$values[1] = (int) round($values[1] * 255);
 		$values[2] = (int) round($values[2] * 255);
 		$values[3] = (int) round($values[3] * 127);
 
-		if ($this->_rgbaValue[3] > 0) {
+		if ($values[3] > 0) {
 			// Tranzparente Farbe allokieren
 			$color = imageColorExactAlpha($this->_image, $values[0], $values[1], $values[2], $values[3]);
 			if ($color === -1) {
