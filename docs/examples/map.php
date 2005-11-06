@@ -1,7 +1,6 @@
 <?php
 
 set_time_limit(0);
-ini_set('memory_limit', '24M');
 require_once('Image/3D.php');
 
 $world = new Image_3D();
@@ -15,7 +14,7 @@ $light2->setColor(new Image_3D_Color(0, 200, 0));
 
 $map = $world->createObject('map');
 
-$detail = 40;
+$detail = 100;
 $size = 150;
 $height = 40;
 
@@ -35,8 +34,10 @@ $world->setOption(Image_3D::IMAGE_3D_OPTION_BF_CULLING, false);
 $world->setOption(Image_3D::IMAGE_3D_OPTION_FILLED, true);
 
 $world->createRenderer('perspectively');
-$world->createDriver('GD');
-$world->render(400, 400, 'Image_3D_Object_Map.png');
+$world->createDriver('SVG');
+$world->render(400, 400, 'Image_3D_Object_Map.svg');
+
+echo memory_get_usage() / 1024, " kb\n";
 
 echo $world->stats();
 

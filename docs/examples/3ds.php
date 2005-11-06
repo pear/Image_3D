@@ -1,7 +1,6 @@
 <?php
 
 set_time_limit(0);
-ini_set('memory_limit', '24M');
 require_once('Image/3D.php');
 
 $world = new Image_3D();
