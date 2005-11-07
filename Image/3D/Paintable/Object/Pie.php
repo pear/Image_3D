@@ -100,11 +100,11 @@ class Image_3D_Object_Pie extends Image_3D_Object {
 	}
 	
 	protected function _checkParameter($array) {
-		$array['detail'] = max(1, (int) $array['detail']);
-		$array['outside'] = max(0, (int) $array['outside']);
-		$array['inside'] = min(max(0, (int) $array['inside']), $array['outside']);
-		$array['start'] = max(0, ((int) $array['start']) * pi() / 180);
-		$array['end'] = max(0, ((int) $array['end']) * pi() / 180);
+		$array['detail'] = max(1, (int) @$array['detail']);
+		$array['outside'] = max(0, (int) @$array['outside']);
+		$array['inside'] = min(max(0, (int) @$array['inside']), @$array['outside']);
+		$array['start'] = max(0, ((int) @$array['start']) * pi() / 180);
+		$array['end'] = max(0, ((int) @$array['end']) * pi() / 180);
 		
 		return ($array);
 	}

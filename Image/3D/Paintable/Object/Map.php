@@ -68,7 +68,7 @@ class Image_3D_Object_Map extends Image_3D_Object {
 	public function addRow($row) {
 		$rowNbr = array_push($this->_points, array()) - 1;
 		foreach ($row as $point) {
-			if (is_object($point) && is_a($point, 'Image_3D_Point')) $this->_points[$rowNbr][] = $point;
+			if (is_object($point) && ($point instanceof Image_3D_Point)) $this->_points[$rowNbr][] = $point;
 		}
 		
 		if (!count($this->_points[$rowNbr])) {

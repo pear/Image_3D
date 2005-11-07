@@ -72,7 +72,7 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 		if (func_num_args()) {
 			$args = func_get_args();
 			for ($i = 0; $i < func_num_args(); $i++) {
-				if (is_object($args[$i]) && is_a($args[$i], 'Image_3D_Point')) {
+				if (is_object($args[$i]) && ($args[$i] instanceof Image_3D_Point)) {
 					$this->addPoint($args[$i]);
 				}
 			}
@@ -103,11 +103,11 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 		$this->_normale = new Image_3D_Vector($a2 * $b3 - $a3 * $b2, $a3 * $b1 - $a1 * $b3, $a1 * $b2 - $a2 * $b1);
 		
 		// Backface Culling
-		if (($this->_normale->getZ() <= 0) && ($this->_option[Image_3D::IMAGE_3D_OPTION_BF_CULLING])) $this->setInvisible();
+		if (($this->_normale->getZ() <= 0) && (@$this->_option[Image_3D::IMAGE_3D_OPTION_BF_CULLING])) $this->setInvisible();
 	}
 	
 	public function getNormale() {
-		if (!is_a($this->_normale, 'Image_3D_Vector')) $this->_calcNormale();
+		if (!($this->_normale instanceof Image_3D_Vector)) $this->_calcNormale();
 		return $this->_normale;	
 	}
 	
@@ -123,7 +123,7 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 	}
 	
 	public function getPosition() {
-		if (!is_a($this->_position, 'Image_3D_Vector')) $this->_calcPosition();
+		if (!($this->_position instanceof Image_3D_Vector)) $this->_calcPosition();
 		return $this->_position;	
 	}
 	

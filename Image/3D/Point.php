@@ -96,7 +96,7 @@ class Image_3D_Point extends Image_3D_Coordinate implements Image_3D_Interface_E
 	}
 
 	public function getNormale() {
-		if (!is_a($this->_normale, 'Image_3D_Vector')) $this->_calcNormale();
+		if (!($this->_normale instanceof Image_3D_Vector)) $this->_calcNormale();
 		return $this->_normale;	
 	}
 	

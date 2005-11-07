@@ -227,11 +227,11 @@ abstract class Image_3D_Renderer {
 	public function addObjects($objects) {
 		if (is_array($objects)) {
 			foreach ($objects as $object) {
-				if (is_a($object, 'Image_3D_Object')) {
+				if ($object instanceof Image_3D_Object) {
 					$this->_getPolygones($object);
 				}
 			}
-		} elseif (is_a($objects, 'Image_3D_Object')) {
+		} elseif ($objects instanceof Image_3D_Object) {
 			$this->_getPolygones($objects);
 		}
 	}
