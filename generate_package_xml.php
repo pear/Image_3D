@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-//    $make = 1;
+    $make = 1;
 	require_once('PEAR/PackageFileManager.php');
 
 	$pkg = new PEAR_PackageFileManager;
@@ -17,25 +17,27 @@
 	$version = '0.3.0';
 	$state = 'alpha';
 	
-	$summary = 'This class allows the rendering of 3 dimensional images using PHP and ext/GD.';
+	$summary = 'This class allows the rendering of 3 dimensional objects utilizing PHP.';
 	$description = <<<EOT
 Image_3D is a highly object oriented PHP5 package 
 that allows the creation of 3 dimensional images
-using PHP and the GD extension, which is bundled
-with PHP.
+using PHP.
 
 Image_3D currently supports:
-* Creation of 3D objects like cubes, spheres, maps, text,...
+* Creation of 3D objects like cubes, spheres, maps, text, pie, torus, ...
 * Own object definitions possible
 * Own material definitions
 * Import of 3DSMax files
 * Unlimited number of light sources
-* Saving all output formats supported by GD
+* Rendering output via GD, SVG or ASCII
 EOT;
 
 	$notes = <<<EOT
-* Added output driver for svg rotation.
-* Added Driver for ASCII-output (including animation).
+* Added torus and cone
+* Fixed package tag
+* Added class documentation
+* Improved speed
+* Added Driver for ASCII-output (including animation)
 EOT;
 	
 	$e = $pkg->setOptions(
