@@ -23,3 +23,5 @@ $world->createRenderer('perspectively');
 $world->createDriver('GD');
 $world->render(400, 400, 'Image_3D_Object_Cone.png');
 
+echo $world->stats( );
+

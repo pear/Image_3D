@@ -3,8 +3,6 @@
 set_time_limit(0);
 require_once('Image/3D.php');
 
-$start = microtime(true);
-
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(255, 255, 255));
 
@@ -22,6 +20,5 @@ $renderer = $world->createRenderer('perspectively');
 $world->createDriver('GD');
 $world->render(400, 400, 'example.png');
 
-printf("Dauer: %2.4f\n\n", microtime(true) - $start);
 echo $world->stats();
 

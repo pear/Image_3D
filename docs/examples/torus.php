@@ -3,8 +3,6 @@
 set_time_limit(0);
 require_once('Image/3D.php');
 
-$start = microtime(true);
-
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(255, 255, 255));
 
@@ -18,12 +16,10 @@ $torus = $world->createObject('torus', array('inner_radius' => 110, 'outer_radiu
 $torus->setColor(new Image_3D_Color(150, 150, 150));
 $torus->transform($world->createMatrix('Rotation', array(60, -10, 0)));
 
-
 $renderer = $world->createRenderer('perspectively');
 
 $world->createDriver('GD');
 $world->render(500, 500, 'Image_3D_Object_Torus.png');
 
-printf("Dauer: %2.4f\n\n", microtime(true) - $start);
 echo $world->stats();
 

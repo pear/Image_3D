@@ -23,8 +23,6 @@ getTime('Start');
 
 getTime('Initialize classes');
 set_time_limit(0);
-ini_set('memory_limit', '24M');
-set_include_path(realpath(dirname(__FILE__) . '/../..'));
 require_once('Image/3D.php');
 getTime();
 

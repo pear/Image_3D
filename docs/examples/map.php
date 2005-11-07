@@ -14,7 +14,7 @@ $light2->setColor(new Image_3D_Color(0, 200, 0));
 
 $map = $world->createObject('map');
 
-$detail = 100;
+$detail = 30;
 $size = 150;
 $height = 40;
 
@@ -34,8 +34,8 @@ $world->setOption(Image_3D::IMAGE_3D_OPTION_BF_CULLING, false);
 $world->setOption(Image_3D::IMAGE_3D_OPTION_FILLED, true);
 
 $world->createRenderer('perspectively');
-$world->createDriver('SVG');
-$world->render(400, 400, 'Image_3D_Object_Map.svg');
+$world->createDriver('GD');
+$world->render(400, 400, 'Image_3D_Object_Map.png');
 
 echo $world->stats();
 

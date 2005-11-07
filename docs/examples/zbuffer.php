@@ -28,3 +28,5 @@ $world->createRenderer('perspectively');
 $world->createDriver('ZBuffer');
 $world->render(400, 400, 'Image_3D_ZBuffer.png');
 
+echo $world->stats( );
+
