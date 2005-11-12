@@ -47,26 +47,23 @@
  * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
-class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_Paintable {
+class Image_3D_Light_Spotlight extends Image_3D_Light {
 	
-	protected $_color;
+	protected $_direction;
+	protected $_angle;
+	protected $_float;
 	
-	public function __construct($x, $y, $z) {
+	public function __construct($x, $y, $z, $parameter) {
 		parent::__construct($x, $y, $z);
-		$this->_color = null;
-		$this->_position = null;
-	}
-	
-	public function getPolygonCount() {
-		return 0;
-	}
-	
-	public function setColor(Image_3D_Color $color) {
-		$this->_color = $color;
-	}
-	
-	public function setOption($option, $value) {
-		$this->_option[$option] = $value;
+
+		$aim = new Image_3D_Vector($parameter['aim'][0], $parameter['aim'][1], $parameter['aim'][2]);
+		$light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
+		$light->sub($aim);
+		$this->_direction = $light;
+		$this->_direction->unify();
+		
+		$this->_angle = $parameter['angle'] / 360 * pi();
+		$this->_float = (int) $parameter['float'];
 	}
 	
 	public function getColor(Image_3D_Interface_Enlightenable $polygon) {
@@ -75,15 +72,23 @@ class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_P
 		$light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
 		$light->sub($polygon->getPosition());
 		$light->unify();
-		$light->add(new Image_3D_Vector(0, 0, -1));
 		
+		$angle = $light->getAngle($this->_direction);
+		if ($angle > $this->_angle) return $color;
+
+		if ($this->_float) {
+			$factor = 1 - pow($angle / $this->_angle, $this->_float);
+		} else {
+			$factor = 1;
+		}
+
+		$light->add(new Image_3D_Vector(0, 0, -1));
 		$normale = $polygon->getNormale();
 		
 		$angle = abs(1 - $normale->getAngle($light));
 		
-		$color->addLight($this->_color, $angle);
+		$color->addLight($this->_color, $angle * $factor);
 		return $color;
 	}
 }
 
-?>

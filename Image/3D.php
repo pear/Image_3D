@@ -32,19 +32,19 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once('Image/3D/Paintable.php');
-require_once('Image/3D/Enlightenable.php');
+require_once 'Image/3D/Paintable.php';
+require_once 'Image/3D/Enlightenable.php';
 
-require_once('Image/3D/Color.php');
-require_once('Image/3D/Coordinate.php');
-require_once('Image/3D/Point.php');
-require_once('Image/3D/Vector.php');
-require_once('Image/3D/Renderer.php');
-require_once('Image/3D/Driver.php');
+require_once 'Image/3D/Color.php';
+require_once 'Image/3D/Coordinate.php';
+require_once 'Image/3D/Point.php';
+require_once 'Image/3D/Vector.php';
+require_once 'Image/3D/Renderer.php';
+require_once 'Image/3D/Driver.php';
 
-require_once('Image/3D/Paintable/Object.php');
-require_once('Image/3D/Paintable/Light.php');
-require_once('Image/3D/Paintable/Polygon.php');
+require_once 'Image/3D/Paintable/Object.php';
+require_once 'Image/3D/Paintable/Light.php';
+require_once 'Image/3D/Paintable/Polygon.php';
 
 // {{{ Image_3D
 
@@ -174,11 +174,11 @@ class Image_3D {
 		$user_path = dirname(__FILE__) . '/3D/User/Object/' . $name . '.php';
 		
 		if (is_file($absolute_path) && is_readable($absolute_path)) {
-			include_once('Image/3D/Paintable/Object/' . $name . '.php');
+			include_once $absolute_path;
 		} elseif (is_file($user_path) && is_readable($user_path)) {
-			include_once('Image/3D/User/Object/' . $name . '.php');
+			include_once $user_path;
 		} else {
-			throw new Exception("Class for object $name not found.");
+			throw new Exception("Class for object $name not found (Searched: $absolute_path, $user_path).");
 		}
 		
 		return $this->_objects[] = new $class($parameter);
@@ -198,8 +198,25 @@ class Image_3D {
      * @param   float       $z          Z-Position
      * @return  Image_3D_Light          Object instance
      */
-	public function createLight($x, $y, $z) {
-		return $this->_lights[] = new Image_3D_Light($x, $y, $z);
+	public function createLight($type, $parameter = array()) {
+		$name = ucfirst($type);
+		if ($name != 'Light') {
+			$class = 'Image_3D_Light_' . $name;
+			$absolute_path = dirname(__FILE__) . '/3D/Paintable/Light/' . $name . '.php';
+			$user_path = dirname(__FILE__) . '/3D/User/Light/' . $name . '.php';
+
+			if (is_file($absolute_path) && is_readable($absolute_path)) {
+				include_once $absolute_path;
+			} elseif (is_file($user_path) && is_readable($user_path)) {
+				include_once $user_path;
+			} else {
+				throw new Exception("Class for object $name not found (Searched: $absolute_path, $user_path).");
+			}
+			
+			return $this->_lights[] = new $class($parameter[0], $parameter[1], $parameter[2], array_slice($parameter, 3));
+		} else {
+			return $this->_lights[] = new Image_3D_Light($parameter[0], $parameter[1], $parameter[2]);
+		}
 	}
 	
 	// }}}
@@ -224,9 +241,9 @@ class Image_3D {
 		$absolute_path = dirname(__FILE__) . '/3D/Matrix/' . $name . '.php';
 		
 		if (is_file($absolute_path) && is_readable($absolute_path)) {
-			include_once('Image/3D/Matrix/' . $name . '.php');
+			include_once $absolute_path;
 		} else {
-			throw new Exception("Class for matrix $name not found.");
+			throw new Exception("Class for matrix $name not found (Searched: $absolute_path, $user_path).");
 		}
 		
 		return new $class($parameter);
@@ -269,11 +286,11 @@ class Image_3D {
 		$user_path = dirname(__FILE__) . '/3D/User/Renderer/' . $name . '.php';
 		
 		if (is_file($absolute_path) && is_readable($absolute_path)) {
-			include_once('Image/3D/Renderer/' . $name . '.php');
+			include_once $absolute_path;
 		} elseif (is_file($user_path) && is_readable($user_path)) {
-			include_once('Image/3D/User/Renderer/' . $name . '.php');
+			include_once $user_path;
 		} else {
-			throw new Exception("Class for renderer $name not found.");
+			throw new Exception("Class for renderer $name not found (Searched: $absolute_path, $user_path).");
 		}
 		
 		return $this->_renderer = new $class();
@@ -300,11 +317,11 @@ class Image_3D {
 		$user_path = dirname(__FILE__) . '/3D/User/Driver/' . $name . '.php';
 		
 		if (is_file($absolute_path) && is_readable($absolute_path)) {
-			include_once('Image/3D/Driver/' . $name . '.php');
+			include_once $absolute_path;
 		} elseif (is_file($user_path) && is_readable($user_path)) {
-			include_once('Image/3D/User/Driver/' . $name . '.php');
+			include_once $user_path;
 		} else {
-			throw new Exception("Class for driver $name not found.");
+			throw new Exception("Class for driver $name not found (Searched: $absolute_path, $user_path).");
 		}
 		
 		return $this->_driver = new $class();
