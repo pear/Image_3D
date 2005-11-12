@@ -6,7 +6,7 @@ require_once('Image/3D.php');
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(255, 255, 255));
 
-$light = $world->createLight(0, 1000, 1000);
+$light = $world->createLight('Light', array(0, 1000, 1000));
 $light->setColor(new Image_3D_Color(255, 255, 255));
 
 $pie = $world->createObject('pie', array('start' => 0, 'end' => 120, 'detail' => 20, 'outside' => 150));

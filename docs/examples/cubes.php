@@ -6,10 +6,10 @@ require_once('Image/3D.php');
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(240, 240, 240));
 
-$light1 = $world->createLight(-300, 0, -300);
+$light1 = $world->createLight('Light', array(-300, 0, -300));
 $light1->setColor(new Image_3D_Color(100, 100, 255));
 
-$light2 = $world->createLight(300, -300, -300);
+$light2 = $world->createLight('Light', array(300, -300, -300));
 $light2->setColor(new Image_3D_Color(100, 255, 100));
 
 $count = 3;

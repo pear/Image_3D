@@ -10,10 +10,10 @@ require_once('Image/3D.php');
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(0, 0, 0));
 
-$light1 = $world->createLight(-500, 0, -500);
+$light1 = $world->createLight('Light', array(-500, 0, -500));
 $light1->setColor(new Image_3D_Color(255, 50, 50));
 
-$light2 = $world->createLight(500, 0, -500);
+$light2 = $world->createLight('Light', array(500, 0, -500));
 $light2->setColor(new Image_3D_Color(50, 50, 255));
 
 $p1 = $world->createObject('torus', array('inner_radius' => 50, 'outer_radius' => 90, 'detail_1' => 10, 'detail_2' => 1));

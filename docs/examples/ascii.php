@@ -32,10 +32,10 @@ $world->setColor(new Image_3D_Color(0, 0, 0));
 getTime();
 
 getTime('Create lights');
-$light1 = $world->createLight(-500, -500, -500);
+$light1 = $world->createLight('Light', array(-500, -500, -500));
 $light1->setColor(new Image_3D_Color(255, 255, 255));
 
-$light2 = $world->createLight(0, 500, -550);
+$light2 = $world->createLight('Light', array(0, 500, -550));
 $light2->setColor(new Image_3D_Color(0, 255, 0));
 getTime();
 

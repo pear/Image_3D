@@ -6,7 +6,7 @@ require_once('Image/3D.php');
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(240, 240, 240));
 
-$light = $world->createLight(-20, -20, -20);
+$light = $world->createLight('Light', array(-20, -20, -20));
 $light->setColor(new Image_3D_Color(100, 100, 255));
 
 $text = $world->createObject('text', 'Image_3D_Object_Text');
