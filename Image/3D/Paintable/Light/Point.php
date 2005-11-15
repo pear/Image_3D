@@ -32,10 +32,9 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once('Image/3D/Point.php');
 
 /**
- * Image_3D_Vector
+ * Image_3D_Light_Point
  *
  *
  *
@@ -48,44 +47,39 @@ require_once('Image/3D/Point.php');
  * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
-class Image_3D_Vector extends Image_3D_Coordinate {
+class Image_3D_Light_Point extends Image_3D_Light {
 	
-	protected $_length;
+	protected $_color;
+	protected $_falloff;
+	protected $_distance;
 	
-	public function getAngle(Image_3D_Vector $vector) {
-		$vector->unify();
-		$this->unify();
-		return acos($this->_x * $vector->getX() + $this->_y * $vector->getY() + $this->_z * $vector->getZ()) * 2 / pi();
+	public function __construct($x, $y, $z, $parameter) {
+		parent::__construct($x, $y, $z);
+		
+		$this->_falloff = max(0, (float) $parameter['falloff']);
+		$this->_distance = (float) $parameter['distance'];
 	}
 	
-	public function unify() {
-		$value = sqrt(pow($this->_x, 2) + pow($this->_y, 2) + pow($this->_z, 2));
-		if ($value == 0) return false;
-		$this->_x /= $value;
-		$this->_y /= $value;
-		$this->_z /= $value;
-		$this->_length = 1;
-	}
+	public function getColor(Image_3D_Interface_Enlightenable $polygon) {
+		$color = clone ($polygon->getColor());
+		
+		$light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
+		$light->sub($polygon->getPosition());
 
-	public function length() {
-		if (empty($this->_length)) {
-			$this->_length = sqrt(pow($this->_x, 2) + pow($this->_y, 2) + pow($this->_z, 2));
-		}
-		return $this->_length;
-	}
-	
-	public function add(Image_3D_Vector $vector) {
-		$this->_x += $vector->getX();
-		$this->_y += $vector->getY();
-		$this->_z += $vector->getZ();
-		$this->_length = null;
-	}
-	
-	public function sub(Image_3D_Vector $vector) {
-		$this->_x -= $vector->getX();
-		$this->_y -= $vector->getY();
-		$this->_z -= $vector->getZ();
-		$this->_length = null;
+		$distance = $light->length();
+
+		if ($distance > $this->_distance) return $color;
+		$factor = 1 - pow($distance / $this->_distance, $this->_falloff);
+		
+		$light->unify();
+		$light->add(new Image_3D_Vector(0, 0, -1));
+		
+		$normale = $polygon->getNormale();
+		
+		$angle = abs(1 - $normale->getAngle($light));
+		
+		$color->addLight($this->_color, $angle * $factor);
+		return $color;
 	}
 }
 
