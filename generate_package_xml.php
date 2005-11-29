@@ -68,6 +68,7 @@ EOT;
 	
 	$e = $pkg->addMaintainer('kore', 'lead', 'Kore Nordmann', 'pear@kore-nordmann.de');
 	$e = $pkg->addMaintainer('toby', 'lead', 'Tobias Schlitt', 'toby@php.net');
+	$e = $pkg->addMaintainer('norro', 'developer', 'Arne Nordmann', 'mail@norro.de');
 	
 	if (PEAR::isError($e)) {
     	echo $e->getMessage();
