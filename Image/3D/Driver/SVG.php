@@ -120,29 +120,4 @@ EOF;
 		$this->_addPolygon(sprintf("\t<polygon id=\"[id]\" points=\"%s\" style=\"fill: url(#%s); stroke: none; fill-opacity: 1;\" />\n", $list, $lg));
 		
 		// Overlay Polygon
-		$lg = $this->_addGradient(sprintf("\t\t<linearGradient id=\"[id]\" x1=\"%.2f\" y1=\"%.2f\" x2=\"%.2f\" y2=\"%.2f\">\n%s\t\t</linearGradient>\n", 
-			($pointarray[2][0] - $xOffset) / $xSize,
-			($pointarray[2][1] - $yOffset) / $ySize,
-			((($pointarray[0][0] + $pointarray[1][0]) / 2) - $xOffset) / $xSize,
-			((($pointarray[0][1] + $pointarray[1][1]) / 2) - $yOffset) / $ySize,
-			$this->_getStop($points[2]->getColor()) . $this->_getStop($points[2]->getColor(), 1, 1)));
-		
-		$this->_addPolygon(sprintf("\t<polygon id=\"[id]\" points=\"%s\" style=\"fill: url(#%s); stroke: none; fill-opacity: 1;\" />\n", $list, $lg));
-	}
-	
-	public function save($file) {
-		$this->_image .= sprintf("\t<defs id=\"defs%d\">\n", $this->_id++);
-		$this->_image .= implode('', $this->_gradients);
-		$this->_image .= sprintf("\t</defs>\n\n");
-
-		$this->_image .= implode('', $this->_polygones);
-		$this->_image .= "</svg>\n";
-		file_put_contents($file, $this->_image);
-	}
-
-	public function getSupportedShading() {
-		return array(Image_3D_Renderer::SHADE_NO, Image_3D_Renderer::SHADE_FLAT, Image_3D_Renderer::SHADE_GAUROUD);
-	}
-}
-
-?>
+		$lg = $this->_addGradient(sprintf("\t\t<linearGradient id=\"[id]\" x
