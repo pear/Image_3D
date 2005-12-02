@@ -28,7 +28,7 @@
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    CVS: $Id$
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      File available since Release 0.1.0
  */
 
@@ -45,7 +45,7 @@ require_once('Image/3D/Matrix.php');
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
 class Image_3D_Matrix_Scale extends Image_3D_Matrix {

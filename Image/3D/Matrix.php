@@ -28,7 +28,7 @@
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    CVS: $Id$
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      File available since Release 0.1.0
  */
 
@@ -44,7 +44,7 @@
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
 class Image_3D_Matrix {
@@ -137,4 +137,54 @@ class Image_3D_Matrix {
 		}
 		
 		if (!empty($rotationZ)) {
-			// Normalisierung der Rotation von Grad auf r
+			// Normalisierung der Rotation von Grad auf radiale Berechnung
+			$rotationZ = (float) $rotationZ;
+			$rotationZ *= pi() / 180;
+			// Setzen der Rotationsmatrix fuer Drehungen an der X-Achse
+			$matrix = new Image_3D_Matrix();
+			
+			$matrix->setValue(0, 0, cos($rotationZ));
+			$matrix->setValue(0, 1, sin($rotationZ));
+			$matrix->setValue(1, 0, -sin($rotationZ));
+			$matrix->setValue(1, 1, cos($rotationZ));
+
+			// Setzen der Transformationsmatrix
+			$this->_multiply($matrix);
+			unset($matrix);
+		}
+	}
+	
+	public function setMoveMatrix($moveX, $moveY, $moveZ) {
+		$matrix = new Image_3D_Matrix();
+		$matrix->setValue(3, 0, (float) $moveX);
+		$matrix->setValue(3, 1, (float) $moveY);
+		$matrix->setValue(3, 2, (float) $moveZ);
+		
+		$this->_multiply($matrix);
+	}
+	
+	public function setScaleMatrix($scaleX, $scaleY, $scaleZ) {
+		$matrix = new Image_3D_Matrix();
+		$matrix->setValue(0, 0, (float) $scaleX);
+		$matrix->setValue(1, 1, (float) $scaleY);
+		$matrix->setValue(2, 2, (float) $scaleZ);
+		
+		$this->_multiply($matrix);
+	}
+	
+	protected function _multiply(Image_3D_Matrix $matrix) {
+		$new = clone($this);
+
+		for ($i = 0; $i < 4; $i++) {
+			for ($j = 0; $j < 4; $j++) {
+				$sum = 0;
+				for ($k = 0; $k < 4; $k++) {
+					$sum += $new->getValue($i, $k) * $matrix->getValue($k, $j);
+				}
+				$this->setValue($i, $j, $sum);
+			}
+		}
+	}
+}
+
+?>

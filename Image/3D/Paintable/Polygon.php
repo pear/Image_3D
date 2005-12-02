@@ -28,7 +28,7 @@
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    CVS: $Id$
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      File available since Release 0.1.0
  */
 
@@ -44,7 +44,7 @@
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
 class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interface_Enlightenable {
@@ -131,4 +131,48 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 		return 1;
 	}
 	
-	public function setColor(Image_3D_Col
+	public function setColor(Image_3D_Color $color) {
+		$this->_color = $color;
+	}
+	
+	public function isVisible() {
+		return $this->isVisible();
+	}
+	
+	public function setInvisible() {
+		$this->_visible = false;
+	}
+	
+	public function setOption($option, $value) {
+		$this->_option[$option] = $value;
+		foreach ($this->_points as $point) $point->setOption($option, $value);
+	}
+	
+	public function addPoint(Image_3D_Point $point) {
+		$this->_points[] = $point;
+	}
+	
+	public function getPoints() {
+		return $this->_points;
+	}
+
+	public function transform(Image_3D_Matrix $matrix, $id = null) {
+		
+		if ($id === null) $id = substr(md5(microtime()), 0, 8);
+		foreach ($this->_points as $point) $point->transform($matrix, $id);
+	}
+	
+	public function getMidZ() {
+		$z = 0;
+		foreach ($this->_points as $point) $z += $point->getZ();
+		return $z / count($this->_points);
+	}
+	
+	public function getMaxZ() {
+		$z = -500;
+		foreach ($this->_points as $point) $z = max($point->getZ(), $z);
+		return $z;
+	}
+}
+
+?>

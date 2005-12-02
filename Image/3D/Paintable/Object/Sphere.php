@@ -28,7 +28,7 @@
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    CVS: $Id$
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      File available since Release 0.1.0
  */
 
@@ -45,7 +45,7 @@ require_once('Image/3D/Paintable/Object.php');
  * @copyright  1997-2005 Kore Nordmann
  * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
  * @version    Release: @package_version@
- * @link       http://pear.php.net/package/Image_3D
+ * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
 class Image_3D_Object_Sphere extends Image_3D_Object {
@@ -115,4 +115,13 @@ class Image_3D_Object_Sphere extends Image_3D_Object {
 		
 		$this->_virtualPolygon[] = array(0, 1, 3);
 		$this->_virtualPolygon[] = array(1, 2, 3);
-		$this->_virtualPolygo
+		$this->_virtualPolygon[] = array(0, 2, 1);
+		$this->_virtualPolygon[] = array(0, 3, 2);
+	}
+	
+	protected function _getRealPolygones() {
+		foreach ($this->_virtualPolygon as $points) {
+			$this->_addPolygon(new Image_3D_Polygon($this->_points[$points[0]], $this->_points[$points[1]], $this->_points[$points[2]]));
+		}
+	}
+}

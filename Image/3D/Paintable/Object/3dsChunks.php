@@ -150,4 +150,132 @@ class Image_3D_Chunk {
 	}
 }
 
-class Image_3D_Chunk_Obj
+class Image_3D_Chunk_Object extends Image_3D_Chunk {
+	
+	protected $name;
+	
+	public function __construct($type, $content) {
+		parent::__construct($type, $content);
+		$this->getName();
+	}
+	
+	protected function getName() {
+		$i = 0;
+		while ((ord($this->content{$i}) !== 0) && ($i < $this->size)) $this->name .= $this->content{$i++};
+		$this->content = substr($this->content, $i + 1);
+	}
+	
+	public function readChunks(Image_3D_Object_3ds $k3ds) {
+		$subtype = $this->getWord(substr($this->content, 0, 2));
+		$subcontent = substr($this->content, 6);
+		
+		switch ($subtype) {
+			case self::OBJ_TRIMESH:
+				$object = $k3ds->addObject($this->name);
+				$this->chunks[] = new Image_3D_Chunk_TriMesh($subtype, $subcontent, $object);
+			break;
+		}
+	}
+	
+	public function debug() {
+		echo 'Object: ', $this->name, "\n";
+		parent::debug();
+	}
+}
+
+class Image_3D_Chunk_TriMesh extends Image_3D_Chunk {
+	
+	protected $matrix;
+	
+	protected $object;
+	
+	public function __construct($type, $content, $object) {
+		parent::__construct($type, $content);
+		
+		$this->object = $object;
+		
+		$this->readChunks();
+		
+		$this->getPoints();
+		$this->getFaces();
+	}
+	
+	protected function getPoints() {
+		$vertexlists = $this->getChunksByType(Image_3D_Chunk::TRI_VERTEXL);
+		foreach ($vertexlists as $vertexlist) {
+			$points = $vertexlist->getContent();
+			$count = $this->getWord(substr($points, 0, 2));
+			$points = substr($points, 2);
+			
+			for ($i = 0; $i < $count; $i++) {
+				$x = $this->getFloat(substr($points, 0, 4));
+				$y = $this->getFloat(substr($points, 4, 4));
+				$z = $this->getFloat(substr($points, 8, 4));
+				$this->object->newPoint($x, $y, $z);
+				$points = substr($points, 12);
+			}
+		}
+	}
+	
+	protected function getFaces() {
+		$facelists = $this->getChunksByType(Image_3D_Chunk::TRI_FACEL1);
+		foreach ($facelists as $facelist) {
+			$faces = $facelist->getContent();
+			$count = $this->getWord(substr($faces, 0, 2));
+			$faces = substr($faces, 2);
+			
+			for ($i = 0; $i < $count; $i++) {
+				$p1 = $this->getWord(substr($faces, 0, 2));
+				$p2 = $this->getWord(substr($faces, 2, 2));
+				$p3 = $this->getWord(substr($faces, 4, 2));
+				$this->object->newPolygon($p1, $p2, $p3);
+				$faces = substr($faces, 8);
+			}
+		}
+	}
+	
+	protected function getTranslations() {
+		$translists = $this->getChunksByType(Image_3D_Chunk::TRI_LOCAL);
+		foreach ($translists as $translist) {
+			$trans = $translist->getContent();
+
+			echo "Trans: " . strlen($trans), "\n";
+		}
+	}
+	
+	public function debug() {
+		parent::debug();
+		printf("Trimesh with %d (0x%04x) points - Pointsize: %.2f\n", $this->pointCount, $this->pointCount, $this->size / $this->pointCount);
+	}
+}
+
+class Image_3D_Object_3ds_Object extends Image_3D_Object {
+	
+	protected $_points;
+	
+	public function __construct() {
+		parent::__construct();
+		
+		$this->_points = array();
+	}
+	
+	public function newPoint($x, $y, $z) {
+		$this->_points[] = new Image_3D_Point($x, $y, $z);
+//		echo "New Point: $x, $y, $z -> ", count($this->_points), "\n";
+	}
+	
+	public function newPolygon($p1, $p2, $p3) {
+		if (!isset($this->_points[$p1]) || !isset($this->_points[$p2]) || !isset($this->_points[$p3])) {
+//			printf("ERROR: Unknown point (%d, %d, %d of %d)\n", $p1, $p2, $p3, count($this->_points) - 1);
+			return false;
+		}
+		$this->_addPolygon(new Image_3D_Polygon($this->_points[$p1], $this->_points[$p2], $this->_points[$p3]));
+//		echo "New Polygon: $p1, $p2, $p3 -> ", count($this->_polygones), "\n";
+	}
+	
+	public function debug() {
+		printf("Points: %d | Polygones: %d (%d)\n", count($this->_points), count($this->_polygones), $this->_polygonCount);
+	}
+}
+
+?>
