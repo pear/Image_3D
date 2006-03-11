@@ -58,9 +58,9 @@ class Image_3D_Object_Map extends Image_3D_Object {
 		
 		foreach ($points as $row) {
 			if (is_array($row)) {
-				$this->_addRow($row);
+				$this->addRow($row);
 			} else {
-				$this->_addRow(array($row));
+				$this->addRow(array($row));
 			}
 		}
 	}
