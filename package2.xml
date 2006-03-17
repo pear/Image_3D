@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.4.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.4.8" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
 http://pear.php.net/dtd/tasks-1.0.xsd
 http://pear.php.net/dtd/package-2.0
 http://pear.php.net/dtd/package-2.0.xsd">
@@ -31,22 +31,28 @@ Image_3D currently supports:
   <email>toby@php.net</email>
   <active>yes</active>
  </lead>
- <date>2005-11-07</date>
- <time>13:16:33</time>
+ <developer>
+  <name>Arne Nordmann</name>
+  <user>norro</user>
+  <email>mail@arne-nordmann.de</email>
+  <active>yes</active>
+ </developer>
+ <date>2006-03-17</date>
+ <time>17:40:24</time>
  <version>
-  <release>0.3.0</release>
-  <api>0.3.0</api>
+  <release>0.4.0</release>
+  <api>0.4.0</api>
  </version>
  <stability>
   <release>alpha</release>
   <api>alpha</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>* Added torus and cone
-* Fixed package tag
-* Added class documentation
-* Improved speed
-* Added Driver for ASCII-output (including animation)
+ <notes>* Modified API to add lights
+  * Added spotlights and ambient lights
+* Added driver SVGControl
+* Added bezier curves
+* Several bugfixes
   
  </notes>
  <contents>
@@ -81,6 +87,10 @@ Image_3D currently supports:
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
      </file>
+     <file baseinstalldir="" name="bezier.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
      <file baseinstalldir="" name="cone.php" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
@@ -97,7 +107,15 @@ Image_3D currently supports:
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
      </file>
+     <file baseinstalldir="" name="pointlight.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
      <file baseinstalldir="" name="sphere.php" role="doc">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+      <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+     </file>
+     <file baseinstalldir="" name="spotlights.php" role="doc">
       <tasks:replace from="@package_version@" to="version" type="package-info" />
       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
      </file>
@@ -148,11 +166,19 @@ Image_3D currently supports:
        <tasks:replace from="@package_version@" to="version" type="package-info" />
        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
+      <file baseinstalldir="" name="ImageCanvas.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+      </file>
+      <file baseinstalldir="" name="ImageMagick.php" role="php">
+       <tasks:replace from="@package_version@" to="version" type="package-info" />
+       <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+      </file>
       <file baseinstalldir="" name="SVG.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
-      <file baseinstalldir="" name="SVGRotate.php" role="php">
+      <file baseinstalldir="" name="SVGControl.php" role="php">
        <tasks:replace from="@package_version@" to="version" type="package-info" />
        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
       </file>
@@ -176,12 +202,30 @@ Image_3D currently supports:
       </file>
      </dir> <!-- /Image/3D/Matrix -->
      <dir name="Paintable">
+      <dir name="Light">
+       <file baseinstalldir="" name="Ambient.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+       </file>
+       <file baseinstalldir="" name="Point.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+       </file>
+       <file baseinstalldir="" name="Spotlight.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+       </file>
+      </dir> <!-- /Image/3D/Paintable/Light -->
       <dir name="Object">
        <file baseinstalldir="" name="3ds.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
         <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
        </file>
        <file baseinstalldir="" name="3dsChunks.php" role="php">
+        <tasks:replace from="@package_version@" to="version" type="package-info" />
+        <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
+       </file>
+       <file baseinstalldir="" name="Bezier.php" role="php">
         <tasks:replace from="@package_version@" to="version" type="package-info" />
         <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
        </file>
@@ -316,6 +360,25 @@ Image_3D currently supports:
 * Added class documentation
 * Improved speed
 * Added Driver for ASCII-output (including animation)
+    
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.0</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2006-03-17</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>* Modified API to add lights
+  * Added spotlights and ambient lights
+* Added driver SVGControl
+* Added bezier curves
+* Several bugfixes
     
    </notes>
   </release>

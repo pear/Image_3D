@@ -1,7 +1,6 @@
 <?php
 
 set_time_limit(0);
-set_include_path(dirname(__FILE__) . '/../..');
 require_once('Image/3D.php');
 
 $world = new Image_3D();

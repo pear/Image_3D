@@ -1,7 +1,7 @@
 #!/usr/bin/php
 <?php
 
-    $make = 1;
+    $make = true;
 	require_once('PEAR/PackageFileManager.php');
 
 	$pkg = new PEAR_PackageFileManager;
@@ -14,7 +14,7 @@
 	$category = 'Image';
 	$package = 'Image_3D';
 	
-	$version = '0.3.0';
+	$version = '0.4.0';
 	$state = 'alpha';
 	
 	$summary = 'This class allows the rendering of 3 dimensional objects utilizing PHP.';
@@ -33,11 +33,11 @@ Image_3D currently supports:
 EOT;
 
 	$notes = <<<EOT
-* Added torus and cone
-* Fixed package tag
-* Added class documentation
-* Improved speed
-* Added Driver for ASCII-output (including animation)
+* Modified API to add lights
+  * Added spotlights and ambient lights
+* Added driver SVGControl
+* Added bezier curves
+* Several bugfixes
 EOT;
 	
 	$e = $pkg->setOptions(
@@ -57,33 +57,47 @@ EOT;
                     'docs' => 'doc'),
 		      'ignore' => array('*.xml',
                                 '*.tgz',
+                                '*.png',
 		                        'generate_package*',
                                 ),
 	));
 	
 	if (PEAR::isError($e)) {
     	echo $e->getMessage();
-    	exit;
+        var_dump($e);
+    	exit(__FILE__ . ':' . __LINE__ . "\n");
 	}
 	
 	$e = $pkg->addMaintainer('kore', 'lead', 'Kore Nordmann', 'pear@kore-nordmann.de');
 	$e = $pkg->addMaintainer('toby', 'lead', 'Tobias Schlitt', 'toby@php.net');
-	$e = $pkg->addMaintainer('norro', 'developer', 'Arne Nordmann', 'mail@norro.de');
+	$e = $pkg->addMaintainer('norro', 'developer', 'Arne Nordmann', 'mail@arne-nordmann.de');
 	
 	if (PEAR::isError($e)) {
     	echo $e->getMessage();
-    	exit;
+    	exit(__FILE__ . ':' . __LINE__ . "\n");
 	}
 
     $e = $pkg->addDependency('gd', null, 'has', 'ext');
+	if (PEAR::isError($e)) {
+    	echo $e->getMessage();
+    	exit(__FILE__ . ':' . __LINE__ . "\n");
+	}
     $e = $pkg->addDependency('php', '5.0.0', 'ge', 'php');
+	if (PEAR::isError($e)) {
+    	echo $e->getMessage();
+    	exit(__FILE__ . ':' . __LINE__ . "\n");
+	}
 
     $e = $pkg->addGlobalReplacement('package-info', '@package_version@', 'version');
+	if (PEAR::isError($e)) {
+    	echo $e->getMessage();
+    	exit(__FILE__ . ':' . __LINE__ . "\n");
+	}
     $e = $pkg->addGlobalReplacement('pear-config', '@data_dir@', 'data_dir');
 
 	if (PEAR::isError($e)) {
     	echo $e->getMessage();
-    	exit;
+    	exit(__FILE__ . ':' . __LINE__ . "\n");
 	}
 	// hack until they get their shit in line with docroot role
 	$pkg->addRole('tpl', 'php');

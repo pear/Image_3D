@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
-<package version="1.0" packagerversion="1.4.4">
+<package version="1.0" packagerversion="1.4.8">
  <name>Image_3D</name>
  <summary>This class allows the rendering of 3 dimensional objects utilizing PHP.</summary>
  <description>Image_3D is a highly object oriented PHP5 package 
@@ -28,17 +28,23 @@ Image_3D currently supports:
    <email>toby@php.net</email>
    <role>lead</role>
   </maintainer>
+  <maintainer>
+   <user>norro</user>
+   <name>Arne Nordmann</name>
+   <email>mail@arne-nordmann.de</email>
+   <role>developer</role>
+  </maintainer>
   </maintainers>
  <release>
-  <version>0.3.0</version>
-  <date>2005-11-07</date>
+  <version>0.4.0</version>
+  <date>2006-03-17</date>
   <license>LGPL</license>
   <state>alpha</state>
-  <notes>* Added torus and cone
-* Fixed package tag
-* Added class documentation
-* Improved speed
-* Added Driver for ASCII-output (including animation)
+  <notes>* Modified API to add lights
+  * Added spotlights and ambient lights
+* Added driver SVGControl
+* Added bezier curves
+* Several bugfixes
   </notes>
   <deps>
    <dep type="ext" rel="has" optional="no">gd</dep>
@@ -76,6 +82,10 @@ Image_3D currently supports:
        <replace type="package-info" from="@package_version@" to="version"/>
        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
       </file>
+      <file role="doc" name="bezier.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
       <file role="doc" name="cone.php">
        <replace type="package-info" from="@package_version@" to="version"/>
        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
@@ -92,7 +102,15 @@ Image_3D currently supports:
        <replace type="package-info" from="@package_version@" to="version"/>
        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
       </file>
+      <file role="doc" name="pointlight.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
       <file role="doc" name="sphere.php">
+       <replace type="package-info" from="@package_version@" to="version"/>
+       <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+      </file>
+      <file role="doc" name="spotlights.php">
        <replace type="package-info" from="@package_version@" to="version"/>
        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
       </file>
@@ -143,11 +161,19 @@ Image_3D currently supports:
         <replace type="package-info" from="@package_version@" to="version"/>
         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
        </file>
+       <file role="php" name="ImageCanvas.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
+       <file role="php" name="ImageMagick.php">
+        <replace type="package-info" from="@package_version@" to="version"/>
+        <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+       </file>
        <file role="php" name="SVG.php">
         <replace type="package-info" from="@package_version@" to="version"/>
         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
        </file>
-       <file role="php" name="SVGRotate.php">
+       <file role="php" name="SVGControl.php">
         <replace type="package-info" from="@package_version@" to="version"/>
         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
        </file>
@@ -171,12 +197,30 @@ Image_3D currently supports:
        </file>
       </dir> <!-- /Image/3D/Matrix -->
       <dir name="Paintable">
+       <dir name="Light">
+        <file role="php" name="Ambient.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Point.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Spotlight.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+       </dir> <!-- /Image/3D/Paintable/Light -->
        <dir name="Object">
         <file role="php" name="3ds.php">
          <replace type="package-info" from="@package_version@" to="version"/>
          <replace type="pear-config" from="@data_dir@" to="data_dir"/>
         </file>
         <file role="php" name="3dsChunks.php">
+         <replace type="package-info" from="@package_version@" to="version"/>
+         <replace type="pear-config" from="@data_dir@" to="data_dir"/>
+        </file>
+        <file role="php" name="Bezier.php">
          <replace type="package-info" from="@package_version@" to="version"/>
          <replace type="pear-config" from="@data_dir@" to="data_dir"/>
         </file>
@@ -292,6 +336,18 @@ Image_3D currently supports:
 * Added class documentation
 * Improved speed
 * Added Driver for ASCII-output (including animation)
+    </notes>
+   </release>
+   <release>
+    <version>0.4.0</version>
+    <date>2006-03-17</date>
+    <license>LGPL</license>
+    <state>alpha</state>
+    <notes>* Modified API to add lights
+  * Added spotlights and ambient lights
+* Added driver SVGControl
+* Added bezier curves
+* Several bugfixes
     </notes>
    </release>
  </changelog>

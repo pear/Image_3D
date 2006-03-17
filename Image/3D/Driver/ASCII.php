@@ -210,11 +210,14 @@ class Image_3D_Driver_ASCII extends Image_3D_Driver {
 					for ($yi = 0; $yi < 3; ++$yi) {
 						$xPos = $x * 2 + $xi;
 						$yPos = $y * 6 + $yi;
-                        $color = $this->_mixColor($this->_image[$xPos][$yPos], $this->_heigth[$xPos][$yPos]);
-						if ((($color[0] + $color[1] + $color[2]) / 3) > IMAGE_3D_DRIVER_ASCII_GRAY) $char |= pow(2, $yi + ($xi * 3));
-						$charColor[0] += $color[0];
-						$charColor[1] += $color[1];
-						$charColor[2] += $color[2];
+                        if (isset($this->_heigth[$xPos][$yPos])) {
+                            $color = $this->_mixColor($this->_image[$xPos][$yPos], 
+                            $this->_heigth[$xPos][$yPos]);
+                            if ((($color[0] + $color[1] + $color[2]) / 3) > IMAGE_3D_DRIVER_ASCII_GRAY) $char |= pow(2, $yi + ($xi * 3));
+                            $charColor[0] += $color[0];
+                            $charColor[1] += $color[1];
+                            $charColor[2] += $color[2];
+                        }
 					}
 				}
 				$lastColor = $this->_getAnsiColorCode(array($charColor[0] / 6, $charColor[1] / 6, $charColor[2] / 6), $lastColor);
