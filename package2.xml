@@ -37,8 +37,8 @@ Image_3D currently supports:
   <email>mail@arne-nordmann.de</email>
   <active>yes</active>
  </developer>
- <date>2006-03-17</date>
- <time>17:40:24</time>
+ <date>2006-03-19</date>
+ <time>23:18:39</time>
  <version>
   <release>0.4.0</release>
   <api>0.4.0</api>
@@ -372,7 +372,7 @@ Image_3D currently supports:
     <release>alpha</release>
     <api>alpha</api>
    </stability>
-   <date>2006-03-17</date>
+   <date>2006-03-19</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
    <notes>* Modified API to add lights
   * Added spotlights and ambient lights

@@ -37,7 +37,7 @@ Image_3D currently supports:
   </maintainers>
  <release>
   <version>0.4.0</version>
-  <date>2006-03-17</date>
+  <date>2006-03-19</date>
   <license>LGPL</license>
   <state>alpha</state>
   <notes>* Modified API to add lights
@@ -340,7 +340,7 @@ Image_3D currently supports:
    </release>
    <release>
     <version>0.4.0</version>
-    <date>2006-03-17</date>
+    <date>2006-03-19</date>
     <license>LGPL</license>
     <state>alpha</state>
     <notes>* Modified API to add lights
