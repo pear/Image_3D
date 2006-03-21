@@ -80,6 +80,72 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
 	protected function _addPolygon(Image_3D_Polygon $polygon) {
 		$this->_polygones[] = $polygon;
 	}
+	
+    public function buildInzidenzGraph() {
+        $polygons = $this->getPolygones();
+
+        $surfaces = array();
+        $edges = array();
+        $points = array();
+
+        $point_hash = array();
+        $edge_hash = array();
+
+        foreach ($polygons as $nr => $polygon) {
+            $p_points = $polygon->getPoints();
+
+            $last_index = false;
+            $first_index = false;
+            foreach ($p_points as $point) {
+                // Add point to edge
+                $p_p_hash = $point->__toString();
+                if (isset($point_hash[$p_p_hash])) {
+                    $p_p_index = $point_hash[$p_p_hash];
+                } else {
+                    $points[] = $point;
+                    $p_p_index = count($points) - 1;
+                    $point_hash[$p_p_hash] = $p_p_index;
+                }
+
+                // Add edge to surface
+                if ($last_index !== false) {
+                    $e_points = array($p_p_index, $last_index);
+                    sort($e_points);
+                    $p_e_hash = implode(' -> ', $e_points);
+                    if (isset($edge_hash[$p_e_hash])) {
+                        $surfaces[$nr][] = $edge_hash[$p_e_hash];
+                    } else {
+                        $edges[] = $e_points;
+                        $edge_hash[$p_e_hash] = count($edges) - 1;
+                        $surfaces[$nr][] = $edge_hash[$p_e_hash];
+                    }
+                } else {
+                    $first_index = $p_p_index;
+                }
+
+                // Prepare last index for next iteration
+                $last_index = $p_p_index;
+            }
+
+            // Close surface
+            $e_points = array($first_index, $last_index);
+            sort($e_points);
+            $p_e_hash = implode(' -> ', $e_points);
+            if (isset($edge_hash[$p_e_hash])) {
+                $surfaces[$nr][] = $edge_hash[$p_e_hash];
+            } else {
+                $edges[] = $e_points;
+                $edge_hash[$p_e_hash] = count($edges) - 1;
+                $surfaces[$nr][] = $edge_hash[$p_e_hash];
+            }
+        }
+
+        return array(
+            'surfaces' => $surfaces,
+            'edges' => $edges,
+            'points' => $points,
+        );
+    }
 }
 
 ?>
