@@ -147,7 +147,7 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
         );
     }
 
-    public function subdivisionSurfaces($factor = 1) {
+    public function subdivideSurfaces($factor = 1) {
         for ($i = 0; $i < $factor; ++$i) {
             $data = $this->_buildInzidenzGraph();
 
@@ -258,16 +258,18 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
 
                 // Create new polygones
                 foreach ($points as $point) {
+                    $edges = array_values(array_intersect($point_edges[$point], $data['surfaces'][$surface]));
                     $this->_addPolygon(new Image_3D_Polygon(
                         $old_points[$point],
-                        $edge_points[$point_edges[$point][0]],
+                        $edge_points[$edges[0]],
                         $face_point,
-                        $edge_points[$point_edges[$point][1]]
+                        $edge_points[$edges[1]]
                     ));
                 }
             }
 
             // Debug output
+            /*
             echo "\nFace points:\n";
             foreach ($face_points as $point) echo $point, "\n";
 
@@ -281,6 +283,7 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
             foreach ($this->_polygones as $polygon) {
                 echo $polygon;
             }
+            */
         }
     }
 }
