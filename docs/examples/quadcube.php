@@ -10,8 +10,12 @@ $light = $world->createLight('Light', array(0, 0, -500));
 $light->setColor(new Image_3D_Color(255, 255, 255));
 
 $cube = $world->createObject('quadcube', array(150, 150, 150));
-$cube->setColor(new Image_3D_Color(50, 50, 250, 150));
-$cube->subdivisionSurfaces(1);
+$cube->setColor(new Image_3D_Color(50, 50, 250, 200));
+
+$cube_s = $world->createObject('quadcube', array(150, 150, 150));
+$cube_s->subdivisionSurfaces(1);
+
+$cube_s->setColor(new Image_3D_Color(50, 50, 250, 100));
 
 $world->transform($world->createMatrix('Rotation', array(15, 15, 0)));
 

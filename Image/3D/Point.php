@@ -128,7 +128,7 @@ class Image_3D_Point extends Image_3D_Coordinate implements Image_3D_Interface_E
 	}
 	
 	public function __toString() {
-		return sprintf('Point: %2.f %2.f %2.f', $this->_x, $this->_y, $this->_z);
+		return sprintf('Point: % 9.4f % 9.4f % 9.4f', $this->_x, $this->_y, $this->_z);
 	}
 }
 

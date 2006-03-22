@@ -173,6 +173,14 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 		foreach ($this->_points as $point) $z = max($point->getZ(), $z);
 		return $z;
 	}
+
+    public function __toString() {
+        $string = "Polygon:\n";
+        foreach ($this->_points as $point) {
+            $string .= "\t" . $point->__toString() . "\n";
+        }
+        return $string;
+    }
 }
 
 ?>
