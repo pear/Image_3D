@@ -11,7 +11,7 @@ $light->setColor(new Image_3D_Color(255, 255, 255));
 
 $cube = $world->createObject('quadcube', array(150, 150, 150));
 $cube->setColor(new Image_3D_Color(50, 50, 250, 150));
-$cube->buildInzidenzGraph();
+$cube->subdivisionSurfaces(1);
 
 $world->transform($world->createMatrix('Rotation', array(15, 15, 0)));
 

@@ -81,7 +81,7 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
 		$this->_polygones[] = $polygon;
 	}
 	
-    public function buildInzidenzGraph() {
+    protected function _buildInzidenzGraph() {
         $polygons = $this->getPolygones();
 
         $surfaces = array();
@@ -146,6 +146,88 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
             'points' => $points,
         );
     }
+
+    public function subdivisionSurfaces($factor = 1) {
+        $data = $this->_buildInzidenzGraph();
+
+        // Additional hash maps
+        $edge_surfaces = array();
+        $point_edges = array();
+        
+        // New calculated points
+        $face_points = array();
+        $edge_points = array();
+        $old_points = array();
+
+        // Calculate "face points"
+        foreach ($data['surfaces'] as $surface => $edges) {
+            // Get all points
+            $points = array();
+            foreach ($edges as $edge) {
+                $points = array_merge($points, $data['edges'][$edge]);
+                $edge_surfaces[$edge][] = $surface;
+            }
+            $points = array_unique($points);
+
+            // Calculate average
+            $face_point = array(0, 0, 0);
+            $point_count = count($points);
+            foreach ($points as $point) {
+                $face_point[0] += $data['points'][$point]->getX() / $point_count;
+                $face_point[1] += $data['points'][$point]->getY() / $point_count;
+                $face_point[2] += $data['points'][$point]->getZ() / $point_count;
+            }
+            
+            // Create face point
+            $face_points[$surface] = new Image_3D_Point($face_point[0], $face_point[1], $face_point[2]);
+        }
+        
+        // Calculate "edge points"
+        foreach ($data['edges'] as $edge => $points) {
+            // Calculate middle of edge
+            $edge_middle = array(0, 0, 0);
+            $point_count = count($points);
+            foreach ($points as $point) {
+                $point_edges[$point][] = $edge;
+                $edge_middle[0] += $data['points'][$point]->getX() / $point_count;
+                $edge_middle[1] += $data['points'][$point]->getY() / $point_count;
+                $edge_middle[2] += $data['points'][$point]->getZ() / $point_count;
+            }
+
+            // Calculate average of the adjacent faces
+            $average_face = array(0, 0, 0);
+            $point_count = count($edge_surfaces[$edge]);
+            foreach ($edge_surfaces[$edge] as $surface) {
+                $average_face[0] += $face_points[$surface]->getX() / $point_count;
+                $average_face[1] += $face_points[$surface]->getY() / $point_count;
+                $average_face[2] += $face_points[$surface]->getZ() / $point_count;
+            }
+            
+            // Create edge point on this base
+            $edge_points[$edge] = new Image_3D_Point(($average_face[0] + $edge_middle[0]) / 2, ($average_face[1] + $edge_middle[1]) / 2, ($average_face[2] + $edge_middle[2]) / 2);
+        }
+
+        // Reposition old vertices
+        foreach ($data['points'] as $point => $value) {
+            // Calculate average of surrounding face points
+            $q = array(0, 0, 0);
+            // @TODO: implement
+
+            // Calculate average of midpoints of adjacent edges
+            $r = array(0, 0, 0);
+            // @TODO: implement
+
+            // Create new edge point
+            $n = count($point_edges[$point]);
+            $old_points[$point] = new Image_3D_Point(
+                ($q[0] / $n) + ((2 * $r[0]) / $n) + (($value->getX() * ($n - 3)) / $n),
+                ($q[1] / $n) + ((2 * $r[1]) / $n) + (($value->getY() * ($n - 3)) / $n),
+                ($q[2] / $n) + ((2 * $r[2]) / $n) + (($value->getZ() * ($n - 3)) / $n)
+            );
+        }
+
+        // Create polygones on new points
+        // @TODO: implement
+    }
 }
 
-?>
