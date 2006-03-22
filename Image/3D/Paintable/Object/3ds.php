@@ -122,6 +122,10 @@ class Image_3D_Object_3ds extends Image_3D_Object {
 		if ($id === null) $id = substr(md5(microtime()), 0, 8);
 		foreach ($this->_objects as $object) $object->transform($matrix, $id);
 	}
+
+    public function subdivideSurfaces($factor) {
+        foreach ($this->_objects as $object) $object->subdivideSurfaces($factor);
+    }
 	
 	public function getPolygones() {
 		$polygones = array();
