@@ -115,8 +115,8 @@ EOF;
         $values[2] = (int) round($values[2] * 255);
         $values[3] = 1 - $values[3];
 
-        // optional: "shape-rendering: optimizeSpeed;" to increase Speed
-        return sprintf('fill:#%02x%02x%02x; stroke:none; shape-rendering:optimizeSpeed;',
+        // optional: "shape-rendering: optimizeSpeed;" to increase speed
+        return sprintf('fill:#%02x%02x%02x; stroke:none;',
                         $values[0],
                         $values[1],
                         $values[2]);
@@ -186,6 +186,8 @@ EOF;
         <script type="text/ecmascript"> <![CDATA[
 
             var svgdoc;
+            var svgns;
+
             var plist, pcont, t1;
 
             var moved_x, moved_y, moved_z;
@@ -211,9 +213,10 @@ EOF;
 
                 // Reference the SVG-Document
                 svgdoc = evt.target.ownerDocument;
+                svgns = 'http://www.w3.org/2000/svg';
 
                 // Reference list of Image_3D_Polygons
-                pcont = svgdoc.getElementById('plist');
+                plist = svgdoc.getElementById('plist');
 
                 // Reference container for polygones
                 pcont = svgdoc.getElementById('pcont');
@@ -229,13 +232,14 @@ EOF;
                 var xs, ys;
 
                 // Remove all current polygons by deleting container
-                cont = svgdoc.getElementById('cont');
                 pcont = svgdoc.getElementById('pcont');
-                cont.removeChild(pcont);
-
-                pcont = svgdoc.createElement('g');
-                pcont.setAttribute('id', 'pcont');
-                cont.appendChild(pcont);
+                var parent = pcont.parentNode;
+                if (parent.nodeType>=1) {
+                    parent.removeChild(pcont);
+                }
+                var pcont = svgdoc.createElementNS(svgns, 'g');
+                pcont.setAttributeNS(null, 'id', 'pcont');
+                parent.appendChild(pcont);
 
                 // Find all polygones
                 for (i=1; i<={$p_count}; ++i) {
@@ -265,9 +269,9 @@ EOF;
                     ys2 = Math.round(viewpoint * (y2 + mov_y) / (z2 + distance) + {$this->_y}) / 2;
 
                     // Draw the polygon
-                    p = svgdoc.createElement('polygon');
-                    p.setAttribute("style", style);
-                    p.setAttribute("points", xs0+','+ys0+' '+xs1+','+ys1+' '+xs2+','+ys2);
+                    p = svgdoc.createElementNS(svgns, 'polygon');
+                    p.setAttributeNS(null, "style", style);
+                    p.setAttributeNS(null, "points", xs0+','+ys0+' '+xs1+','+ys1+' '+xs2+','+ys2);
                     pcont.appendChild(p);
                 }
             }
