@@ -119,7 +119,8 @@ EOF;
         return sprintf('fill:#%02x%02x%02x; stroke:none;',
                         $values[0],
                         $values[1],
-                        $values[2]);
+                        $values[2])
+               .((empty($values[3]))?'':' opacity:'.$values[3]); // opacity
     }
 
     protected function _getStop(Image_3D_Color $color, $offset = 0, $alpha = null) {
@@ -160,6 +161,11 @@ EOF;
         $points = $polygon->getPoints();
 
         $svg = "\t\t\t<polygon id=\"[id]\" "; //Image_3D_P
+
+        // number of points
+        $svg .= 'nop="'.count($points).'" ';
+
+        // coordinates on start
         foreach ($points as $nr => $point) {
             $svg .= 'x'.$nr.'="'.round($point->getX()).'" ';
             $svg .= 'y'.$nr.'="'.round($point->getY()).'" ';
@@ -226,11 +232,6 @@ EOF;
 
             // Draw all polygones
             function drawAllPolygones() {
-                var i, j;
-                var cont, pcont;
-                var p, style, x0, x1, x2, y0, y1, y2, z0, z1, z2;
-                var xs, ys;
-
                 // Remove all current polygons by deleting container
                 pcont = svgdoc.getElementById('pcont');
                 var parent = pcont.parentNode;
@@ -244,34 +245,31 @@ EOF;
                 // Find all polygones
                 for (i=1; i<={$p_count}; ++i) {
                     p = svgdoc.getElementById("polygon"+i);
-
-                    // find three points per polygon
                     style = p.getAttribute("style");
-                    x0 = parseInt(p.getAttribute("x0"));
-                    y0 = parseInt(p.getAttribute("y0"));
-                    z0 = parseInt(p.getAttribute("z0"));
-                    x1 = parseInt(p.getAttribute("x1"));
-                    y1 = parseInt(p.getAttribute("y1"));
-                    z1 = parseInt(p.getAttribute("z1"));
-                    x2 = parseInt(p.getAttribute("x2"));
-                    y2 = parseInt(p.getAttribute("y2"));
-                    z2 = parseInt(p.getAttribute("z2"));
 
-                    // Calculate coordinates on screen (perspectively - viewpoint, distance: 500)
-                    // 1st point
-                    xs0 = Math.round(viewpoint * (x0 + mov_x) / (z0 + distance) + {$this->_x}) / 2;
-                    ys0 = Math.round(viewpoint * (y0 + mov_y) / (z0 + distance) + {$this->_y}) / 2;
-                    // 2nd point
-                    xs1 = Math.round(viewpoint * (x1 + mov_x) / (z1 + distance) + {$this->_x}) / 2;
-                    ys1 = Math.round(viewpoint * (y1 + mov_y) / (z1 + distance) + {$this->_y}) / 2;
-                    // 3rd point
-                    xs2 = Math.round(viewpoint * (x2 + mov_x) / (z2 + distance) + {$this->_x}) / 2;
-                    ys2 = Math.round(viewpoint * (y2 + mov_y) / (z2 + distance) + {$this->_y}) / 2;
+                    // Number of points for this polygon
+                    nop = parseInt(p.getAttribute("nop"));
+
+                    // find coordinates of each point
+                    pstr = '';
+                    for (j=0; j<nop; ++j) {
+                        window['x'+j] = parseInt(p.getAttribute('x'+j));
+                        window['y'+j] = parseInt(p.getAttribute('y'+j));
+                        window['z'+j] = parseInt(p.getAttribute('z'+j));
+
+                        // Calculate coordinates on screen (perspectively - viewpoint, distance: 500)
+                        x = Math.round(viewpoint * (window['x'+j] + mov_x) / (window['z'+j] + distance) + {$this->_x}) / 2;
+                        y = Math.round(viewpoint * (window['y'+j] + mov_y) / (window['z'+j] + distance) + {$this->_y}) / 2;
+
+                        // Create string of points
+                        pstr += x+','+y+' ';
+                    }
+
 
                     // Draw the polygon
                     p = svgdoc.createElementNS(svgns, 'polygon');
                     p.setAttributeNS(null, "style", style);
-                    p.setAttributeNS(null, "points", xs0+','+ys0+' '+xs1+','+ys1+' '+xs2+','+ys2);
+                    p.setAttributeNS(null, "points", pstr);
                     pcont.appendChild(p);
                 }
             }
@@ -349,30 +347,27 @@ EOF;
                 for (i=1; i<={$p_count}; ++i) {
                     p = svgdoc.getElementById('polygon'+i);
 
+                    // Number of points for this polygon
+                    nop = parseInt(p.getAttribute("nop"));
+
                     switch (coord) {
                         case 0  :   // X
-                                    var c = parseInt(p.getAttribute('x0'));
-                                    p.setAttribute('x0', (c+step));
-                                    var c = parseInt(p.getAttribute('x1'));
-                                    p.setAttribute('x1', (c+step));
-                                    var c = parseInt(p.getAttribute('x2'));
-                                    p.setAttribute('x2', (c+step));
+                                    for (j=0; j<nop; ++j) {
+                                        var c = parseInt(p.getAttribute('x'+j));
+                                        p.setAttribute('x'+j, (c+step));
+                                    }
                                  break;
                         case 1  :   // Y
-                                    var c = parseInt(p.getAttribute('y0'));
-                                    p.setAttribute('y0', (c+step));
-                                    var c = parseInt(p.getAttribute('y1'));
-                                    p.setAttribute('y1', (c+step));
-                                    var c = parseInt(p.getAttribute('y2'));
-                                    p.setAttribute('y2', (c+step));
+                                    for (j=0; j<nop; ++j) {
+                                        var c = parseInt(p.getAttribute('y'+j));
+                                        p.setAttribute('y'+j, (c+step));
+                                    }
                                  break;
                         case 2  :   // Z
-                                    var c = parseInt(p.getAttribute('z0'));
-                                    p.setAttribute('z0', (c+step));
-                                    var c = parseInt(p.getAttribute('z1'));
-                                    p.setAttribute('z1', (c+step));
-                                    var c = parseInt(p.getAttribute('z2'));
-                                    p.setAttribute('z2', (c+step));
+                                    for (j=0; j<nop; ++j) {
+                                        var c = parseInt(p.getAttribute('z'+j));
+                                        p.setAttribute('z'+j, (c+step));
+                                    }
                                  break;
                     }
                 }
