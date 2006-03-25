@@ -151,7 +151,7 @@ EOF;
     }
 
     protected function _addPolygon($string) {
-        $id = 'polygon' . $this->_id++;
+        $id = 'data_polygon' . $this->_id++;
         $this->_polygones[] = str_replace('[id]', $id, $string);
         return $id;
     }
@@ -237,30 +237,19 @@ EOF;
 
             // Draw all polygones
             function drawAllPolygones() {
-                // Remove all current polygons by deleting container
-                pcont = svgdoc.getElementById('pcont');
-                var parent = pcont.parentNode;
-                if (parent.nodeType>=1) {
-                    parent.removeChild(pcont);
-                }
-                var pcont = svgdoc.createElementNS(svgns, 'g');
-                pcont.setAttributeNS(null, 'id', 'pcont');
-                parent.appendChild(pcont);
-
-                // Find all polygones
+                // Update all polygones
                 for (i=1; i<={$p_count}; ++i) {
-                    p = svgdoc.getElementById("polygon"+i);
-                    style = p.getAttribute("style");
+                    dp = svgdoc.getElementById("data_polygon"+i);
 
                     // Number of points for this polygon
-                    nop = parseInt(p.getAttribute("nop"));
+                    nop = parseInt(dp.getAttribute("nop"));
 
                     // find coordinates of each point
                     pstr = '';
                     for (j=0; j<nop; ++j) {
-                        x = parseInt(p.getAttribute('x'+j));
-                        y = parseInt(p.getAttribute('y'+j));
-                        z = parseInt(p.getAttribute('z'+j));
+                        x = parseInt(dp.getAttribute('x'+j));
+                        y = parseInt(dp.getAttribute('y'+j));
+                        z = parseInt(dp.getAttribute('z'+j));
 
                         // Rotation
                         if (rot_x!=0 || rot_y!=0 || rot_z!=0) {
@@ -289,13 +278,23 @@ EOF;
                         pstr += x+','+y+' ';
                     }
 
+                    // Manipulate the polygon if existing, otherwise create it
+                    p = svgdoc.getElementById("polygon"+i);
+                    if (p==null) {
+                        // Polygon doesn't exist, create it
+                        p = svgdoc.createElementNS(svgns, 'polygon');
 
-                    // Draw the polygon
-                    p = svgdoc.createElementNS(svgns, 'polygon');
-                    p.setAttributeNS(null, "style", style);
-                    //p = svgdoc.getElementById("polygon"+i);
-                    p.setAttributeNS(null, "points", pstr);
-                    pcont.appendChild(p);
+                        // Get style of data polygon
+                        var style = dp.getAttribute("style");
+                        p.setAttributeNS(null, "style", style);
+
+                        p.setAttributeNS(null, "id", "polygon"+i);
+                        p.setAttributeNS(null, "points", pstr);
+                        pcont.appendChild(p);
+                    } else {
+                        // Polygon exists, just update points-attribute
+                        p.setAttributeNS(null, "points", pstr);
+                    }
                 }
             }
 
@@ -332,15 +331,21 @@ EOF;
             }
 
             // Translate Z (zoom)
-            function zoom_in() {
-                distance -= 24;
-                viewpoint += 8;
-                drawAllPolygones();
+            function zoom_in(steps) {
+                if (steps>0) {
+                    distance -= 3;
+                    viewpoint += 1;
+                    drawAllPolygones();
+                    timer = setTimeout('zoom_in('+(steps-1)+')', 1);
+                }
             }
-            function zoom_out() {
-                distance += 24;
-                viewpoint -= 8;
-                drawAllPolygones();
+            function zoom_out(steps) {
+                if (steps>0) {
+                    distance += 3;
+                    viewpoint -= 1;
+                    drawAllPolygones();
+                    timer = setTimeout('zoom_out('+(steps-1)+')', 1);
+                }
             }
 
             // Rotate Z
@@ -369,14 +374,14 @@ EOF;
                 rot_y = 0;
                 rot_z = 0;
 
-                // Kill existing timer for moving/rotating
+                // Kill existing timer to stop remaining movements
                 clearTimeout(timer);
 
                 // Zoom to default position
                 viewpoint = (width + height) / 2;
                 distance = (width + height) / 2;
 
-                // Draw
+                // Draw all polygones with reset parameters
                 drawAllPolygones();
             }
 
@@ -457,7 +462,7 @@ EOF;
         $controls .= "\t</g>\n";
 
         // Button "zoom in"
-        $controls .= "\t<g onclick=\"zoom_in()\" transform=\"translate(25, 0)\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t<g onclick=\"zoom_in(10)\" transform=\"translate(25, 0)\" style=\"cursor:pointer;\">\n";
         $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
         $controls .= "\t\t<path style=\"fill:#999; stroke:#aaa; stroke-width:1px;\" d=\"M 5 13 L 3 17 A 2 2 0 0 0 8 17 L 11 14\"/>\n";
         $controls .= "\t\t<circle cx=\"11\" cy=\"9\" r=\"7\" style=\"fill:#fff; stroke:#ccc; stroke-width:1px;\" />\n";
@@ -466,7 +471,7 @@ EOF;
         $controls .= "\t</g>\n";
 
         // Button "zoom out"
-        $controls .= "\t<g onclick=\"zoom_out()\" transform=\"translate(46, 0)\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t<g onclick=\"zoom_out(10)\" transform=\"translate(46, 0)\" style=\"cursor:pointer;\">\n";
         $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
         $controls .= "\t\t<path style=\"fill:#999; stroke:#aaa; stroke-width:1px;\" d=\"M 5 13 L 3 17 A 2 2 0 0 0 8 17 L 11 14\"/>\n";
         $controls .= "\t\t<circle cx=\"11\" cy=\"9\" r=\"7\" style=\"fill:#fff; stroke:#ccc; stroke-width:1px;\" />\n";
@@ -474,11 +479,10 @@ EOF;
         $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
         $controls .= "\t</g>\n";
 
-        /*
-        // Button "hand"
+        /*// Button "hand"
         $controls .= "\t<g transform=\"translate(70, 0)\">\n";
         $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
-        $controls .= "\t\t<text x=\"10\" y=\"14\" style=\"font-size:10px; fill:#fff; text-anchor:middle;\">H</text>\n";
+        $controls .= "\t\t<path d=\"M 7.95,18.08 C 8.01,15.70 5.14,15.75 4.62,12.86 C 4.09,9.934 3.76,8.16 3.76,8.16 C 3.76,8.16 5.54,7.95 5.98,9.47 C 6.42,11 7.07,12.48 7.07,12.48 C 7.07,12.48 6.12,5.12 6.16,4.68 C 6.22,4.04 6.30,3.28 6.953,3.24 C 7.64,3.19 8.06,3.66 8.26,4.51 C 8.38,5.05 8.98,8.49 8.98,8.49 C 8.98,8.49 8.66,3.41 8.84,2.98 C 9.131,2.30 9.17,1.97 9.81,1.92 C 10.45,1.88 10.94,2.60 11.05,3.07 C 11.15,3.53 11.37,8.24 11.37,8.24 C 11.37,8.24 11.55,4.08 11.81,3.49 C 12.08,2.90 12.14,2.39 12.78,2.47 C 13.42,2.56 13.80,3.19 13.74,3.87 C 13.69,4.55 13.74,9.72 13.74,9.72 C 13.74,9.72 14.30,7.12 14.45,6.63 C 14.63,6.03 15.17,5.32 15.70,5.48 C 16.13,5.61 16.27,7.01 15.95,8.52 C 15.65,9.92 15.32,11.86 15.06,12.77 C 14.79,13.68 14.36,14.38 13.77,15.17 C 13.18,15.96 12.94,17.01 12.97,18.11 C 10.73,18.16 8.71,18.07 7.95,18.07\" style=\"fill:#fff; stroke:#000; stroke-width:.5;\" />\n";
         $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
         $controls .= "\t</g>\n";
 
@@ -563,7 +567,11 @@ EOF;
         $this->_image .= $this->_background;
 
         // Create container for drawn polygones
-        $this->_image .= "\n\t<!-- Container for drawn polygones-->\n\t<g id=\"cont\">\n\t\t<g id=\"pcont\">\n\t\t</g>\n\t</g>\n";
+        $this->_image .= "\n\t<!-- Container for drawn polygones-->";
+        $this->_image .= "\n\t<g id=\"cont\">";
+        $this->_image .= "\n\t\t<g id=\"pcont\">";
+        $this->_image .= "\n\t\t</g>";
+        $this->_image .= "\n\t</g>\n";
 
         // Add controls for moving and rotating
         $this->_image .= $this->_getControls();
