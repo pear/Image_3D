@@ -194,12 +194,15 @@ EOF;
             var svgdoc;
             var svgns;
 
-            var plist, pcont, t1;
-
-            var moved_x, moved_y, moved_z;
-
             var width, height;
             var viewpoint, distance;
+
+            var plist, pcont, t1;
+
+            var timer;
+
+            var mov_x, mov_y, mov_z;
+            var rot_x, rot_y, rot_z;
 
             // Some kind of constructor
             function init(evt) {
@@ -215,6 +218,8 @@ EOF;
                 mov_x = 0;
                 mov_y = 0;
                 mov_z = 0;
+                rot_x = 0;
+                rot_y = 0;
                 rot_z = 0;
 
                 // Reference the SVG-Document
@@ -253,13 +258,32 @@ EOF;
                     // find coordinates of each point
                     pstr = '';
                     for (j=0; j<nop; ++j) {
-                        window['x'+j] = parseInt(p.getAttribute('x'+j));
-                        window['y'+j] = parseInt(p.getAttribute('y'+j));
-                        window['z'+j] = parseInt(p.getAttribute('z'+j));
+                        x = parseInt(p.getAttribute('x'+j));
+                        y = parseInt(p.getAttribute('y'+j));
+                        z = parseInt(p.getAttribute('z'+j));
+
+                        // Rotation
+                        if (rot_x!=0 || rot_y!=0 || rot_z!=0) {
+                            /*if (rot_x!=0) {
+                                // rotate around the x-axis
+                            }
+
+                            if (rot_y!=0) {
+                                // rotate around the y-axis
+                            }*/
+
+                            if (rot_z!=0) {
+                                // rotate around the z-axis
+                                var b = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+                                var phi = Math.atan2(x, y);
+                                x = b * Math.sin(phi + Math.PI/360*rot_z);
+                                y = b * Math.cos(phi + Math.PI/360*rot_z);
+                            }
+                        }
 
                         // Calculate coordinates on screen (perspectively - viewpoint, distance: 500)
-                        x = Math.round(viewpoint * (window['x'+j] + mov_x) / (window['z'+j] + distance) + {$this->_x}) / 2;
-                        y = Math.round(viewpoint * (window['y'+j] + mov_y) / (window['z'+j] + distance) + {$this->_y}) / 2;
+                        x = Math.round(viewpoint * (x + mov_x) / (z + distance) + {$this->_x}) / 2;
+                        y = Math.round(viewpoint * (y + mov_y) / (z + distance) + {$this->_y}) / 2;
 
                         // Create string of points
                         pstr += x+','+y+' ';
@@ -269,59 +293,70 @@ EOF;
                     // Draw the polygon
                     p = svgdoc.createElementNS(svgns, 'polygon');
                     p.setAttributeNS(null, "style", style);
+                    //p = svgdoc.getElementById("polygon"+i);
                     p.setAttributeNS(null, "points", pstr);
                     pcont.appendChild(p);
                 }
             }
 
-            // Move the object to the left
+            // Translate X
             function move_left(steps) {
                 if (steps>0) {
                     mov_x -= 3;
                     drawAllPolygones();
-                    setTimeout('move_left('+(steps-1)+')', 1);
+                    timer = setTimeout('move_left('+(steps-1)+')', 1);
                 }
             }
-
-            // Move the object to the left
-            function move_up(steps) {
-                if (steps>0) {
-                    mov_y -= 3;
-                    drawAllPolygones();
-                    setTimeout('move_up('+(steps-1)+')', 1);
-                }
-            }
-
-            // Move the object to the left
             function move_right(steps) {
                 if (steps>0) {
                     mov_x += 3;
                     drawAllPolygones();
-                    setTimeout('move_right('+(steps-1)+')', 1);
+                    timer = setTimeout('move_right('+(steps-1)+')', 1);
                 }
             }
 
-            // Move the object to the left
+            // Translate Y
+            function move_up(steps) {
+                if (steps>0) {
+                    mov_y -= 3;
+                    drawAllPolygones();
+                    timer = setTimeout('move_up('+(steps-1)+')', 1);
+                }
+            }
             function move_down(steps) {
                 if (steps>0) {
                     mov_y += 3;
                     drawAllPolygones();
-                    setTimeout('move_down('+(steps-1)+')', 1);
+                    timer = setTimeout('move_down('+(steps-1)+')', 1);
                 }
             }
 
-            // Zoom in (decrease the distance)
+            // Translate Z (zoom)
             function zoom_in() {
                 distance -= 24;
                 viewpoint += 8;
                 drawAllPolygones();
             }
-
-            // Zoom out (decrease the distance)
             function zoom_out() {
                 distance += 24;
                 viewpoint -= 8;
                 drawAllPolygones();
+            }
+
+            // Rotate Z
+            function rotate_z_cw(steps) {
+                if (steps>0) {
+                    rot_z -= 6;
+                    drawAllPolygones();
+                    timer = setTimeout('rotate_z_cw('+(steps-1)+')', 1);
+                }
+            }
+            function rotate_z_ccw(steps) {
+                if (steps>0) {
+                    rot_z += 6;
+                    drawAllPolygones();
+                    timer = setTimeout('rotate_z_ccw('+(steps-1)+')', 1);
+                }
             }
 
             // Back to default position
@@ -330,6 +365,12 @@ EOF;
                 mov_x = 0;
                 mov_y = 0;
                 mov_z = 0;
+                rot_x = 0;
+                rot_y = 0;
+                rot_z = 0;
+
+                // Kill existing timer for moving/rotating
+                clearTimeout(timer);
 
                 // Zoom to default position
                 viewpoint = (width + height) / 2;
@@ -390,7 +431,7 @@ EOF;
             $arrow_points=($x+12).','.($y+3).' '.($x+3).','.($y+8).' '.($x+12).','.($y+13);
 
             $arrow = "\t<g id=\"".$id.'" transform="rotate('.$rot.', '.($x+8).', '.($y+8)
-                    .')" onclick="'.$funct."\">\n";
+                    .')" onclick="'.$funct."\" style=\"cursor:pointer\">\n";
             $arrow .= "\t\t<rect x=\"".$x.'" y="'.$y.'" width="16" height="16" '
                         ." style=\"fill:#bbb; stroke:none;\" />\n";
             $arrow .= "\t\t<rect x=\"".($x+1).'" y="'.($y+1).'" width="14" height="14" '
@@ -402,7 +443,67 @@ EOF;
             return $arrow;
         }
 
-        $controls = "\n\t<!-- Control Elements -->\n";
+        $x = $this->_x * 0.05;
+        $y = $this->_y * 0.05;
+
+        $controls  = "\n\t<!-- Control Elements -->\n";
+        $controls .= "\t<rect x=\"0\" y=\"0\" width=\"".$this->_x."\" height=\"20\" style=\"fill:#eee; stroke:#ddd; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+
+        // Button "1:1"
+        $controls .= "\t<g onclick=\"move_to_default()\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<text x=\"10\" y=\"14\" style=\"font-size:10px; text-anchor:middle;\">1:1</text>\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";
+
+        // Button "zoom in"
+        $controls .= "\t<g onclick=\"zoom_in()\" transform=\"translate(25, 0)\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<path style=\"fill:#999; stroke:#aaa; stroke-width:1px;\" d=\"M 5 13 L 3 17 A 2 2 0 0 0 8 17 L 11 14\"/>\n";
+        $controls .= "\t\t<circle cx=\"11\" cy=\"9\" r=\"7\" style=\"fill:#fff; stroke:#ccc; stroke-width:1px;\" />\n";
+        $controls .= "\t\t<text x=\"11\" y=\"13\" style=\"font-size:10px; text-anchor:middle;\">+</text>\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";
+
+        // Button "zoom out"
+        $controls .= "\t<g onclick=\"zoom_out()\" transform=\"translate(46, 0)\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<path style=\"fill:#999; stroke:#aaa; stroke-width:1px;\" d=\"M 5 13 L 3 17 A 2 2 0 0 0 8 17 L 11 14\"/>\n";
+        $controls .= "\t\t<circle cx=\"11\" cy=\"9\" r=\"7\" style=\"fill:#fff; stroke:#ccc; stroke-width:1px;\" />\n";
+        $controls .= "\t\t<text x=\"10\" y=\"8\" style=\"font-size:10px; text-anchor:middle;\">_</text>\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";
+
+        /*
+        // Button "hand"
+        $controls .= "\t<g transform=\"translate(70, 0)\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<text x=\"10\" y=\"14\" style=\"font-size:10px; fill:#fff; text-anchor:middle;\">H</text>\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";
+
+        // Button "drag"
+        $controls .= "\t<g transform=\"translate(91, 0)\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<text x=\"10\" y=\"14\" style=\"font-size:10px; text-anchor:middle;\">d</text>\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";*/
+
+        // Button "rotate counter-clockwise"
+        $controls .= "\t<g transform=\"translate(115, 0)\" onclick=\"rotate_z_ccw(15)\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<path style=\"fill:none; stroke:#000; stroke-width:1px;\" d=\"M 9 16 A 6 6 0 1 0 5 10\" />\n";
+        $controls .= "\t\t<polygon style=\"fill:#000;\" points=\"2,10 8,10 5,14\" />\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";
+
+        // Button "rotate clockwise"
+        $controls .= "\t<g transform=\"translate(136, 0)\" onclick=\"rotate_z_cw(15)\" style=\"cursor:pointer;\">\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"fill:url(#b_off); stroke:#ccc; stroke-width:1px; shape-rendering:optimizeSpeed;\" />\n";
+        $controls .= "\t\t<path style=\"fill:none; stroke:#000; stroke-width:1px;\" d=\"M 9 16 A 6 6 0 1 1 15 10\" />\n";
+        $controls .= "\t\t<polygon style=\"fill:#000;\" points=\"12,10 18,10 15,14\" />\n";
+        $controls .= "\t\t<rect x=\"0\" y=\"0\" width=\"20\" height=\"20\" style=\"opacity:0;\" />\n";
+        $controls .= "\t</g>\n";
 
         // Move left
         $x = 0;
@@ -411,7 +512,7 @@ EOF;
 
         // Move up
         $x = $this->_x / 2 - 8;
-        $y = 0;
+        $y = 20;
         $controls .= drawArrow($x, $y, 'move_up', 90, 'move_up(15)');
 
         // Move right
@@ -423,39 +524,6 @@ EOF;
         $x = $this->_x / 2 - 8;
         $y = $this->_y - 16;
         $controls .= drawArrow($x, $y, 'move_down', -90, 'move_down(15)');
-
-        // Zoom in
-        $x = $this->_x * 0.12 - 10;
-        $y = $this->_y * 0.88 - 10;
-        $controls .= "\t<g id=\"zoom_in\" onclick=\"zoom_in()\">\n";
-        $controls .= "\t\t<rect x=\"".$x.'" y="'.$y."\" width=\"20\" height=\"20\" style=\"fill:#bbb; stroke:none;\" />\n";
-        $controls .= "\t\t<rect x=\"".++$x.'" y="'.++$y."\" width=\"18\" height=\"18\" style=\"fill:#ddd; stroke:none;\" />\n";
-        $controls .= "\t\t<text x=\"".++$x.'" y="'.($y+17)."\" "
-                ."style=\"font-size:20pt; font-family:arial, verdana, helvetica, sans-serif;\">+</text>\n";
-        $controls .= "\t\t<rect x=\"".($x-2).'" y="'.$y."\" width=\"20\" height=\"20\" style=\"opacity: 0;\" />\n";
-        $controls .= "\t</g>\n";
-
-        // Zoom out
-        $x = $this->_x * 0.88 - 10;
-        $y = $this->_y * 0.88 - 10;
-        $controls .= "\t<g id=\"zoom_out\" onclick=\"zoom_out()\">\n";
-        $controls .= "\t\t<rect x=\"".$x.'" y="'.$y."\" width=\"20\" height=\"20\" style=\"fill:#bbb; stroke:none;\" />\n";
-        $controls .= "\t\t<rect x=\"".++$x.'" y="'.++$y."\" width=\"18\" height=\"18\" style=\"fill:#ddd; stroke:none;\" />\n";
-        $controls .= "\t\t<text x=\"".++$x.'" y="'.($y+15)."\" "
-                ."style=\"font-size:20pt; font-family:arial, verdana, helvetica, sans-serif;\">-</text>\n";
-        $controls .= "\t\t<rect x=\"".($x-2).'" y="'.$y."\" width=\"20\" height=\"20\" style=\"opacity: 0;\" />\n";
-        $controls .= "\t</g>\n";
-
-        // "1:1" - Move to default
-        $x = $this->_x * 0.1 - 10;
-        $y = $this->_y * 0.1 - 10;
-        $controls .= "\t<g id=\"move_to_default\" onclick=\"move_to_default()\">\n";
-        $controls .= "\t\t<rect x=\"".$x.'" y="'.$y."\" width=\"25\" height=\"25\" style=\"fill:#bbb; stroke:none;\" />\n";
-        $controls .= "\t\t<rect x=\"".++$x.'" y="'.++$y."\" width=\"23\" height=\"23\" style=\"fill:#ddd; stroke:none;\" />\n";
-        $controls .= "\t\t<text x=\"".++$x.'" y="'.($y+16)."\" "
-                ."style=\"font-size:10pt; font-family:arial, verdana, helvetica, sans-serif;\">1:1</text>\n";
-        $controls .= "\t\t<rect x=\"".($x-2).'" y="'.$y."\" width=\"25\" height=\"25\" style=\"opacity: 0;\" />\n";
-        $controls .= "\t</g>\n";
 
         return $controls;
     }
@@ -476,6 +544,17 @@ EOF;
         $this->_image .= "\n\t\t<!-- polygon data elements -->\n\t\t<g id=\"plist\">\n";
         $this->_image .= implode('', $this->_polygones);
         $this->_image .= "\t\t</g>\n";
+
+        /***** button gradients to defs *****/
+        $this->_image .= "\t<linearGradient id=\"b_off\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">\n";
+        $this->_image .= "\t\t<stop offset=\"0\" stop-color=\"#eee\" />\n";
+        $this->_image .= "\t\t<stop offset=\"1\" stop-color=\"#ccc\" />\n";
+        $this->_image .= "\t</linearGradient>\n";
+        $this->_image .= "\t<linearGradient id=\"b_on\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\">\n";
+        $this->_image .= "\t\t<stop offset=\"0\" stop-color=\"#ccc\" />\n";
+        $this->_image .= "\t\t<stop offset=\"1\" stop-color=\"#eee\" />\n";
+        $this->_image .= "\t</linearGradient>\n";
+        /**********/
 
         // End of SVG definition area
         $this->_image .= sprintf("\t</defs>\n\n");
