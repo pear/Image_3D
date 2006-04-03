@@ -104,8 +104,7 @@ class Image_3D_Matrix {
 		
 		if (!empty($rotationX)) {
 			// Normalisierung der Rotation von Grad auf radiale Berechnung
-			$rotationX = (float) $rotationX;
-			$rotationX *= pi() / 180;
+			$rotationX = deg2rad((float) $rotationX);
 			// Setzen der Rotationsmatrix fuer Drehungen an der X-Achse
 			$matrix = new Image_3D_Matrix();
 			
@@ -121,8 +120,7 @@ class Image_3D_Matrix {
 		
 		if (!empty($rotationY)) {
 			// Normalisierung der Rotation von Grad auf radiale Berechnung
-			$rotationY = (float) $rotationY;
-			$rotationY *= pi() / 180;
+			$rotationY = deg2rad((float) $rotationY);
 			// Setzen der Rotationsmatrix fuer Drehungen an der X-Achse
 			$matrix = new Image_3D_Matrix();
 			
@@ -138,8 +136,7 @@ class Image_3D_Matrix {
 		
 		if (!empty($rotationZ)) {
 			// Normalisierung der Rotation von Grad auf radiale Berechnung
-			$rotationZ = (float) $rotationZ;
-			$rotationZ *= pi() / 180;
+			$rotationZ = deg2rad((float) $rotationZ);
 			// Setzen der Rotationsmatrix fuer Drehungen an der X-Achse
 			$matrix = new Image_3D_Matrix();
 			

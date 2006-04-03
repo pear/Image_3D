@@ -103,8 +103,8 @@ class Image_3D_Object_Pie extends Image_3D_Object {
 		$array['detail'] = max(1, (int) @$array['detail']);
 		$array['outside'] = max(0, (int) @$array['outside']);
 		$array['inside'] = min(max(0, (int) @$array['inside']), @$array['outside']);
-		$array['start'] = max(0, ((int) @$array['start']) * pi() / 180);
-		$array['end'] = max(0, ((int) @$array['end']) * pi() / 180);
+		$array['start'] = max(0, deg2rad((float) @$array['start']));
+		$array['end'] = max(0, deg2rad((float) @$array['end']));
 		
 		return ($array);
 	}

@@ -19,7 +19,7 @@ class Image_3D_Object_Cone extends Image_3D_Object {
 		$points[] = $last;
 
 		for ($i = 1; $i <= $detail; ++$i) {
-			$actual = new Image_3D_Point(cos($i / $detail * 2 * pi()), 0, sin($i / $detail * 2 * pi()));
+			$actual = new Image_3D_Point(cos(deg2rad(360 * $i / $detail)), 0, sin(deg2rad(360 * $i / $detail)));
 			$points[] = $actual;
 			
 			// Build polygon

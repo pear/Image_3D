@@ -62,7 +62,7 @@ class Image_3D_Light_Spotlight extends Image_3D_Light {
 		$this->_direction = $light;
 		$this->_direction->unify();
 		
-		$this->_angle = $parameter['angle'] / 360 * pi();
+		$this->_angle = deg2rad($parameter['angle']) / 2;
 		$this->_float = (int) $parameter['float'];
 	}
 	
