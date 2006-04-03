@@ -115,7 +115,7 @@ class Image_3D_Matrix {
 			$matrix->setValue(2, 2, cos($rotationX));
 
 			// Setzen der Transformationsmatrix
-			$this->_multiply($matrix);
+			$this->multiply($matrix);
 			unset($matrix);
 		}
 		
@@ -132,7 +132,7 @@ class Image_3D_Matrix {
 			$matrix->setValue(2, 2, cos($rotationY));
 
 			// Setzen der Transformationsmatrix
-			$this->_multiply($matrix);
+			$this->multiply($matrix);
 			unset($matrix);
 		}
 		
@@ -149,7 +149,7 @@ class Image_3D_Matrix {
 			$matrix->setValue(1, 1, cos($rotationZ));
 
 			// Setzen der Transformationsmatrix
-			$this->_multiply($matrix);
+			$this->multiply($matrix);
 			unset($matrix);
 		}
 	}
@@ -160,7 +160,7 @@ class Image_3D_Matrix {
 		$matrix->setValue(3, 1, (float) $moveY);
 		$matrix->setValue(3, 2, (float) $moveZ);
 		
-		$this->_multiply($matrix);
+		$this->multiply($matrix);
 	}
 	
 	public function setScaleMatrix($scaleX, $scaleY, $scaleZ) {
@@ -169,10 +169,10 @@ class Image_3D_Matrix {
 		$matrix->setValue(1, 1, (float) $scaleY);
 		$matrix->setValue(2, 2, (float) $scaleZ);
 		
-		$this->_multiply($matrix);
+		$this->multiply($matrix);
 	}
 	
-	protected function _multiply(Image_3D_Matrix $matrix) {
+	public function multiply(Image_3D_Matrix $matrix) {
 		$new = clone($this);
 
 		for ($i = 0; $i < 4; $i++) {
@@ -184,6 +184,8 @@ class Image_3D_Matrix {
 				$this->setValue($i, $j, $sum);
 			}
 		}
+
+        return $this;
 	}
 }
 
