@@ -55,7 +55,7 @@ class Image_3D_Vector extends Image_3D_Coordinate {
 	public function getAngle(Image_3D_Vector $vector) {
 		$vector->unify();
 		$this->unify();
-		return acos($this->scalar($vector)) * 2 / pi();
+		return acos(abs($this->scalar($vector))) / M_PI;
 	}
 	
 	public function getSide(Image_3D_Vector $vector) {
@@ -70,6 +70,7 @@ class Image_3D_Vector extends Image_3D_Coordinate {
 		$this->_y /= $this->_length;
 		$this->_z /= $this->_length;
 		$this->_length = 1;
+        return $this;
 	}
 
 	public function length() {
@@ -79,18 +80,20 @@ class Image_3D_Vector extends Image_3D_Coordinate {
 		return $this->_length;
 	}
 	
-	public function add(Image_3D_Vector $vector) {
+	public function add(Image_3D_Coordinate $vector) {
 		$this->_x += $vector->getX();
 		$this->_y += $vector->getY();
 		$this->_z += $vector->getZ();
 		$this->_length = null;
+        return $this;
 	}
 	
-	public function sub(Image_3D_Vector $vector) {
+	public function sub(Image_3D_Coordinate $vector) {
 		$this->_x -= $vector->getX();
 		$this->_y -= $vector->getY();
 		$this->_z -= $vector->getZ();
 		$this->_length = null;
+        return $this;
 	}
 
     public function multiply($scalar) {
@@ -99,16 +102,17 @@ class Image_3D_Vector extends Image_3D_Coordinate {
         $this->_x *= $scalar;
         $this->_y *= $scalar;
         $this->_z *= $scalar;
+		$this->_length = null;
         return $this;
     }
 
-    public function scalar(Image_3D_Vector $vector) {
+    public function scalar(Image_3D_Coordinate $vector) {
         return (($this->_x * $vector->getX()) +
                 ($this->_y * $vector->getY()) +
                 ($this->_z * $vector->getZ()));
     }
 
-    public function crossProduct(Image_3D_Vector $vector) {
+    public function crossProduct(Image_3D_Coordinate $vector) {
         return new Image_3D_Vector(
                 $this->getY() * $vector->getZ() - $this->getZ() * $vector->getY(),
                 $this->getZ() * $vector->getX() - $this->getX() * $vector->getZ(),

@@ -79,7 +79,7 @@ class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_P
 		
 		$normale = $polygon->getNormale();
 		
-		$angle = abs(1 - $normale->getAngle($light));
+		$angle = 1 - $normale->getAngle($light);
 		
 		$color->addLight($this->_color, $angle);
 		return $color;
