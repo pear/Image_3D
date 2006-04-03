@@ -23,8 +23,8 @@ for ($x = -($count - 1) / 2; $x <= ($count - 1) / 2; ++$x) {
 //        	if (max(abs($x), abs($y), abs($z)) < ($count - 1) / 2) continue;
         	if (max($x, $y, $z) <= 0) continue;
         	
-        	$cube = $world->createObject('cube', array($size, $size, $size));
-            $cube->setColor(new Image_3D_Color(255, 255, 255));        	
+        	$cube = $world->createObject('quadcube', array($size, $size, $size));
+            $cube->setColor(new Image_3D_Color(255, 255, 255, 75));        	
             $cube->transform($world->createMatrix('Move', array($x * ($size + $offset), $y * ($size + $offset), $z * ($size + $offset))));
         }
     }
@@ -37,8 +37,8 @@ $world->setOption(Image_3D::IMAGE_3D_OPTION_BF_CULLING, true);
 $world->setOption(Image_3D::IMAGE_3D_OPTION_FILLED, true);
 
 $world->createRenderer('perspectively');
-$world->createDriver('GD');
-$world->render(400, 400, 'Image_3D_Cubes.png');
+$world->createDriver('SVGControl');
+$world->render(250, 250, 'Image_3D_Cubes.svg');
 
 echo $world->stats();
 
