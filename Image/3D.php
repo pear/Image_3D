@@ -39,6 +39,7 @@ require_once 'Image/3D/Color.php';
 require_once 'Image/3D/Coordinate.php';
 require_once 'Image/3D/Point.php';
 require_once 'Image/3D/Vector.php';
+require_once 'Image/3D/Line.php';
 require_once 'Image/3D/Renderer.php';
 require_once 'Image/3D/Driver.php';
 
@@ -113,6 +114,13 @@ class Image_3D {
      * @var array
      */
 	protected $_optionSet;
+
+    /**
+     * Begin of world creation
+     *
+     * @var float
+     */
+    protected $_start;
 	
 	// }}}
 	// {{{ constants
@@ -147,6 +155,8 @@ class Image_3D {
 		$this->_option[self::IMAGE_3D_OPTION_FILLED]			= true;
 		$this->_option[self::IMAGE_3D_OPTION_BF_CULLING]		= true;
 		$this->_optionSet = array();
+
+        $this->_start = microtime(true);
 	}
 	
 	// }}}
@@ -417,11 +427,14 @@ objects:    %d
 lights:     %d
 polygones:  %d
 points:     %d
+
+time:       %.4f s
 ',
 			count($this->_objects),
 			$this->_renderer->getLightCount(),
 			$this->_renderer->getPolygonCount(),
-			$this->_renderer->getPointCount()
+			$this->_renderer->getPointCount(),
+            microtime(true) - $this->_start
 		);
 	}
     
