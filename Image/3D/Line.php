@@ -32,10 +32,10 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once('Image/3D/Paintable/Object.php');
+require_once('Image/3D/Coordinate.php');
 
 /**
- * Image_3D_Object_Cube
+ * Image_3D_Line
  *
  *
  *
@@ -48,17 +48,32 @@ require_once('Image/3D/Paintable/Object.php');
  * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
-class Image_3D_Object_Polygon extends Image_3D_Object {
+class Image_3D_Line extends Image_3D_Coordinate {
 	
-	public function __construct($points) {
-		parent::__construct();
+	protected $_direction;
+	
+    public function __construct($x, $y, $z, Image_3D_Vector $direcetion) {
+        parent::__construct($x, $y, $z);
+        $this->_direction = $direcetion;
+    }
 
-		$polygon = new Image_3D_Polygon();
-		foreach ($points as $point) $polygon->addPoint($point);
-		$this->_addPolygon($polygon);
-	}
+    public function calcPoint($t) {
+        $t = (float) $t;
 
-    public function getPolygon() {
-        return reset($this->_polygones);
+        return new Image_3D_Coordinate(
+            $this->getX() + $t * $this->_direction->getX(), 
+            $this->getY() + $t * $this->_direction->getY(), 
+            $this->getZ() + $t * $this->_direction->getZ()
+        );
+    }
+
+    public function setDirection(Image_3D_Vector $direcetion) {
+        $this->_direction = $direcetion;
+    }
+
+    public function getDirection() {
+        return $this->_direction;
     }
 }
+
+?>

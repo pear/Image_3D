@@ -59,6 +59,8 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 	protected $_visible;
 	protected $_normale;
 	protected $_position;
+
+    protected $_boundingRect;
 	
 	public function __construct() {
 		$this->_points = array();
@@ -68,6 +70,7 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 		$this->_visible = true;
 		$this->_normale = null;
 		$this->_position = null;
+        $this->_boundingRect = array(null, null, null, null, null, null);
 		
 		if (func_num_args()) {
 			$args = func_get_args();
@@ -150,6 +153,14 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 	
 	public function addPoint(Image_3D_Point $point) {
 		$this->_points[] = $point;
+
+        // Adjust bounding rectangle
+        if (!isset($this->_boundingRect[0]) || ($point->getX() < $this->_boundingRect[0])) $this->_boundingRect[0] = $point->getX();
+        if (!isset($this->_boundingRect[1]) || ($point->getY() < $this->_boundingRect[1])) $this->_boundingRect[1] = $point->getY();
+        if (!isset($this->_boundingRect[2]) || ($point->getZ() < $this->_boundingRect[2])) $this->_boundingRect[2] = $point->getZ();
+        if (!isset($this->_boundingRect[3]) || ($point->getX() > $this->_boundingRect[3])) $this->_boundingRect[3] = $point->getX();
+        if (!isset($this->_boundingRect[4]) || ($point->getY() > $this->_boundingRect[4])) $this->_boundingRect[4] = $point->getY();
+        if (!isset($this->_boundingRect[5]) || ($point->getZ() > $this->_boundingRect[5])) $this->_boundingRect[5] = $point->getZ();
 	}
 	
 	public function getPoints() {
@@ -180,6 +191,79 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
             $string .= "\t" . $point->__toString() . "\n";
         }
         return $string;
+    }
+
+    public function distance(Image_3D_Line $line) {
+        // Calculate parameters for plane
+        $normale = $this->getNormale();
+
+        $A = $normale->getX();
+        $B = $normale->getY();
+        $C = $normale->getZ();
+
+        $D =  -($normale->getX() * $this->_points[0]->getX() +
+                $normale->getY() * $this->_points[0]->getY() +
+                $normale->getZ() * $this->_points[0]->getZ());
+
+        // Calculate wheather and where line cuts the polygons plane
+        $lineDirection = $line->getDirection();
+        $denominator = -(   $A * $line->getX() +
+                            $B * $line->getY() +
+                            $C * $line->getZ() +
+                            $D);
+        $numerator = (      $A * $lineDirection->getX() +
+                            $B * $lineDirection->getY() +
+                            $C * $lineDirection->getZ());
+
+        // Nu cut, when denomintor equals 0 (parallel plane)
+        if ((int) ($denominator * 100000) === 0) return false;
+        if ((int) ($numerator * 100000) === 0) return false;
+        
+        $t = $denominator / $numerator;
+
+        // No cut, when $t < 0 (plane is behind the camera)
+        if ($t < 0) return false;
+
+        // TODO: Perhaps add max distance check with unified normale vector
+
+        // Calculate cutting point between line an plane
+        $cuttingPoint = $line->calcPoint($t);
+
+        // Perform fast check for point in bounding cube;
+        if (($cuttingPoint->getX() < $this->_boundingRect[0]) ||
+            ($cuttingPoint->getY() < $this->_boundingRect[1]) ||
+            ($cuttingPoint->getZ() < $this->_boundingRect[2]) ||
+            ($cuttingPoint->getX() > $this->_boundingRect[3]) ||
+            ($cuttingPoint->getY() > $this->_boundingRect[4]) ||
+            ($cuttingPoint->getZ() > $this->_boundingRect[5])) {
+            return false;
+        }
+
+        // perform exact check for point in polygon
+        $lastScalar = 0;
+        foreach ($this->_points as $nr => $point) {
+            $nextPoint = $this->_points[($nr + 1) % count($this->_points)];
+            
+            $edge = new Image_3D_Vector(
+                $nextPoint->getX() - $point->getX(),
+                $nextPoint->getY() - $point->getY(),
+                $nextPoint->getZ() - $point->getZ());
+            $v = new Image_3D_Vector(
+                $cuttingPoint->getX() - $point->getX(),
+                $cuttingPoint->getY() - $point->getY(),
+                $cuttingPoint->getZ() - $point->getZ());
+            
+            $scalar = $edge->crossProduct($v)->scalar($normale);
+
+            if ($scalar * $lastScalar >= 0) {
+                $lastScalar = $scalar;
+            } else {
+                return false;
+            }
+        }
+            
+        // Point is in polygon, return distance to polygon
+        return $line->getDirection()->multiply($t)->length();
     }
 }
 
