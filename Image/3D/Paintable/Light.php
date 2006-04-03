@@ -72,15 +72,19 @@ class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_P
 	public function getColor(Image_3D_Interface_Enlightenable $polygon) {
 		$color = clone ($polygon->getColor());
 		
+        // Create vector from polygons point to light source
 		$light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
 		$light->sub($polygon->getPosition());
-		$light->unify();
-		$light->add(new Image_3D_Vector(0, 0, -1));
 		
-		$normale = $polygon->getNormale();
+        // Create vector from polygons point to camera
+//        $camera = new Image_3D_Vector(0, 0, -100);
+//        $camera->sub($polygon->getPosition());
+        
+        // Compare with polygones normale vector
+        $normale = $polygon->getNormale();
+    	$angle = $normale->getAngle($light);
 		
-		$angle = 1 - $normale->getAngle($light);
-		
+        // Use angle as light intensity
 		$color->addLight($this->_color, $angle);
 		return $color;
 	}

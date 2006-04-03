@@ -53,9 +53,10 @@ class Image_3D_Vector extends Image_3D_Coordinate {
 	protected $_length;
 	
 	public function getAngle(Image_3D_Vector $vector) {
-		$vector->unify();
-		$this->unify();
-		return acos(abs($this->scalar($vector))) / M_PI;
+        $length = $vector->length() * $this->length();
+        if ($length < 0.0001) return 1;
+
+        return abs(acos($this->scalar($vector) / $length) / M_PI - .5) * 2;
 	}
 	
 	public function getSide(Image_3D_Vector $vector) {
@@ -66,6 +67,8 @@ class Image_3D_Vector extends Image_3D_Coordinate {
 	
 	public function unify() {
         if ($this->length() == 0) return false;
+        if ($this->_length == 1) return $this;
+
 		$this->_x /= $this->_length;
 		$this->_y /= $this->_length;
 		$this->_z /= $this->_length;
