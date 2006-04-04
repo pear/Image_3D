@@ -32,7 +32,7 @@
  * @since      File available since Release 0.1.0
  */
 
-require_once('Image/3D/Coordinate.php');
+require_once('Image/3D/Vector.php');
 
 /**
  * Image_3D_Line
@@ -48,7 +48,7 @@ require_once('Image/3D/Coordinate.php');
  * @link       http://pear.php.net/package/PackageName
  * @since      Class available since Release 0.1.0
  */
-class Image_3D_Line extends Image_3D_Coordinate {
+class Image_3D_Line extends Image_3D_Vector {
 	
 	protected $_direction;
 	
@@ -73,6 +73,10 @@ class Image_3D_Line extends Image_3D_Coordinate {
 
     public function getDirection() {
         return $this->_direction;
+    }
+
+    public function __toString() {
+        return parent::__toString() . ' -> ' . $this->getDirection()->__toString();
     }
 }
 

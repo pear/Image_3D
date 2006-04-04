@@ -73,6 +73,13 @@ class Image_3D_Color {
      */
 	protected $_light;
 
+    /**
+     * Optinal value for reflection
+     *
+     * @var float
+     */
+    protected $_reflection;
+
     // }}}
     // {{{ __construct()
 
@@ -87,7 +94,7 @@ class Image_3D_Color {
      * @param   mixed       $alpha          alpha
      * @return  Image_3D_Color              Instance of Color
      */
-    public function __construct($red = 0., $green = 0., $blue = 0., $alpha = 0.) {
+    public function __construct($red = 0., $green = 0., $blue = 0., $alpha = 0., $reflection = null) {
 		$this->_rgbaValue = array();
 		
 		$this->_lights = array();
@@ -107,6 +114,8 @@ class Image_3D_Color {
 				$this->_rgbaValue[$i] = 0;
 			}
 		}
+
+        $this->setReflection($reflection);
 	}
 	
     // }}}
@@ -122,11 +131,39 @@ class Image_3D_Color {
      * @return  void
      */
 	public function mixAlpha($alpha = 1.) {
-	    if (is_int($arglist[$i])) {
+	    if (is_int($alpha)) {
 			$this->_rgbaValue[3] *= (float) min(1, max(0, (float) $alpha / 255));
 	    } else {
 			$this->_rgbaValue[3] *= (float) min(1, max(0, (float) $alpha));
 	    }
+	}
+	
+    // }}}
+    // {{{ setReflection()
+
+    /**
+     * sets reflection intensity
+     *
+     * @param   float   $reflection     reflection
+     */
+	public function setReflection($reflection) {
+        $this->_reflection = min(1, max(0, (float) $reflection));
+	}
+	
+    // }}}
+    // {{{ getReflection()
+
+    /**
+     * return reflection intensity
+     *
+     * @return  float           reflection
+     */
+	public function getReflection() {
+        if (!isset($this->_reflection)) {
+            return 0;
+        } else {
+            return $this->_reflection;
+        }
 	}
 	
     // }}}
@@ -149,7 +186,7 @@ class Image_3D_Color {
 	}
 	
     // }}}
-    // {{{ getValues()
+    // {{{ addLight()
 
     /**
      * Add light
@@ -211,12 +248,48 @@ class Image_3D_Color {
      * @return  void
      */
 	public function calculateColor() {
+        if (!count($this->_lights)) {
+            $this->_rgbaValue = array(0, 0, 0, $this->_rgbaValue[3]);
+            return true;
+        }
+        
 		$this->_calcLights();
 		$this->_mixColor();
 	}
 
     // }}}
-    // {{{ calculateColor()
+    // {{{ merge()
+
+    /**
+     * Merge with other colors
+     *
+     * Merge color with other colors
+     *
+     * @return  void
+     */
+	public function merge($colors) {
+        $count = 0;
+        foreach ($colors as $color) {
+            if (!($color instanceof Image_3D_Color)) continue;
+
+            $values = $color->getValues();
+            $this->_rgbaValue[0] += $values[0];
+            $this->_rgbaValue[1] += $values[1];
+            $this->_rgbaValue[2] += $values[2];
+            $this->_rgbaValue[3] += $values[3];
+            ++$count;
+        }
+
+        $this->_rgbaValue[0] /= $count;
+        $this->_rgbaValue[1] /= $count;
+        $this->_rgbaValue[2] /= $count;
+        $this->_rgbaValue[3] /= $count;
+
+        return $this;
+	}
+
+    // }}}
+    // {{{ __toString()
 
     /**
      * Return Color as string

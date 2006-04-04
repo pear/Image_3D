@@ -81,8 +81,13 @@ class Image_3D_Point extends Image_3D_Coordinate implements Image_3D_Interface_E
 	}
 
 	public function calculateColor($lights) {
+        if (!count($lights)) {
+            $this->_color = new Image_3D_Color(0, 0, 0, end($this->getColor()->getValues()));
+            return false;
+        }
+        
 		foreach ($lights as $light) $this->_color = $light->getColor($this);
-		$this->_color->calculateColor();
+        if (is_object($this->_color)) $this->_color->calculateColor();
 	}
 
 	public function addVector(Image_3D_Vector $vector) {

@@ -167,10 +167,24 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
 		return $this->_points;
 	}
 
+    protected function _recalcBoundings() {
+        $this->_boundingRect = array(null, null, null, null, null, null);
+        
+        foreach ($this->_points as $point) {
+            if (!isset($this->_boundingRect[0]) || ($point->getX() < $this->_boundingRect[0])) $this->_boundingRect[0] = $point->getX();
+            if (!isset($this->_boundingRect[1]) || ($point->getY() < $this->_boundingRect[1])) $this->_boundingRect[1] = $point->getY();
+            if (!isset($this->_boundingRect[2]) || ($point->getZ() < $this->_boundingRect[2])) $this->_boundingRect[2] = $point->getZ();
+            if (!isset($this->_boundingRect[3]) || ($point->getX() > $this->_boundingRect[3])) $this->_boundingRect[3] = $point->getX();
+            if (!isset($this->_boundingRect[4]) || ($point->getY() > $this->_boundingRect[4])) $this->_boundingRect[4] = $point->getY();
+            if (!isset($this->_boundingRect[5]) || ($point->getZ() > $this->_boundingRect[5])) $this->_boundingRect[5] = $point->getZ();
+        }
+    }
+
 	public function transform(Image_3D_Matrix $matrix, $id = null) {
 		
 		if ($id === null) $id = substr(md5(microtime()), 0, 8);
 		foreach ($this->_points as $point) $point->transform($matrix, $id);
+        $this->_recalcBoundings();
 	}
 	
 	public function getMidZ() {
@@ -222,7 +236,7 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
         $t = $denominator / $numerator;
 
         // No cut, when $t < 0 (plane is behind the camera)
-        if ($t < 0) return false;
+        if ($t <= 0) return false;
 
         // TODO: Perhaps add max distance check with unified normale vector
 
@@ -263,7 +277,7 @@ class Image_3D_Polygon implements Image_3D_Interface_Paintable, Image_3D_Interfa
         }
             
         // Point is in polygon, return distance to polygon
-        return $line->getDirection()->multiply($t)->length();
+        return $t;
     }
 }
 

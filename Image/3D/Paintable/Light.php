@@ -64,6 +64,10 @@ class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_P
 	public function setColor(Image_3D_Color $color) {
 		$this->_color = $color;
 	}
+
+    public function getRawColor() {
+        return $this->_color;
+    }
 	
 	public function setOption($option, $value) {
 		$this->_option[$option] = $value;
