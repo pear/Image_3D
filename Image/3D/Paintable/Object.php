@@ -36,16 +36,17 @@
 /**
  * Image_3D_Object
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
-class Image_3D_Object implements Image_3D_Interface_Paintable {
+class Image_3D_Object implements Image_3D_Interface_Paintable
+{
     
     protected $_polygones;
     
@@ -54,25 +55,39 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
         $this->_polygones = array();
     }
     
-    public function getPolygonCount() {
+    public function getPolygonCount() 
+    {
         return count($this->_polygones);
     }
     
-    public function setColor(Image_3D_Color $color) {
-        foreach ($this->_polygones as $polygon) $polygon->setColor($color);
+    public function setColor(Image_3D_Color $color) 
+    {
+        foreach ($this->_polygones as $polygon) {
+            $polygon->setColor($color);
+        }
     }
     
-    public function setOption($option, $value) {
-        foreach ($this->_polygones as $polygon) $polygon->setOption($option, $value);
+    public function setOption($option, $value) 
+    {
+        foreach ($this->_polygones as $polygon) { 
+            $polygon->setOption($option, $value); 
+        }
     }
 
-    public function transform(Image_3D_Matrix $matrix, $id = null) {
+    public function transform(Image_3D_Matrix $matrix, $id = null) 
+    {
         
-        if ($id === null) $id = substr(md5(microtime()), 0, 8);
-        foreach ($this->_polygones as $polygon) $polygon->transform($matrix, $id);
+        if ($id === null) { 
+            $id = substr(md5(microtime()), 0, 8); 
+        }
+
+        foreach ($this->_polygones as $polygon) { 
+            $polygon->transform($matrix, $id); 
+        }
     }
     
-    public function getPolygones() {
+    public function getPolygones() 
+    {
         return $this->_polygones;
     }
     
@@ -86,16 +101,16 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
         $polygons = $this->getPolygones();
 
         $surfaces = array();
-        $edges = array();
-        $points = array();
+        $edges    = array();
+        $points   = array();
 
         $point_hash = array();
-        $edge_hash = array();
+        $edge_hash  = array();
 
         foreach ($polygons as $nr => $polygon) {
             $p_points = $polygon->getPoints();
 
-            $last_index = false;
+            $last_index  = false;
             $first_index = false;
             foreach ($p_points as $point) {
                 // Add point to edge
@@ -103,8 +118,9 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
                 if (isset($point_hash[$p_p_hash])) {
                     $p_p_index = $point_hash[$p_p_hash];
                 } else {
-                    $points[] = $point;
+                    $points[]  = $point;
                     $p_p_index = count($points) - 1;
+
                     $point_hash[$p_p_hash] = $p_p_index;
                 }
 
@@ -117,7 +133,9 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
                         $surfaces[$nr][] = $edge_hash[$p_e_hash];
                     } else {
                         $edges[] = $e_points;
+
                         $edge_hash[$p_e_hash] = count($edges) - 1;
+
                         $surfaces[$nr][] = $edge_hash[$p_e_hash];
                     }
                 } else {
@@ -135,9 +153,9 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
             if (isset($edge_hash[$p_e_hash])) {
                 $surfaces[$nr][] = $edge_hash[$p_e_hash];
             } else {
-                $edges[] = $e_points;
+                $edges[]              = $e_points;
                 $edge_hash[$p_e_hash] = count($edges) - 1;
-                $surfaces[$nr][] = $edge_hash[$p_e_hash];
+                $surfaces[$nr][]      = $edge_hash[$p_e_hash];
             }
         }
 
@@ -148,19 +166,20 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
         );
     }
 
-    public function subdivideSurfaces($factor = 1) {
+    public function subdivideSurfaces($factor = 1) 
+    {
         for ($i = 0; $i < $factor; ++$i) {
             $data = $this->_buildInzidenzGraph();
 
             // Additional hash maps
             $edge_surfaces = array();
-            $edge_middles = array();
-            $point_edges = array();
+            $edge_middles  = array();
+            $point_edges   = array();
             
             // New calculated points
             $face_points = array();
             $edge_points = array();
-            $old_points = array();
+            $old_points  = array();
 
             // Calculate "face points"
             foreach ($data['surfaces'] as $surface => $edges) {
@@ -168,12 +187,13 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
                 $points = array();
                 foreach ($edges as $edge) {
                     $points = array_merge($points, $data['edges'][$edge]);
+
                     $edge_surfaces[$edge][] = $surface;
                 }
                 $points = array_unique($points);
 
                 // Calculate average
-                $face_point = array(0, 0, 0);
+                $face_point  = array(0, 0, 0);
                 $point_count = count($points);
                 foreach ($points as $point) {
                     $face_point[0] += $data['points'][$point]->getX() / $point_count;
@@ -195,6 +215,7 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
                     $point_count = count($points);
                     foreach ($points as $point) {
                         $point_edges[$point][] = $edge;
+
                         $edge_middle[0] += $data['points'][$point]->getX() / $point_count;
                         $edge_middle[1] += $data['points'][$point]->getY() / $point_count;
                         $edge_middle[2] += $data['points'][$point]->getZ() / $point_count;
@@ -204,7 +225,7 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
 
                 // Calculate average of the adjacent faces
                 $average_face = array(0, 0, 0);
-                $point_count = count($edge_surfaces[$edge]);
+                $point_count  = count($edge_surfaces[$edge]);
                 foreach ($edge_surfaces[$edge] as $surface) {
                     $average_face[0] += $face_points[$surface]->getX() / $point_count;
                     $average_face[1] += $face_points[$surface]->getY() / $point_count;
@@ -219,18 +240,23 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
             foreach ($data['points'] as $point => $value) {
                 // Calculate average of midpoints of adjacent edges
                 $r = array(0, 0, 0);
+
                 $surfaces = array();
+
                 $point_count = count($point_edges[$point]);
+
                 foreach ($point_edges[$point] as $edge) {
                     $r[0] += $edge_middles[$edge][0] / $point_count;
                     $r[1] += $edge_middles[$edge][1] / $point_count;
                     $r[2] += $edge_middles[$edge][2] / $point_count;
+
                     $surfaces = array_merge($surfaces, $edge_surfaces[$edge]);
                 }
-                $surfaces= array_unique($surfaces);
+                $surfaces = array_unique($surfaces);
 
                 // Calculate average of surrounding face points
                 $q = array(0, 0, 0);
+
                 $surface_count = count($surfaces);
                 foreach ($surfaces as $surface) {
                     $q[0] += $face_points[$surface]->getX() / $surface_count;
@@ -240,6 +266,7 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
 
                 // Create new edge point
                 $n = count($point_edges[$point]);
+
                 $old_points[$point] = new Image_3D_Point(
                     ($q[0] / $n) + ((2 * $r[0]) / $n) + (($value->getX() * ($n - 3)) / $n),
                     ($q[1] / $n) + ((2 * $r[1]) / $n) + (($value->getY() * ($n - 3)) / $n),
@@ -260,12 +287,10 @@ class Image_3D_Object implements Image_3D_Interface_Paintable {
                 // Create new polygones
                 foreach ($points as $point) {
                     $edges = array_values(array_intersect($point_edges[$point], $data['surfaces'][$surface]));
-                    $this->_addPolygon(new Image_3D_Polygon(
-                        $old_points[$point],
-                        $edge_points[$edges[0]],
-                        $face_point,
-                        $edge_points[$edges[1]]
-                    ));
+                    $this->_addPolygon(new Image_3D_Polygon($old_points[$point],
+                                                            $edge_points[$edges[0]],
+                                                            $face_point,
+                                                            $edge_points[$edges[1]]));
                 }
             }
 

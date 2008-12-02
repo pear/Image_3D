@@ -38,14 +38,14 @@ require_once('Image/3D/Paintable/Object/3dsChunks.php');
 /**
  * Image_3D_Object_3ds
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
 class Image_3D_Object_3ds extends Image_3D_Object {
     
