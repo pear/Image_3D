@@ -27,7 +27,7 @@
  * @author    Kore Nordmann <3d@kore-nordmann.de>
  * @copyright 1997-2005 Kore Nordmann
  * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
+ * @version   CVS: $Id$
  * @link      http://pear.php.net/package/PackageName
  * @since     File available since Release 0.1.0
  */
@@ -46,7 +46,8 @@
  * @link      http://pear.php.net/package/PackageName
  * @since     Class available since Release 0.1.0
  */
-abstract class Image_3D_Renderer {
+abstract class Image_3D_Renderer
+{
     
     // {{{ properties
 
@@ -105,19 +106,20 @@ abstract class Image_3D_Renderer {
     /*
      * No Shading
      */
-    const SHADE_NO            = 0;
+    const SHADE_NO = 0;
+
     /*
      * Flat Shading
      */
-    const SHADE_FLAT        = 1;
+    const SHADE_FLAT = 1;
     /*
      * Gauroud Shading
      */
-    const SHADE_GAUROUD        = 2;
+    const SHADE_GAUROUD = 2;
     /*
      * Phong Shading
      */
-    const SHADE_PHONG        = 3;
+    const SHADE_PHONG = 3;
 
     // }}}
     // {{{ __construct()
@@ -146,11 +148,13 @@ abstract class Image_3D_Renderer {
      */
     public function reset()
     {
-        $this->_objects = array();
+        $this->_objects   = array();
         $this->_polygones = array();
+
         $this->_points = array();
         $this->_lights = array();
-        $this->_size = array(0, 0);
+        $this->_size   = array(0, 0);
+
         $this->_background = null;
         
         $this->_driver = null;
@@ -168,11 +172,13 @@ abstract class Image_3D_Renderer {
      * polygon- and pointarrays.
      *
      * @param Image_3D_Object $object Object to merge
+     *
      * @return  void
      */
     protected function _getPolygones(Image_3D_Object $object)
     {
         $newPolygones = $object->getPolygones();
+
         $this->_polygones = array_merge($this->_polygones, $newPolygones);
         
         // Add points unique to points-Array
@@ -196,7 +202,8 @@ abstract class Image_3D_Renderer {
      * Calculate screen coordinates for a point according to the perspektive 
      * the renderer should display
      *
-     * @param Image_3D_Point  $point  Point to process
+     * @param Image_3D_Point $point Point to process
+     *
      * @return  void
      */
     abstract protected function _calculateScreenCoordiantes(Image_3D_Point $point);
@@ -222,10 +229,12 @@ abstract class Image_3D_Renderer {
      * Add objects to renderer. Only objects which are added will be 
      * displayed
      *
-     * @param array           $objetcs    Array of objects
+     * @param array $objects Array of objects
+     *
      * @return  void
      */
-    public function addObjects($objects) {
+    public function addObjects($objects)
+    {
         if (is_array($objects)) {
             foreach ($objects as $object) {
                 if ($object instanceof Image_3D_Object) {
@@ -246,7 +255,8 @@ abstract class Image_3D_Renderer {
      * Add objects to renderer. Only objects which are added will be 
      * displayed
      *
-     * @param array           $objetcs    Array of objects
+     * @param array $lights Array of objects
+     *
      * @return  void
      */
     public function addLights($lights)
@@ -262,8 +272,9 @@ abstract class Image_3D_Renderer {
      *
      * Set the size of the destination image.
      *
-     * @param integer         $x          Width
-     * @param integer         $y          Height
+     * @param integer $x Width
+     * @param integer $y Height
+     *
      * @return  void
      */
     public function setSize($x, $y)
@@ -279,7 +290,8 @@ abstract class Image_3D_Renderer {
      *
      * Set the backgroundcolor of the destination image.
      *
-     * @param Image_3D_Color  $color      Backgroundcolor
+     * @param Image_3D_Color $color Backgroundcolor
+     *
      * @return  void
      */
     public function setBackgroundColor(Image_3D_Color $color)
@@ -296,7 +308,8 @@ abstract class Image_3D_Renderer {
      * Set the quality of the shading. Standard value is the maximum shading
      * quality the driver is able to render.
      *
-     * @param integer         $shading    Shading quality
+     * @param integer $shading Shading quality
+     *
      * @return  void
      */
     public function setShading($shading)
@@ -312,7 +325,8 @@ abstract class Image_3D_Renderer {
      *
      * Set the driver the image should be rendered with
      *
-     * @param Image_3D_Driver $driver     Driver to use
+     * @param Image_3D_Driver $driver Driver to use
+     *
      * @return  void
      */
     public function setDriver(Image_3D_Driver $driver)
@@ -332,7 +346,8 @@ abstract class Image_3D_Renderer {
      *
      * @return  integer     Number of Polygones
      */
-    public function getPolygonCount() {
+    public function getPolygonCount()
+    {
         return count($this->_polygones);
     }
     
@@ -346,7 +361,8 @@ abstract class Image_3D_Renderer {
      *
      * @return  integer     Number of Points
      */
-    public function getPointCount() {
+    public function getPointCount()
+    {
         return count($this->_points);
     }
     
@@ -360,7 +376,8 @@ abstract class Image_3D_Renderer {
      *
      * @return  integer     Number of Lights
      */
-    public function getLightCount() {
+    public function getLightCount()
+    {
         return count($this->_lights);
     }
     
@@ -375,7 +392,8 @@ abstract class Image_3D_Renderer {
      *
      * @return  void
      */
-    protected function _calculatePolygonColors() {
+    protected function _calculatePolygonColors()
+    {
         foreach ($this->_polygones as $polygon) {
             $polygon->calculateColor($this->_lights);
         }
@@ -393,10 +411,11 @@ abstract class Image_3D_Renderer {
      *
      * @return  void
      */
-    protected function _calculatePointColors() {
+    protected function _calculatePointColors()
+    {
         foreach ($this->_polygones as $polygon) {
             $normale = $polygon->getNormale();
-            $color = $polygon->getColor();
+            $color   = $polygon->getColor();
             
             $points = $polygon->getPoints();
             foreach ($points as $point) {
@@ -405,7 +424,9 @@ abstract class Image_3D_Renderer {
             }
         }
         
-        foreach ($this->_points as $point) $point->calculateColor($this->_lights);
+        foreach ($this->_points as $point) {
+            $point->calculateColor($this->_lights); 
+        }
     }
     
     // }}}
@@ -418,24 +439,31 @@ abstract class Image_3D_Renderer {
      *
      * @return  void
      */
-    protected function _shade() {
+    protected function _shade()
+    {
         switch ($this->_shading) {
-            case self::SHADE_NO:
-                foreach ($this->_polygones as $polygon) $this->_driver->drawPolygon($polygon);
+        case self::SHADE_NO:
+            foreach ($this->_polygones as $polygon) {
+                $this->_driver->drawPolygon($polygon);
+            }
             break;
-            
-            case self::SHADE_FLAT:
-                $this->_calculatePolygonColors();
-                foreach ($this->_polygones as $polygon) $this->_driver->drawPolygon($polygon);
+        
+        case self::SHADE_FLAT:
+            $this->_calculatePolygonColors();
+            foreach ($this->_polygones as $polygon) {
+                $this->_driver->drawPolygon($polygon);
+            }
             break;
-            
-            case self::SHADE_GAUROUD:
-                $this->_calculatePointColors();
-                foreach ($this->_polygones as $polygon) $this->_driver->drawGradientPolygon($polygon);
+        
+        case self::SHADE_GAUROUD:
+            $this->_calculatePointColors();
+            foreach ($this->_polygones as $polygon) {
+                $this->_driver->drawPolygon($polygon);
+            }
             break;
-            
-            default:
-                throw new Exception('Shading type not supported.');
+        
+        default:
+            throw new Exception('Shading type not supported.');
             break;
         }
     }
@@ -448,14 +476,21 @@ abstract class Image_3D_Renderer {
      *
      * Render the image into the metioned file
      *
-     * @param string              $file       Filename
+     * @param string $file Filename
+     *
      * @return  void
      */
-    public function render($file) {
-        if (empty($this->_driver)) return false;
+    public function render($file)
+    {
+        if (empty($this->_driver)) {
+            return false; 
+        }
         
         // Calculate screen coordinates
-        foreach ($this->_points as $point) $this->_calculateScreenCoordiantes($point);
+        foreach ($this->_points as $point) {
+            $this->_calculateScreenCoordiantes($point);
+        }
+
         $this->_sortPolygones();
         
         // Draw background
