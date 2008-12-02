@@ -19,19 +19,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Arne Nordmann <3d-rotate@arne-nordmann.de>
+ * @category Image
+ * @package  Image_3D
+ * @author   Arne Nordmann <3d-rotate@arne-nordmann.de>
  */
 
 /**
  * Creates a SVG, to move and rotate the 3D-object at runtime
  *
- * @category   Image
- * @package    Image_3D
- * @author     Arne Nordmann <3d-rotate@arne-nordmann.de>
+ * @category Image
+ * @package  Image_3D
+ * @author   Arne Nordmann <3d-rotate@arne-nordmann.de>
  */
-class Image_3D_Driver_SVGControl extends Image_3D_Driver {
+class Image_3D_Driver_SVGControl extends Image_3D_Driver
+{
 
     /**
      * Width of the image
@@ -64,9 +65,11 @@ class Image_3D_Driver_SVGControl extends Image_3D_Driver {
      * Constructor
      *
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->_image = '';
-        $this->_id = 1;
+        $this->_id    = 1;
+
         $this->_gradients = array();
         $this->_polygones = array();
     }
@@ -74,10 +77,13 @@ class Image_3D_Driver_SVGControl extends Image_3D_Driver {
     /**
      * Creates image header
      *
-     * @param float width of the image
-     * @param float height of the image
+     * @param float $x width of the image
+     * @param float $y height of the image
+     *
+     * @return void
      */
-    public function createImage($x, $y) {
+    public function createImage($x, $y)
+    {
         $this->_x = (int) $x;
         $this->_y = (int) $y;
 
@@ -88,26 +94,30 @@ class Image_3D_Driver_SVGControl extends Image_3D_Driver {
 
 <svg xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="{$this->_x}" height="{$this->_y}" onload="init(evt)">
 EOF;
+
         $this->_image .= "\n\n";
     }
 
     /**
-     *
      * Adds coloured background to the image
      *
      * Draws a rectangle with the size of the image and the passed colour
      *
-     * @param Image_3D_Color Background colour of the image
+     * @param Image_3D_Color $color Background colour of the image
+     *
+     * @return void
      */
-    public function setBackground(Image_3D_Color $color) {
-        $this->_background = "\t<!-- coloured background -->\n";
+    public function setBackground(Image_3D_Color $color)
+    {
+        $this->_background  = "\t<!-- coloured background -->\n";
         $this->_background .= sprintf("\t<rect id=\"background\" x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" style=\"%s\" />\n",
             $this->_x,
             $this->_y,
             $this->_getStyle($color));
     }
 
-    protected function _getStyle(Image_3D_Color $color) {
+    protected function _getStyle(Image_3D_Color $color)
+    {
         $values = $color->getValues();
 
         $values[0] = (int) round($values[0] * 255);
@@ -123,7 +133,8 @@ EOF;
                .((empty($values[3]))?'':' opacity:'.$values[3]); // opacity
     }
 
-    protected function _getStop(Image_3D_Color $color, $offset = 0, $alpha = null) {
+    protected function _getStop(Image_3D_Color $color, $offset = 0, $alpha = null)
+    {
         $values = $color->getValues();
 
         $values[0] = (int) round($values[0] * 255);
@@ -144,20 +155,25 @@ EOF;
                         $values[3]);
     }
 
-    protected function _addGradient($string) {
+    protected function _addGradient($string)
+    {
         $id = 'linearGradient' . $this->_id++;
+
         $this->_gradients[] = str_replace('[id]', $id, $string);
         return $id;
     }
 
-    protected function _addPolygon($string) {
+    protected function _addPolygon($string)
+    {
         $id = 'data_polygon' . $this->_id++;
+
         $this->_polygones[] = str_replace('[id]', $id, $string);
         return $id;
     }
 
-    public function drawPolygon(Image_3D_Polygon $polygon) {
-        $list = '';
+    public function drawPolygon(Image_3D_Polygon $polygon)
+    {
+        $list   = '';
         $points = $polygon->getPoints();
 
         $svg = "\t\t\t<polygon id=\"[id]\" "; //Image_3D_P
@@ -176,14 +192,17 @@ EOF;
         $this->_addPolygon($svg);
     }
 
-    public function drawGradientPolygon(Image_3D_Polygon $polygon) {
+    public function drawGradientPolygon(Image_3D_Polygon $polygon)
+    {
     }
 
     /**
      * Creates scripting area for moving and rotating the object
      *
+     * @return string
      */
-    protected function _getScript() {
+    protected function _getScript()
+    {
         $p_count = count($this->_polygones);
 
         // Create entire scripting area for moving and rotating the polygones
@@ -429,13 +448,16 @@ EOF;
     /**
      * Creates controls for moving and rotating the object
      *
+     * @return string
      */
-    protected function _getControls() {
+    protected function _getControls()
+    {
 
-        function drawArrow($x, $y, $id, $rot, $funct) {
-            $arrow_points=($x+12).','.($y+3).' '.($x+3).','.($y+8).' '.($x+12).','.($y+13);
+        function drawArrow($x, $y, $id, $rot, $funct)
+        {
+            $arrow_points = ($x+12).','.($y+3).' '.($x+3).','.($y+8).' '.($x+12).','.($y+13);
 
-            $arrow = "\t<g id=\"".$id.'" transform="rotate('.$rot.', '.($x+8).', '.($y+8)
+            $arrow  = "\t<g id=\"".$id.'" transform="rotate('.$rot.', '.($x+8).', '.($y+8)
                     .')" onclick="'.$funct."\" style=\"cursor:pointer\">\n";
             $arrow .= "\t\t<rect x=\"".$x.'" y="'.$y.'" width="16" height="16" '
                         ." style=\"fill:#bbb; stroke:none;\" />\n";
@@ -512,27 +534,32 @@ EOF;
         // Move left
         $x = 0;
         $y = $this->_y / 2 - 8;
+
         $controls .= drawArrow($x, $y, 'move_left', 0, 'move_left(15)');
 
         // Move up
         $x = $this->_x / 2 - 8;
         $y = 20;
+
         $controls .= drawArrow($x, $y, 'move_up', 90, 'move_up(15)');
 
         // Move right
         $x = $this->_x - 16;
         $y = $this->_y / 2 - 8;
+
         $controls .= drawArrow($x, $y, 'move_right', 180, 'move_right(15)');
 
         // Move down
         $x = $this->_x / 2 - 8;
         $y = $this->_y - 16;
+
         $controls .= drawArrow($x, $y, 'move_down', -90, 'move_down(15)');
 
         return $controls;
     }
 
-    public function save($file) {
+    public function save($file)
+    {
         // Start of SVG definition area
         $this->_image .= sprintf("\t<defs id=\"defs%d\">\n", $this->_id++);
 
@@ -580,7 +607,8 @@ EOF;
         file_put_contents($file, $this->_image);
     }
 
-    public function getSupportedShading() {
+    public function getSupportedShading()
+    {
         return array(Image_3D_Renderer::SHADE_NO, Image_3D_Renderer::SHADE_FLAT);
     }
 }

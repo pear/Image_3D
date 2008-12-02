@@ -1,6 +1,7 @@
 <?php
 
-class Image_3D_Driver_SVG extends Image_3D_Driver {
+class Image_3D_Driver_SVG extends Image_3D_Driver
+{
 
     protected $_x;
     protected $_y;
@@ -10,14 +11,17 @@ class Image_3D_Driver_SVG extends Image_3D_Driver {
     protected $_gradients;
     protected $_polygones;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->_image = '';
-        $this->_id = 1;
+        $this->_id    = 1;
+
         $this->_gradients = array();
         $this->_polygones = array();
     }
 
-    public function createImage($x, $y) {
+    public function createImage($x, $y)
+    {
         $this->_x = (int) $x;
         $this->_y = (int) $y;
 
@@ -28,10 +32,12 @@ class Image_3D_Driver_SVG extends Image_3D_Driver {
 
 <svg xmlns="http://www.w3.org/2000/svg" x="0" y="0" width="{$this->_x}" height="{$this->_y}">
 EOF;
+
         $this->_image .= "\n\n";
     }
 
-    public function setBackground(Image_3D_Color $color) {
+    public function setBackground(Image_3D_Color $color)
+    {
         $this->_addPolygon(sprintf("\t<polygon id=\"background%d\" points=\"0,0 %d,0 %d,%d 0,%d\" style=\"%s\" />\n",
             $this->_id++,
             $this->_x,
@@ -41,7 +47,8 @@ EOF;
             $this->_getStyle($color)));
     }
 
-    protected function _getStyle(Image_3D_Color $color) {
+    protected function _getStyle(Image_3D_Color $color)
+    {
         $values = $color->getValues();
 
         $values[0] = (int) round($values[0] * 255);
@@ -52,7 +59,8 @@ EOF;
         return sprintf('fill: #%02x%02x%02x; fill-opacity: %.2f; stroke: none;', $values[0], $values[1], $values[2], $values[3]);
     }
 
-    protected function _getStop(Image_3D_Color $color, $offset = 0, $alpha = null) {
+    protected function _getStop(Image_3D_Color $color, $offset = 0, $alpha = null)
+    {
         $values = $color->getValues();
 
         $values[0] = (int) round($values[0] * 255);
@@ -67,24 +75,30 @@ EOF;
         return sprintf("\t\t\t<stop id=\"stop%d\" offset=\"%.1f\" style=\"stop-color: rgb(%d, %d, %d); stop-opacity: %.4f;\" />\n", $this->_id++, $offset, $values[0], $values[1], $values[2], $values[3]);
     }
 
-    protected function _addGradient($string) {
+    protected function _addGradient($string)
+    {
         $id = 'linearGradient' . $this->_id++;
+
         $this->_gradients[] = str_replace('[id]', $id, $string);
         return $id;
     }
 
-    protected function _addPolygon($string) {
+    protected function _addPolygon($string)
+    {
         $id = 'polygon' . $this->_id++;
+
         $this->_polygones[] = str_replace('[id]', $id, $string);
         return $id;
     }
 
-    public function drawPolygon(Image_3D_Polygon $polygon) {
+    public function drawPolygon(Image_3D_Polygon $polygon)
+    {
 
-        $list = '';
+        $list   = '';
         $points = $polygon->getPoints();
         foreach ($points as $point) {
             $pointarray = $point->getScreenCoordinates();
+
             $list .= sprintf('%.2f,%.2f ', $pointarray[0], $pointarray[1]);
         }
 
@@ -93,13 +107,16 @@ EOF;
             $this->_getStyle($polygon->getColor())));
     }
 
-    public function drawGradientPolygon(Image_3D_Polygon $polygon) {
+    public function drawGradientPolygon(Image_3D_Polygon $polygon)
+    {
         $points = $polygon->getPoints();
 
         $list = '';
+
         $pointarray = array();
         foreach ($points as $nr => $point) {
             $pointarray[$nr] = $point->getScreenCoordinates();
+
             $list .= sprintf('%.2f,%.2f ', $pointarray[$nr][0], $pointarray[$nr][1]);
         }
 
@@ -131,7 +148,8 @@ EOF;
         $this->_addPolygon(sprintf("\t<polygon id=\"[id]\" points=\"%s\" style=\"fill: url(#%s); stroke: none; fill-opacity: 1;\" />\n", $list, $lg));
     }
 
-    public function save($file) {
+    public function save($file)
+    {
         $this->_image .= sprintf("\t<defs id=\"defs%d\">\n", $this->_id++);
         $this->_image .= implode('', $this->_gradients);
         $this->_image .= sprintf("\t</defs>\n\n");
@@ -141,7 +159,8 @@ EOF;
         file_put_contents($file, $this->_image);
     }
 
-    public function getSupportedShading() {
+    public function getSupportedShading()
+    {
         return array(Image_3D_Renderer::SHADE_NO, Image_3D_Renderer::SHADE_FLAT, Image_3D_Renderer::SHADE_GAUROUD);
     }
 }

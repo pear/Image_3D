@@ -30,12 +30,13 @@
  *
  **/
 
-interface Image_3D_Interface_Paintable {
-	
-	public function getPolygonCount();
-	public function setColor(Image_3D_Color $color);
-	public function setOption($option, $value);
-	public function transform(Image_3D_Matrix $matrix, $id = null);
+interface Image_3D_Interface_Paintable
+{
+    
+    public function getPolygonCount();
+    public function setColor(Image_3D_Color $color);
+    public function setOption($option, $value);
+    public function transform(Image_3D_Matrix $matrix, $id = null);
 }
 
 ?>

@@ -22,76 +22,81 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
 
 /**
  * Image_3D_Light
  *
- *
- *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
-class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_Paintable {
-	
-	protected $_color;
-	
-	public function __construct($x, $y, $z) {
-		parent::__construct($x, $y, $z);
-		$this->_color = null;
-		$this->_position = null;
-	}
-	
-	public function getPolygonCount() {
-		return 0;
-	}
-	
-	public function setColor(Image_3D_Color $color) {
-		$this->_color = $color;
-	}
+class Image_3D_Light extends Image_3D_Coordinate implements Image_3D_Interface_Paintable
+{
+    
+    protected $_color;
+    
+    public function __construct($x, $y, $z)
+    {
+        parent::__construct($x, $y, $z);
+        $this->_color = null;
+        $this->_position = null;
+    }
+    
+    public function getPolygonCount()
+    {
+        return 0;
+    }
+    
+    public function setColor(Image_3D_Color $color)
+    {
+        $this->_color = $color;
+    }
 
-    public function getRawColor() {
+    public function getRawColor()
+    {
         return $this->_color;
     }
-	
-	public function setOption($option, $value) {
-		$this->_option[$option] = $value;
-	}
-	
-	public function getColor(Image_3D_Interface_Enlightenable $polygon) {
-		$color = clone ($polygon->getColor());
-		
+    
+    public function setOption($option, $value)
+    {
+        $this->_option[$option] = $value;
+    }
+    
+    public function getColor(Image_3D_Interface_Enlightenable $polygon)
+    {
+        $color = clone ($polygon->getColor());
+        
         // Create vector from polygons point to light source
-		$light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
-		$light->sub($polygon->getPosition());
-		
+        $light = new Image_3D_Vector($this->_x, $this->_y, $this->_z);
+        $light->sub($polygon->getPosition());
+        
         // Create vector from polygons point to camera
 //        $camera = new Image_3D_Vector(0, 0, -100);
 //        $camera->sub($polygon->getPosition());
         
         // Compare with polygones normale vector
         $normale = $polygon->getNormale();
-    	$angle = $normale->getAngle($light);
-		
+        $angle = $normale->getAngle($light);
+        
         // Use angle as light intensity
-		$color->addLight($this->_color, $angle);
-		return $color;
-	}
+        $color->addLight($this->_color, $angle);
+        return $color;
+    }
 }
 
 ?>

@@ -22,36 +22,36 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
-require_once('Image/3D/Matrix.php');
+require_once 'Image/3D/Matrix.php';
 
 /**
  * Image_3D_Matrix_Move
  *
- *
- *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
-class Image_3D_Matrix_Move extends Image_3D_Matrix {
-	
-	public function __construct($parameter) {
-		$this->setUnitMatrix();
-		$this->setMoveMatrix((float) @$parameter[0], (float) @$parameter[1], (float) @$parameter[2]);
-	}
+class Image_3D_Matrix_Move extends Image_3D_Matrix
+{
+    
+    public function __construct($parameter)
+    {
+        $this->setUnitMatrix();
+        $this->setMoveMatrix((float) @$parameter[0], (float) @$parameter[1], (float) @$parameter[2]);
+    }
 }

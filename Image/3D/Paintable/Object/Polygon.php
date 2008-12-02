@@ -22,22 +22,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
 require_once('Image/3D/Paintable/Object.php');
 
 /**
  * Image_3D_Object_Cube
- *
- *
  *
  * @category   Image
  * @package    Image_3D
@@ -49,14 +47,14 @@ require_once('Image/3D/Paintable/Object.php');
  * @since      Class available since Release 0.1.0
  */
 class Image_3D_Object_Polygon extends Image_3D_Object {
-	
-	public function __construct($points) {
-		parent::__construct();
+    
+    public function __construct($points) {
+        parent::__construct();
 
-		$polygon = new Image_3D_Polygon();
-		foreach ($points as $point) $polygon->addPoint($point);
-		$this->_addPolygon($polygon);
-	}
+        $polygon = new Image_3D_Polygon();
+        foreach ($points as $point) $polygon->addPoint($point);
+        $this->_addPolygon($polygon);
+    }
 
     public function getPolygon() {
         return reset($this->_polygones);

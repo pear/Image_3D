@@ -22,14 +22,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
 // {{{ Image_3D_Driver
@@ -37,19 +37,18 @@
 /**
  * Image_3D_Driver
  *
- * 
- *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
-abstract class Image_3D_Driver {
-	
+abstract class Image_3D_Driver
+{
+    
     // {{{ properties
 
     /**
@@ -57,8 +56,8 @@ abstract class Image_3D_Driver {
      *
      * @var mixed
      */
-	protected $_image;
-	
+    protected $_image;
+    
     // }}}
     // {{{ __construct()
 
@@ -69,81 +68,87 @@ abstract class Image_3D_Driver {
      *
      * @return  Image_3D_Driver             Instance of Renderer
      */
-	public function __construct() {
-		$this->_image = null;
-	}
-	
+    public function __construct()
+    {
+        $this->_image = null;
+    }
+    
     // }}}
     // {{{ createImage()
-	
+    
     /**
      * Initialize image
      *
      * Initialize the image with given width and height
      *
-     * @param   integer         $x      Width
-     * @param   integer         $y      Height
+     * @param integer $x Width
+     * @param integer $y Height
+     *
      * @return  void
      */
-	abstract public function createImage($x, $y);
-	
+    abstract public function createImage($x, $y);
+    
     // }}}
     // {{{ setBackground()
-	
+    
     /**
      * Sets Background
      *
      * Set the background for the image
      *
-     * @param   Image_3D_Color  $color  Backgroundcolor
+     * @param Image_3D_Color $color Backgroundcolor
+     *
      * @return  void
      */
-	abstract public function setBackground(Image_3D_Color $color);
-	
+    abstract public function setBackground(Image_3D_Color $color);
+    
     // }}}
     // {{{ drawPolygon()
-	
+    
     /**
      * Draws a flat shaded polygon
      *
      * Draws a flat shaded polygon. Methd uses the polygon color
      *
-     * @param   Image_3D_Polygon    $polygon    Polygon
+     * @param Image_3D_Polygon $polygon Polygon
+     *
      * @return  void
      */
-	abstract public function drawPolygon(Image_3D_Polygon $polygon);
-	
+    abstract public function drawPolygon(Image_3D_Polygon $polygon);
+    
     // }}}
     // {{{ drawGradientPolygon()
-	
+    
     /**
      * Draws a gauroud shaded polygon
      *
      * Draws a gauroud shaded polygon. Methd uses the colors of the polygones
      * points and tries to create a gradient filling for the polygon.
      *
-     * @param   Image_3D_Polygon    $polygon    Polygon
+     * @param Image_3D_Polygo $polygon Polygon
+     *
      * @return  void
      */
-	abstract public function drawGradientPolygon(Image_3D_Polygon $polygon);
-	
+    abstract public function drawGradientPolygon(Image_3D_Polygon $polygon);
+    
     // }}}
     // {{{ save()
-	
+    
     /**
      * Save image
      *
      * Save image to file
      *
-     * @param   string          $file   File
+     * @param string $file File
+     *
      * @return  void
      */
-	abstract public function save($file);
-	
-	
+    abstract public function save($file);
+    
+    
     // }}}
     // {{{ getSupportedShading()
-	
+    
     /**
      * Return supported shadings
      *
@@ -151,11 +156,12 @@ abstract class Image_3D_Driver {
      *
      * @return  array           Array with supported shading types
      */
-	public function getSupportedShading() {
-		return array(Image_3D_Renderer::SHADE_NO);
-	}
-	
-	// }}}
+    public function getSupportedShading()
+    {
+        return array(Image_3D_Renderer::SHADE_NO);
+    }
+    
+    // }}}
 }
 
 // }}}

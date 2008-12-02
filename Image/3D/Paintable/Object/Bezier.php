@@ -22,22 +22,20 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
 require_once('Image/3D/Paintable/Object/Map.php');
 
 /**
  * Image_3D_Object_Bezier
- *
- *
  *
  * @category   Image
  * @package    Image_3D
@@ -49,8 +47,8 @@ require_once('Image/3D/Paintable/Object/Map.php');
  * @since      Class available since Release 0.3.0
  */
 class Image_3D_Object_Bezier extends Image_3D_Object_Map {
-	
-	public function __construct($options) {
+    
+    public function __construct($options) {
         // Fetch options
         $x_detail = max(2, (int) @$options['x_detail']);
         $y_detail = max(2, (int) @$options['y_detail']);
@@ -91,7 +89,7 @@ class Image_3D_Object_Bezier extends Image_3D_Object_Map {
         }
 
         parent::__construct($map);
-	}
+    }
 
     protected function _binomial_coefficient($n, $k) {
         if ($k > $n) return 0;
