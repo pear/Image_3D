@@ -22,44 +22,45 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
-require_once('Image/3D/Color.php');
+require_once 'Image/3D/Color.php';
 
 /**
  * Image_3D_Color_Metal
  *
- *
- *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
-class Image_3D_Color_Metal extends Image_3D_Color {
-	
-	protected $_metal;
+class Image_3D_Color_Metal extends Image_3D_Color
+{
+    
+    protected $_metal;
 
-	public function setMetal($metal) {
-		$this->_metal = (float) $metal;
-	}
-	
-	protected function _mixColor() {
-		$this->_rgbaValue[0] = min(1, $this->_rgbaValue[0] * $this->_light[0] + $this->_metal * $this->_light[0]);
-		$this->_rgbaValue[1] = min(1, $this->_rgbaValue[1] * $this->_light[1] + $this->_metal * $this->_light[1]);
-		$this->_rgbaValue[2] = min(1, $this->_rgbaValue[2] * $this->_light[2] + $this->_metal * $this->_light[2]);
-	}
+    public function setMetal($metal)
+    {
+        $this->_metal = (float) $metal;
+    }
+    
+    protected function _mixColor()
+    {
+        $this->_rgbaValue[0] = min(1, $this->_rgbaValue[0] * $this->_light[0] + $this->_metal * $this->_light[0]);
+        $this->_rgbaValue[1] = min(1, $this->_rgbaValue[1] * $this->_light[1] + $this->_metal * $this->_light[1]);
+        $this->_rgbaValue[2] = min(1, $this->_rgbaValue[2] * $this->_light[2] + $this->_metal * $this->_light[2]);
+    }
 }
 
