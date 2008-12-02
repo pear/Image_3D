@@ -22,14 +22,14 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    CVS: $Id$
- * @link       http://pear.php.net/package/PackageName
- * @since      File available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   CVS: $Id$
+ * @link      http://pear.php.net/package/PackageName
+ * @since     File available since Release 0.1.0
  */
 
 // {{{ Image_3D_Renderer_Perspectively
@@ -37,19 +37,18 @@
 /**
  * Image_3D_Renderer_Perspectively
  *
- * 
- *
- * @category   Image
- * @package    Image_3D
- * @author     Kore Nordmann <3d@kore-nordmann.de>
- * @copyright  1997-2005 Kore Nordmann
- * @license    http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/package/PackageName
- * @since      Class available since Release 0.1.0
+ * @category  Image
+ * @package   Image_3D
+ * @author    Kore Nordmann <3d@kore-nordmann.de>
+ * @copyright 1997-2005 Kore Nordmann
+ * @license   http://www.gnu.org/licenses/lgpl.txt lgpl 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/PackageName
+ * @since     Class available since Release 0.1.0
  */
-class Image_3D_Renderer_Perspectively extends Image_3D_Renderer {
-	
+class Image_3D_Renderer_Perspectively extends Image_3D_Renderer
+{
+    
     // {{{ _calculateScreenCoordiantes()
 
     /**
@@ -57,19 +56,19 @@ class Image_3D_Renderer_Perspectively extends Image_3D_Renderer {
      *
      * Calculate perspectively screen coordinates for a point
      *
-     * @param   Image_3D_Point  $point  Point to process
+     * @param Image_3D_Point $point Point to process
+     *
      * @return  void
      */
-	protected function _calculateScreenCoordiantes(Image_3D_Point $point) {
-		$viewpoint = 500.;
-		$distance = 500.;
-		
-		$point->setScreenCoordinates(
-			$viewpoint * $point->getX() / ($point->getZ() + $distance) + $this->_size[0],
-			$viewpoint * $point->getY() / ($point->getZ() + $distance) + $this->_size[1]
-		);
-	}
-	
+    protected function _calculateScreenCoordiantes(Image_3D_Point $point)
+    {
+        $viewpoint = 500.;
+        $distance  = 500.;
+        
+        $point->setScreenCoordinates($viewpoint * $point->getX() / ($point->getZ() + $distance) + $this->_size[0],
+                                     $viewpoint * $point->getY() / ($point->getZ() + $distance) + $this->_size[1]);
+    }
+    
     // }}}
     // {{{ _sortPolygones()
 
@@ -80,12 +79,15 @@ class Image_3D_Renderer_Perspectively extends Image_3D_Renderer {
      *
      * @return  void
      */
-	protected function _sortPolygones() {
-		$polygoneDepth = array();
-		foreach ($this->_polygones as $polygon) $polygoneDepth[] = $polygon->getMidZ();
+    protected function _sortPolygones()
+    {
+        $polygoneDepth = array();
+        foreach ($this->_polygones as $polygon) {
+            $polygoneDepth[] = $polygon->getMidZ();
+        }
 
-		array_multisort($polygoneDepth, SORT_DESC, SORT_NUMERIC, $this->_polygones);
-	}
+        array_multisort($polygoneDepth, SORT_DESC, SORT_NUMERIC, $this->_polygones);
+    }
 
     // }}}
 }
