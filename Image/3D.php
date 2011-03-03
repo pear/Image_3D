@@ -1,4 +1,4 @@
-m<?php
+<?php
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
@@ -7,17 +7,17 @@ m<?php
  *
  * PHP versions 5
  *
- * LICENSE: 
+ * LICENSE:
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
  * version 2.1 of the License, or (at your option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
@@ -65,50 +65,50 @@ require_once 'Image/3D/Paintable/Polygon.php';
  */
 class Image_3D
 {
-    
+
     // {{{ properties
-    
+
     /**
      * Backgroundcolor
      *
      * @var Image_3D_Color
      */
     protected $_color;
-    
+
     /**
      * List of known objects
      *
      * @var array
      */
     protected $_objects;
-    
+
     /**
      * List of lights
      *
      * @var array
      */
     protected $_lights;
-    
+
     /**
      * Active renderer
      *
      * @var Image_3D_Renderer
      */
     protected $_renderer;
-    
+
     /**
      * Active outputdriver
      *
      * @var Image_3D_Driver
      */
     protected $_driver;
-    
-    
+
+
     /**
      * Options for rendering
      */
     protected $_option;
-    
+
     /**
      * Options set by the user
      *
@@ -122,10 +122,10 @@ class Image_3D
      * @var float
      */
     protected $_start;
-    
+
     // }}}
     // {{{ constants
-    
+
     /**
      * Option for filled polygones (depreceated)
      */
@@ -135,25 +135,25 @@ class Image_3D
      * Option for backface culling (depreceated)
      */
     const IMAGE_3D_OPTION_BF_CULLING = 2;
-    
+
     // }}}
     // {{{ __construct()
 
     /**
      * Constructor for Image_3D
-     * 
+     *
      * Initialises the environment
      *
      * @return  Image_3D                World instance
      */
-    public function __construct() 
+    public function __construct()
     {
         $this->_objects  = array();
         $this->_lights   = array();
         $this->_renderer = null;
         $this->_driver   = null;
         $this->_color    = null;
-        
+
         $this->_option[self::IMAGE_3D_OPTION_FILLED]     = true;
         $this->_option[self::IMAGE_3D_OPTION_BF_CULLING] = true;
 
@@ -161,14 +161,14 @@ class Image_3D
 
         $this->_start = microtime(true);
     }
-    
+
     // }}}
     // {{{ createObject()
 
     /**
      * Factory method for Objects
-     * 
-     * Creates and returns a printable object. 
+     *
+     * Creates and returns a printable object.
      * Standard objects with parameters:
      *     - cube        array(float $x, float $y, float $z)
      *     - sphere    array(float $r, int $detail)
@@ -188,7 +188,7 @@ class Image_3D
 
         $absolute_path = dirname(__FILE__) . '/3D/Paintable/Object/' . $name . '.php';
         $user_path     = dirname(__FILE__) . '/3D/User/Object/' . $name . '.php';
-        
+
         if (is_file($absolute_path) && is_readable($absolute_path)) {
             include_once $absolute_path;
         } elseif (is_file($user_path) && is_readable($user_path)) {
@@ -196,16 +196,16 @@ class Image_3D
         } else {
             throw new Exception("Class for object $name not found (Searched: $absolute_path, $user_path).");
         }
-        
+
         return $this->_objects[] = new $class($parameter);
     }
-    
+
     // }}}
     // {{{ createLight()
-    
+
     /**
      * Factory method for lights
-     * 
+     *
      * Creates and returns a light. Needs only the position of the lights as a
      * parameter.
      *
@@ -230,19 +230,19 @@ class Image_3D
             } else {
                 throw new Exception("Class for object $name not found (Searched: $absolute_path, $user_path).");
             }
-            
+
             return $this->_lights[] = new $class($parameter[0], $parameter[1], $parameter[2], array_slice($parameter, 3));
         } else {
             return $this->_lights[] = new Image_3D_Light($parameter[0], $parameter[1], $parameter[2]);
         }
     }
-    
+
     // }}}
     // {{{ createMatrix()
 
     /**
      * Factory method for transformation matrixes
-     * 
+     *
      * Creates a transformation matrix
      * Known matrix types:
      *  - rotation      array(float $x, float $y, float $z)
@@ -260,22 +260,22 @@ class Image_3D
         $class = 'Image_3D_Matrix_' . $name;
 
         $absolute_path = dirname(__FILE__) . '/3D/Matrix/' . $name . '.php';
-        
+
         if (is_file($absolute_path) && is_readable($absolute_path)) {
             include_once $absolute_path;
         } else {
             throw new Exception("Class for matrix $name not found (Searched: $absolute_path, $user_path).");
         }
-        
+
         return new $class($parameter);
     }
-    
+
     // }}}
     // {{{ setColor()
 
     /**
-     * Sets world backgroundcolor 
-     * 
+     * Sets world backgroundcolor
+     *
      * Sets the backgroundcolor for final image. Transparancy is not supported
      * by all drivers
      *
@@ -293,7 +293,7 @@ class Image_3D
 
     /**
      * Factory method for renderer
-     * 
+     *
      * Creates and returns a renderer.
      * Avaible renderers
      *  - Isometric
@@ -310,7 +310,7 @@ class Image_3D
 
         $absolute_path = dirname(__FILE__) . '/3D/Renderer/' . $name . '.php';
         $user_path     = dirname(__FILE__) . '/3D/User/Renderer/' . $name . '.php';
-        
+
         if (is_file($absolute_path) && is_readable($absolute_path)) {
             include_once $absolute_path;
         } elseif (is_file($user_path) && is_readable($user_path)) {
@@ -318,16 +318,16 @@ class Image_3D
         } else {
             throw new Exception("Class for renderer $name not found (Searched: $absolute_path, $user_path).");
         }
-        
+
         return $this->_renderer = new $class();
     }
-    
+
     // }}}
     // {{{ createDriver()
 
     /**
      * Factory method for drivers
-     * 
+     *
      * Creates and returns a new driver
      * Standrad available drivers:
      *  - GD
@@ -344,7 +344,7 @@ class Image_3D
 
         $absolute_path = dirname(__FILE__) . '/3D/Driver/' . $name . '.php';
         $user_path     = dirname(__FILE__) . '/3D/User/Driver/' . $name . '.php';
-        
+
         if (is_file($absolute_path) && is_readable($absolute_path)) {
             include_once $absolute_path;
         } elseif (is_file($user_path) && is_readable($user_path)) {
@@ -352,16 +352,16 @@ class Image_3D
         } else {
             throw new Exception("Class for driver $name not found (Searched: $absolute_path, $user_path).");
         }
-        
+
         return $this->_driver = new $class();
     }
-    
+
     // }}}
     // {{{ setOption()
 
     /**
      * Sets an option for all known objects
-     * 
+     *
      * Sets one of the Image_3D options for all known objects
      *
      * @param integer $option Option
@@ -384,12 +384,12 @@ class Image_3D
 
     /**
      * Transform all known objects
-     * 
+     *
      * Transform all known objects with the given transformation matrix.
      * Can be interpreted as a transformation of the viewpoint.
-     * 
+     *
      * The id is an optional value which shouldn't be set by the user to
-     * avoid double calculations, if a point is related to more than one 
+     * avoid double calculations, if a point is related to more than one
      * object.
      *
      * @param Image_3D_Matrix $matrix Transformation matrix
@@ -399,7 +399,7 @@ class Image_3D
      */
     public function transform(Image_3D_Matrix $matrix, $id = null)
     {
-        
+
         if ($id === null) {
             $id = substr(md5(microtime()), 0, 8);
         }
@@ -408,13 +408,13 @@ class Image_3D
             $object->transform($matrix, $id);
         }
     }
-    
+
     // }}}
     // {{{ render()
 
     /**
      * Renders the image
-     * 
+     *
      * Starts rendering an image with given size into the given file.
      *
      * @param integer $x    Width
@@ -431,7 +431,7 @@ class Image_3D
             &&    !preg_match('/^\s*php:\/\/(stdout|output)\s*$/i', $file)) {
             throw new Exception('Cannot write outputfile.');
         }
-        
+
         $x = min(1280, max(0, (int) $x));
         $y = min(1280, max(0, (int) $y));
 
@@ -440,16 +440,16 @@ class Image_3D
         $this->_renderer->addObjects($this->_objects);
         $this->_renderer->addLights($this->_lights);
         $this->_renderer->setDriver($this->_driver);
-        
+
         return $this->_renderer->render($file);
     }
-    
+
     // }}}
     // {{{ stats()
 
     /**
      * Statistics for Image_3D
-     * 
+     *
      * Returns simple statisics for Image_3D as a string.
      *
      * @return  string                  Statistics
@@ -471,7 +471,7 @@ time:       %.4f s
             $this->_renderer->getPointCount(),
             microtime(true) - $this->_start);
     }
-    
+
     // }}}
 }
 
