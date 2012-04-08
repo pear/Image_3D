@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+<package packagerversion="1.9.4" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
  <name>Image_3D</name>
  <channel>pear.php.net</channel>
  <summary>This class allows the rendering of 3 dimensional objects utilizing PHP.</summary>
@@ -32,10 +32,10 @@ Image_3D currently supports:
   <email>mail@arne-nordmann.de</email>
   <active>yes</active>
  </developer>
- <date>2009-03-02</date>
- <time>12:41:27</time>
+ <date>2012-04-08</date>
+ <time>21:15:06</time>
  <version>
-  <release>0.4.1</release>
+  <release>0.4.2</release>
   <api>0.4.0</api>
  </version>
  <stability>
@@ -43,272 +43,278 @@ Image_3D currently supports:
   <api>alpha</api>
  </stability>
  <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
- <notes>Updated package.xml</notes>
+ <notes>
+QA release
+
+Request #14925	Improve PHPCS results
+
+Bug #18325	There is an m before the PHP opening tag
+ </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="c535de471f7fc9353a516ea213051553" name="data/TextData.dat" role="data">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="8ff2298c66e27dd582a5b48cb19b9d61" name="data/DynamicCanvas/Base64.js" role="data" />
-   <file baseinstalldir="/" md5sum="d739211a75c5875664589269a3eca22d" name="data/DynamicCanvas/CanvasDriver.js" role="data" />
-   <file baseinstalldir="/" md5sum="582aca0e046726af069d672dbfcf7843" name="data/DynamicCanvas/Image3D.js" role="data" />
-   <file baseinstalldir="/" md5sum="5ce80db2c495322563d3e1f180fc9d28" name="data/DynamicCanvas/Init.js" role="data" />
-   <file baseinstalldir="/" md5sum="11e041e98d9f9b1e4560e86de4bcb849" name="data/DynamicCanvas/MouseEventGenerator.js" role="data" />
-   <file baseinstalldir="/" md5sum="46aa571734bd630d13e9c9dacd66275c" name="data/DynamicCanvas/PngDriver.js" role="data" />
-   <file baseinstalldir="/" md5sum="e9006923ab0f8ab3a5a1916819a8af87" name="data/DynamicCanvas/Renderer.js" role="data" />
-   <file baseinstalldir="/" md5sum="c837d67bce1c142ce2c0ea26cfad3c81" name="data/DynamicCanvas/RotateAnimationEventGenerator.js" role="data" />
-   <file baseinstalldir="/" md5sum="fc4dda148630cce2e5757c8f1e5ae4a5" name="data/DynamicCanvas/Startup.js" role="data" />
-   <file baseinstalldir="/" md5sum="3f2be6435559752469763ac9aa5eebef" name="data/DynamicCanvas/SvgDriver.js" role="data" />
-   <file baseinstalldir="/" md5sum="cade42fa4eb9e730dc594ab3ad566c74" name="data/DynamicCanvas/Toolbar.js" role="data" />
-   <file baseinstalldir="" md5sum="ec04a4e757039f8fc36b0a8127554038" name="docs/AUTHORS" role="doc">
+   <file baseinstalldir="/" md5sum="69e48dcc6246ac32c87f7b6cb5a90f71" name="data/DynamicCanvas/Base64.js" role="data" />
+   <file baseinstalldir="/" md5sum="0769eed35c7883f3a9b6a2e8772aee90" name="data/DynamicCanvas/CanvasDriver.js" role="data" />
+   <file baseinstalldir="/" md5sum="118f79e40652495dd59819ec831670fb" name="data/DynamicCanvas/Image3D.js" role="data" />
+   <file baseinstalldir="/" md5sum="0b00e82ccd5e9e01b46d9cebd688c67b" name="data/DynamicCanvas/Init.js" role="data" />
+   <file baseinstalldir="/" md5sum="72fff6e6ea2072490a093045c5e66a05" name="data/DynamicCanvas/MouseEventGenerator.js" role="data" />
+   <file baseinstalldir="/" md5sum="679c950edf821af4bd564edc4430667d" name="data/DynamicCanvas/PngDriver.js" role="data" />
+   <file baseinstalldir="/" md5sum="0d70bf545090069e1ec6ecd6fd1facc8" name="data/DynamicCanvas/Renderer.js" role="data" />
+   <file baseinstalldir="/" md5sum="cf2cff388dfc044e59dc39046be48de3" name="data/DynamicCanvas/RotateAnimationEventGenerator.js" role="data" />
+   <file baseinstalldir="/" md5sum="c26c9f12b45bfeb259980f0403b55da9" name="data/DynamicCanvas/Startup.js" role="data" />
+   <file baseinstalldir="/" md5sum="66e7f22186a4cd07e5e48bd296f3cc23" name="data/DynamicCanvas/SvgDriver.js" role="data" />
+   <file baseinstalldir="/" md5sum="81e1441b24f9a8371de6548891c2f89b" name="data/DynamicCanvas/Toolbar.js" role="data" />
+   <file baseinstalldir="" md5sum="228efe3a996d12b084bf36e617d88bb0" name="docs/AUTHORS" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="80d5280342ccaa1edf2a4b1c87a47d94" name="docs/COPYING" role="doc">
+   <file baseinstalldir="" md5sum="a6f89e2100d9b6cdffcea4f398e37343" name="docs/COPYING" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="3b2744b2a28b62319d3e794d97c577cf" name="docs/README" role="doc">
+   <file baseinstalldir="" md5sum="1e6c6550ad475fc8d5e85fc7ace18881" name="docs/README" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="6f86ea01d2b3b7cd09103c0e20918364" name="docs/TODO" role="doc">
+   <file baseinstalldir="" md5sum="b3dbea53b51d0d04544f28df111803fe" name="docs/TODO" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="2036a9c148f7dc5bd7efe8d70ec9b59c" name="docs/examples/3ds.php" role="doc">
+   <file baseinstalldir="" md5sum="df28bf968a310c56506179ec97064d76" name="docs/examples/3ds.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="01d0e2a7f33bcccf6578a78bbeefe5de" name="docs/examples/ascii.php" role="doc">
+   <file baseinstalldir="" md5sum="13c7c9c444bf186085981c738e948f7f" name="docs/examples/ascii.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="f20cb4ecda3d18a9822ef0328622324c" name="docs/examples/ascii_demo.php" role="doc">
+   <file baseinstalldir="" md5sum="5d6d00262ac1664e90737f15bcc66d79" name="docs/examples/ascii_demo.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="1183eff449686ef4f14e16b8ae6e5c8a" name="docs/examples/bezier.php" role="doc">
+   <file baseinstalldir="" md5sum="f320a34c3d39ce48b7e7a4bb05ebe0b9" name="docs/examples/bezier.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="c9185f54f61f21a3b59f916487e61641" name="docs/examples/cone.php" role="doc">
+   <file baseinstalldir="" md5sum="3231c11a4fb85b50d9f09796a0bef001" name="docs/examples/cone.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="70ec3feafbcf15741f77d49f4a89b587" name="docs/examples/cubes.php" role="doc">
+   <file baseinstalldir="" md5sum="8215f0f4affae4dbe7d16bebcb45126d" name="docs/examples/cubes.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="c782173c350cb1f26e2deb0a4c890271" name="docs/examples/dynamic_cubes.php" role="doc" />
-   <file baseinstalldir="" md5sum="7315ec2cd579f31feb56559b9b806ded" name="docs/examples/map.php" role="doc">
+   <file baseinstalldir="/" md5sum="237f8a8981757cd2e2e30005df77d6c3" name="docs/examples/dynamic_cubes.php" role="doc" />
+   <file baseinstalldir="" md5sum="f4ebf22b27768c1b3ea8b87df39d5491" name="docs/examples/map.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="a68a3e0c3e844b5fa298171ba6a4f19d" name="docs/examples/pie.php" role="doc">
+   <file baseinstalldir="" md5sum="83c1f617474ab5a82128b1cd346028f5" name="docs/examples/pie.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="32c7c8d2311fa3a2c88963e158bc1693" name="docs/examples/pointlight.php" role="doc">
+   <file baseinstalldir="" md5sum="98bf2a51d482fdccd707aabb14e792d7" name="docs/examples/pointlight.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="a701198fdf7af959ea8efa4786e38165" name="docs/examples/quadcube.php" role="doc" />
-   <file baseinstalldir="/" md5sum="cbdf76d4844aa34a07096f325de656ec" name="docs/examples/raytrace.php" role="doc" />
-   <file baseinstalldir="" md5sum="5b8445afc904cb57a2d44aa56ef22d4f" name="docs/examples/sphere.php" role="doc">
+   <file baseinstalldir="/" md5sum="d6218748f41149640a9643fed36c55cf" name="docs/examples/quadcube.php" role="doc" />
+   <file baseinstalldir="/" md5sum="54813c6272554273d8ceddca14982eee" name="docs/examples/raytrace.php" role="doc" />
+   <file baseinstalldir="" md5sum="a0a70e98bf28f2e6aabf0e099aa760dc" name="docs/examples/sphere.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="34017116bf2a5417ce90f0e9043f330f" name="docs/examples/spotlights.php" role="doc">
+   <file baseinstalldir="" md5sum="b7949ea75b25b24cd3e3afaf667ab2b5" name="docs/examples/spotlights.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="d7739ace8310823398d356f8e57ec781" name="docs/examples/text.php" role="doc">
+   <file baseinstalldir="" md5sum="7b8d3d259e202c9f16afbb08eea76cc5" name="docs/examples/text.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="c829a1ce209e04234126a5b97267f134" name="docs/examples/torus.php" role="doc">
+   <file baseinstalldir="" md5sum="c2a7674611719c79708b9e5f22b0da54" name="docs/examples/torus.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="3d353f46fb4a8b135aca357ea17d9507" name="docs/examples/zbuffer.php" role="doc">
+   <file baseinstalldir="" md5sum="ca3d0bf8cf08a519eb132953b453a868" name="docs/examples/zbuffer.php" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="dbcf3a2f1cfeb0ab620852d7e36ea888" name="docs/examples/models/cube.3ds" role="doc">
+   <file baseinstalldir="" md5sum="a478b2064aead7a1e7fed6f390d733e2" name="docs/examples/models/cube.3ds" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="62acf842181cd9d81c5b5414a6a42f6e" name="docs/examples/models/Image_3D.3ds" role="doc">
+   <file baseinstalldir="" md5sum="8170f1a1e65f6025b0d53e3b45811761" name="docs/examples/models/Image_3D.3ds" role="doc">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="90541e20a0cf028409a9d0d0def0d847" name="Image/3D.php" role="php">
+   <file baseinstalldir="" md5sum="3a88bf5c1d891e6cc084fcd6d0e9d88d" name="Image/3D.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="916c21af8c66fc0f1ab5174213140d98" name="Image/3D/Color.php" role="php">
+   <file baseinstalldir="" md5sum="d0213269d6ed2008824a3887ac2e8cce" name="Image/3D/Color.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="7388e55fcb73e085c346802fe27956cf" name="Image/3D/Coordinate.php" role="php">
+   <file baseinstalldir="" md5sum="a50b71240316b226026b28db7182640d" name="Image/3D/Coordinate.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="e63abd7fcc55bc2f7955465651dd1e41" name="Image/3D/Driver.php" role="php">
+   <file baseinstalldir="" md5sum="3c20cddafe362b54dd8f55c9f1cae4f2" name="Image/3D/Driver.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="9b43f251632fbeb86ba39061574e86d1" name="Image/3D/Enlightenable.php" role="php">
+   <file baseinstalldir="" md5sum="4e252520f2d342efe7864b08211ede48" name="Image/3D/Enlightenable.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="23d03c5e19f958dc796ec352ac9eade2" name="Image/3D/Line.php" role="php" />
-   <file baseinstalldir="" md5sum="b85817d0db81464d255c90b79547b648" name="Image/3D/Matrix.php" role="php">
+   <file baseinstalldir="/" md5sum="b751eead76e85f9a7c9e56f925b93f1f" name="Image/3D/Line.php" role="php" />
+   <file baseinstalldir="" md5sum="458a7fa3dd830fb4191e62478dc0729b" name="Image/3D/Matrix.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="0a680a4e4dbeb82428cb090fd50d93d5" name="Image/3D/Paintable.php" role="php">
+   <file baseinstalldir="" md5sum="b0bee3e8d44b00797d258a9ac208f501" name="Image/3D/Paintable.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="648e9734b6414768d556de11aa3642cf" name="Image/3D/Point.php" role="php">
+   <file baseinstalldir="" md5sum="120ac96a2503c68bfcf1d98558d6a912" name="Image/3D/Point.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="d52c4b8f9a0cb9d41ee4b0000c85cd7f" name="Image/3D/Renderer.php" role="php">
+   <file baseinstalldir="" md5sum="a86f1460d5a341ed163a352ff33863ff" name="Image/3D/Renderer.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="b5e08727053c8100c8cdaaf16a26e12c" name="Image/3D/Vector.php" role="php">
+   <file baseinstalldir="" md5sum="87e4b811468caadc0dd42600f7e25b07" name="Image/3D/Vector.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="6fad8582e466ada49624cf30b901736d" name="Image/3D/Color/Metal.php" role="php">
+   <file baseinstalldir="" md5sum="bbbd3e72288e67b7ba7d3db0ef922388" name="Image/3D/Color/Metal.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="e688babac06a0c00a8a1b305fb59f9dd" name="Image/3D/Driver/ASCII.php" role="php">
+   <file baseinstalldir="" md5sum="c60b054bc4ddb280d2c551634db3186f" name="Image/3D/Driver/ASCII.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="89fdcbb5c3d2c10140a754a531290e46" name="Image/3D/Driver/DynamicCanvas.php" role="php" />
-   <file baseinstalldir="" md5sum="d8505dcb99558fd7fbd245fcdc2a7136" name="Image/3D/Driver/GD.php" role="php">
+   <file baseinstalldir="/" md5sum="6d6381099c2a690137bd9f3290ea81a2" name="Image/3D/Driver/DynamicCanvas.php" role="php" />
+   <file baseinstalldir="" md5sum="8994abe4eae1582cbf2dd7e1c1d20762" name="Image/3D/Driver/GD.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="4ef90484fddd0b2aeb354fa4a6379e48" name="Image/3D/Driver/ImageCanvas.php" role="php">
+   <file baseinstalldir="" md5sum="4d754e5b49d91d2c3d065c410143c849" name="Image/3D/Driver/ImageCanvas.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="1b8904daabf75d8ab70a76d6e20bdad6" name="Image/3D/Driver/ImageMagick.php" role="php">
+   <file baseinstalldir="" md5sum="edac73318ee65f928d4bdbb0b072ab53" name="Image/3D/Driver/ImageMagick.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="56c046dd3f4e7de09d4734242d1826da" name="Image/3D/Driver/SVG.php" role="php">
+   <file baseinstalldir="" md5sum="0ba0bd7815596d99f3b28684be011997" name="Image/3D/Driver/SVG.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="bb1a3d97c6cf02ec6235942c8252ef70" name="Image/3D/Driver/SVGControl.php" role="php">
+   <file baseinstalldir="" md5sum="5c01b1b6dfa3578bf4a670526cb8dc0a" name="Image/3D/Driver/SVGControl.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="8cf464d997d23a139cf9950210a07a43" name="Image/3D/Driver/ZBuffer.php" role="php">
+   <file baseinstalldir="" md5sum="8df494ad5943459501314928d70c3ce4" name="Image/3D/Driver/ZBuffer.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="6eb5a950e93941f874416812a368d86b" name="Image/3D/Matrix/Move.php" role="php">
+   <file baseinstalldir="" md5sum="95ab2ae488225e7efa47797e24b53444" name="Image/3D/Matrix/Move.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="9f86317b2a867fa96c156f2b3a0a15b3" name="Image/3D/Matrix/Rotation.php" role="php">
+   <file baseinstalldir="" md5sum="a1e54c5f928ed26ba24f4b828f4803da" name="Image/3D/Matrix/Rotation.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="b2cfff17d461adff6c7546ed637c46b2" name="Image/3D/Matrix/Scale.php" role="php">
+   <file baseinstalldir="" md5sum="6aed3a9378fd2b795319344929b9b090" name="Image/3D/Matrix/Scale.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="242cce9567ee03b170996b0bc972db5e" name="Image/3D/Paintable/Light.php" role="php">
+   <file baseinstalldir="" md5sum="e35d7245fd481d357c979fe3f69c2a60" name="Image/3D/Paintable/Light.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="c3dcdac38f006a53bf042d7772e040a0" name="Image/3D/Paintable/Object.php" role="php">
+   <file baseinstalldir="" md5sum="5ff47a0e68b8387b1c83620af767fd6e" name="Image/3D/Paintable/Object.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="bfb4f919041cf0df55933e0455b4b557" name="Image/3D/Paintable/Polygon.php" role="php">
+   <file baseinstalldir="" md5sum="81a08bff40420881cf9b26807267ce7b" name="Image/3D/Paintable/Polygon.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="1b3415c1421c7ff871fd11108f791e0f" name="Image/3D/Paintable/Light/Ambient.php" role="php">
+   <file baseinstalldir="" md5sum="68dd5dfbdb96d5fd4745434829cab685" name="Image/3D/Paintable/Light/Ambient.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="c9cf2730cce9b6485d3350623540eec6" name="Image/3D/Paintable/Light/Point.php" role="php">
+   <file baseinstalldir="" md5sum="06bd3a08bb4b6263ff769896bc166cbb" name="Image/3D/Paintable/Light/Point.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="abcf4e3e393de4a5c38f6aaae122a4c3" name="Image/3D/Paintable/Light/Spotlight.php" role="php">
+   <file baseinstalldir="" md5sum="aa6c0782f8a9a82e5ac882c861d15d57" name="Image/3D/Paintable/Light/Spotlight.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="6a52bc778f5bd3e1db1dea944924b381" name="Image/3D/Paintable/Object/3ds.php" role="php">
+   <file baseinstalldir="" md5sum="e27b2423e556ba056c8d005d79b0fb13" name="Image/3D/Paintable/Object/3ds.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="dc92a6b74b2951741e472f4c5504f240" name="Image/3D/Paintable/Object/3dsChunks.php" role="php">
+   <file baseinstalldir="" md5sum="39747d3312b34f7c41bcbedfe9c59f0d" name="Image/3D/Paintable/Object/3dsChunks.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="fc3f0ecfa0b591235ec0e2a125491240" name="Image/3D/Paintable/Object/Bezier.php" role="php">
+   <file baseinstalldir="" md5sum="72f66705642f95f2e31361931ff26779" name="Image/3D/Paintable/Object/Bezier.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="411ea4c1631967c6f62a27a81648a89a" name="Image/3D/Paintable/Object/Cone.php" role="php">
+   <file baseinstalldir="" md5sum="f02dc78d48aa998f706c9bd9318b6200" name="Image/3D/Paintable/Object/Cone.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="1699131cffa88db80d6779e7f310e751" name="Image/3D/Paintable/Object/Cube.php" role="php">
+   <file baseinstalldir="" md5sum="be636c73f30b8daff8b6d63299b524d6" name="Image/3D/Paintable/Object/Cube.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="8e9270e19eb61d0da432ed9815ac567f" name="Image/3D/Paintable/Object/Map.php" role="php">
+   <file baseinstalldir="" md5sum="fdce4e110de7fb0c324a272443e8fdeb" name="Image/3D/Paintable/Object/Map.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="72df2bc0e9fdd35da1b4e7714930b373" name="Image/3D/Paintable/Object/Pie.php" role="php">
+   <file baseinstalldir="" md5sum="1c006433b0a03f4655cee5600be5642c" name="Image/3D/Paintable/Object/Pie.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="93e1fe48c17897b0a989cf562fec5211" name="Image/3D/Paintable/Object/Polygon.php" role="php">
+   <file baseinstalldir="" md5sum="c3171f08168f87a54f2a1ca2632e8123" name="Image/3D/Paintable/Object/Polygon.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="09a1ffcf555a4378d30ab5dfb8f9ed8b" name="Image/3D/Paintable/Object/Quadcube.php" role="php" />
-   <file baseinstalldir="" md5sum="d7d26a1566ff69702661b013bdca2224" name="Image/3D/Paintable/Object/Sphere.php" role="php">
+   <file baseinstalldir="/" md5sum="e861d6e95878d06e77d0efd642e20cae" name="Image/3D/Paintable/Object/Quadcube.php" role="php" />
+   <file baseinstalldir="" md5sum="b947322bb3a1f1ec77fcdaf6c04273e6" name="Image/3D/Paintable/Object/Sphere.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="3dd2975879080c4fe5826abe6f05889d" name="Image/3D/Paintable/Object/Text.php" role="php">
+   <file baseinstalldir="" md5sum="f271b7f4d0e510f2b724ebc291ffa6c5" name="Image/3D/Paintable/Object/Text.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="8ebe8520784222fdfc66709d9c23fe75" name="Image/3D/Paintable/Object/Torus.php" role="php">
+   <file baseinstalldir="" md5sum="76c072b657cb8f6b3b8504391624cca0" name="Image/3D/Paintable/Object/Torus.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="acb92d78a20da3c62e4c86ec5ad6c256" name="Image/3D/Renderer/Isometric.php" role="php">
+   <file baseinstalldir="" md5sum="3ec87bf07ec8da0b5d6d940024d6097b" name="Image/3D/Renderer/Isometric.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="" md5sum="7edcc9b2a71ac69a0311f1e1e5e66f28" name="Image/3D/Renderer/Perspectively.php" role="php">
+   <file baseinstalldir="" md5sum="3be6fad160c0d83f26604d030702dc10" name="Image/3D/Renderer/Perspectively.php" role="php">
     <tasks:replace from="@package_version@" to="version" type="package-info" />
     <tasks:replace from="@data_dir@" to="data_dir" type="pear-config" />
    </file>
-   <file baseinstalldir="/" md5sum="651a1fff52e3c04250c795cd9ca84c9f" name="Image/3D/Renderer/Raytrace.php" role="php" />
-   <file baseinstalldir="/" md5sum="d0b01c8774acaf1446da14befb31e676" name="generate_package_xml.php" role="php" />
+   <file baseinstalldir="/" md5sum="9b7223c891b080edbf86eadeeee56e1b" name="Image/3D/Renderer/Raytrace.php" role="php" />
+   <file baseinstalldir="/" md5sum="c07cbc68b4dab0229f46acbdd0aaeb9b" name="README" role="data" />
   </dir>
  </contents>
  <dependencies>
@@ -337,11 +343,13 @@ Image_3D currently supports:
    </stability>
    <date>2005-11-07</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>* Added torus and cone
+   <notes>
+* Added torus and cone
 * Fixed package tag
 * Added class documentation
 * Improved speed
-* Added Driver for ASCII-output (including animation)</notes>
+* Added Driver for ASCII-output (including animation)
+   </notes>
   </release>
   <release>
    <version>
@@ -354,11 +362,13 @@ Image_3D currently supports:
    </stability>
    <date>2006-03-19</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>* Modified API to add lights
+   <notes>
+* Modified API to add lights
   * Added spotlights and ambient lights
 * Added driver SVGControl
 * Added bezier curves
-* Several bugfixes</notes>
+* Several bugfixes
+   </notes>
   </release>
   <release>
    <version>
@@ -371,7 +381,28 @@ Image_3D currently supports:
    </stability>
    <date>2009-03-02</date>
    <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
-   <notes>Updated package.xml</notes>
+   <notes>
+Updated package.xml
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.4.2</release>
+    <api>0.4.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2012-04-08</date>
+   <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+   <notes>
+QA release
+
+Request #14925	Improve PHPCS results
+
+Bug #18325	There is an m before the PHP opening tag
+   </notes>
   </release>
  </changelog>
 </package>
