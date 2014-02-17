@@ -1,0 +1,41 @@
+{
+    "authors": [
+        {
+            "email": "pear@kore-nordmann.de",
+            "name": "Kore Nordmann",
+            "role": "Lead"
+        },
+        {
+            "email": "toby@php.net",
+            "name": "Tobias Schlitt",
+            "role": "Lead"
+        },
+        {
+            "email": "mail@arne-nordmann.de",
+            "name": "Arne Nordmann",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Image_3D": "./"
+        }
+    },
+    "description": "More info available on: http://pear.php.net/package/Image_3D",
+    "include-path": [
+        "./"
+    ],
+    "license": "LGPL",
+    "name": "pear/image_3d",
+    "support": {
+        "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Image_3D",
+        "source": "https://github.com/pear/Image_3D"
+    },
+    "type": "library",
+    "require": {
+        "pear/pear_exception": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    }
+}
