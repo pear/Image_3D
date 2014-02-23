@@ -1,6 +1,6 @@
 <?php
 
-require_once('Image/3D.php');
+require_once(__DIR__ . '/../../vendor/autoload.php');
 
 // Erstellen der Welt
 $world = new Image_3D();

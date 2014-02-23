@@ -4,7 +4,7 @@ $iterations = 40;
 $images = 'php://output';
 
 set_time_limit(0);
-require_once('Image/3D.php');
+require_once(__DIR__ . '/../../vendor/autoload.php');
 
 $world = new Image_3D();
 $world->setColor(new Image_3D_Color(0, 0, 0));

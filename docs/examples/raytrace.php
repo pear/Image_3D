@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Image/3D.php';
+require_once(__DIR__ . '/../../vendor/autoload.php');
 // resize image according to this factor
 $factor = 5;
 
