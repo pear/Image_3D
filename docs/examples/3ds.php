@@ -24,7 +24,7 @@ $sphere->setColor(new Image_3D_Color(200, 200, 200));
 $sphere->transform($world->createMatrix('Move', array(70, 40, 0)));
 
 // Import eines 3ds-Objekts (Schriftzug "Image 3D")
-$text = $world->createObject('3ds', 'docs/examples/models/Image_3D.3ds');
+$text = $world->createObject('3ds', __DIR__ . '/models/Image_3D.3ds');
 $text->setColor(new Image_3D_Color(255, 255, 255, 180));
 $text->transform($world->createMatrix('Rotation', array(90, 0, 0)));
 $text->transform($world->createMatrix('Scale', array(5, 5, 5)));
